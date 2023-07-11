@@ -76,6 +76,8 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
 
     let ownerId = req.user.id;
 
+
+    try {
         const createSpot = await Spot.create({
             ownerId,
             address,
@@ -90,6 +92,11 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
         });
 
         return res.status(201).json(createSpot)
+
+    } catch (error) {
+        error.status = 400;
+        next (error);
+    }
 });
 
 
