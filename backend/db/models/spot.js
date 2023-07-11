@@ -20,72 +20,92 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        len: [5, 50]
+        is: {
+          args: /^[\w\-\s]+$/,
+          msg: "The address field must contain only alphanumeric characters and spaces"
+        },
+        len: [5, 50],
+        notEmpty: true,
       }
     },
     city: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 20],
-        isAlpha: true
+          is: {
+            args: /^[a-z\s]*$/i,
+            msg: "The city field must contain only alphabetical characters and spaces"
+          },
+          len: [2, 20],
+          notEmpty: true,
       }
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        len: [2, 20],
-        isAlpha: true
+        validate: {
+          is: {
+            args: /^[a-z\s]*$/i,
+            msg: "The state field must contain only alphabetical characters and spaces"
+          },
+          len: [2, 20],
+          notEmpty: true,
       }
     },
     country: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        is: {
+          args: /^[a-z\s]*$/i,
+          msg: "The country field must contain only alphabetical characters and spaces"
+        },
         len: [2, 20],
-            allowSpaces(value) {
-
-                if (typeof value !== "string"){
-                  throw new Error('Input for country must be in letters only');
-                }
-                else if (value.includes("  " || value.includes("   " ) || value.includes("    "))){
-                  throw new Error("No more than a single space is permitted.")
-                }
-            }
+        notEmpty: true,
       }
     },
     lat: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        isDecimal: true
+        isDecimal: true,
+        notEmpty: true,
       }
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        isDecimal: true
+        isDecimal: true,
+        notEmpty: true,
       }
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 50]
+        is: {
+          args: /^[\w\-\s]+$/,
+          msg: "The name field must contain only alphanumeric characters and spaces"
+        },
+        len: [2, 50],
+        notEmpty: true,
       }
     },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 500]
+        len: [2, 500],
+        notEmpty: true,
       }
     },
     price: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      }
     }
   }, {
     sequelize,
