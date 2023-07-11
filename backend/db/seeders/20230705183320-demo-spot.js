@@ -23,13 +23,13 @@ module.exports = {
     },
     {
       "ownerId": 2,
-      "address": "535 Michigan Avenue",
+      "address": "535 N Michigan Avenue",
       "city" : "Chicago",
       "state" : "Illinois",
       "country" : "United States",
       "lat": 41.89198,
       "lng": 87.62378,
-      "name": "535 N. Michigan Avenue Condo",
+      "name": "535 N Michigan Avenue Condo",
       "description": "Enjoy great views of the Magnificent Mile on the 28th floor of this 1 bedroom unit.",
       "price": 388
     }
