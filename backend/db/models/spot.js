@@ -44,16 +44,30 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [2, 20],
-        isAlpha: true
+            allowSpaces(value) {
+
+                if (typeof value !== "string"){
+                  throw new Error('Input for country must be in letters only');
+                }
+                else if (value.includes("  " || value.includes("   " ) || value.includes("    "))){
+                  throw new Error("No more than a single space is permitted.")
+                }
+            }
       }
     },
     lat: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        isDecimal: true
+      }
     },
     lng: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        isDecimal: true
+      }
     },
     name: {
       type: DataTypes.STRING,

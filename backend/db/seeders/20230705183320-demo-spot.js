@@ -20,8 +20,20 @@ module.exports = {
       "name": "Down By The Lake Getaway",
       "description": "Come enjoy gorgeous views of Lake Michigan!",
       "price": 250.00
-
-    }], {});
+    },
+    {
+      "ownerId": 2,
+      "address": "535 Michigan Avenue",
+      "city" : "Chicago",
+      "state" : "Illinois",
+      "country" : "United States",
+      "lat": 41.89198,
+      "lng": 87.62378,
+      "name": "535 N. Michigan Avenue Condo",
+      "description": "Enjoy great views of the Magnificent Mile on the 28th floor of this 1 bedroom unit.",
+      "price": 388
+    }
+  ], {});
   },
 
   async down (queryInterface, Sequelize) {

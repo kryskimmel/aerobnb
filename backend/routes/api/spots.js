@@ -1,9 +1,10 @@
 const express = require('express');
-const { Sequelize, Op } = require('sequelize');
+const { Sequelize, Op, ValidationError } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User } = require('../../db/models');
+const user = require('../../db/models/user');
 const router = express.Router();
 
 
@@ -60,21 +61,20 @@ const router = express.Router();
 
 //get all spots
 router.get('/', async (req, res) => {
-    const getAllSpots = await Spot.findAll()
-
+    const getAllSpots = await Spot.findAll();
     return res.json(getAllSpots)
 })
 
 
 
 //create a spot
-router.post('/', requireAuth, async (req, res, next) => {
+router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => {
     const { address, city, state,
             country, lat, lng,
             name, description, price } = req.body;
 
-    const ownerId = req.User.id
 
+    let ownerId = req.user.id;
 
         const createSpot = await Spot.create({
             ownerId,
@@ -90,9 +90,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         });
 
         return res.status(201).json(createSpot)
-
-
-})
+});
 
 
 
