@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
 
 
 
-
 //Get all spots owned by the current user
 router.get('/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
@@ -25,6 +24,21 @@ router.get('/current', requireAuth, async (req, res) => {
         where: {ownerId}
     })
     return res.json(getSpotsByCurrUser)
+});
+
+
+
+//Get details for a spot from an id
+router.get('/:spotId', async (req, res, next) => {
+
+        const getSpotById = await Spot.findByPk(req.params.spotId);
+        if (!getSpotById){
+            const err = new Error(`Spot with an id of ${req.params.spotId} does not exist`);
+            err.title = "404 Not Found"
+            err.status = 404;
+            throw err;
+        }
+        return res.json(getSpotById)
 });
 
 
@@ -50,10 +64,9 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
             price
         });
     return res.status(201).json(createSpot);
-
-    } catch (error) {
-        error.status = 400;
-        next (error);
+    } catch (err) {
+        err.status = 400
+        next(err);
     }
 });
 
