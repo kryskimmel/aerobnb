@@ -3,14 +3,19 @@ const { Sequelize, Op, ValidationError } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, User } = require('../../db/models');
+const { Spot, SpotImage } = require('../../db/models');
 const user = require('../../db/models/user');
 const router = express.Router();
 
 
 //Get all spots
 router.get('/', async (req, res) => {
-    const getAllSpots = await Spot.findAll();
+    const getAllSpots = await Spot.findAll({
+        include: {
+            model: SpotImage,
+            as: 'previewImage'
+        }
+    });
     return res.json(getAllSpots)
 });
 
@@ -73,7 +78,7 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
 
 
 //Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', requireAuth, handleValidationErrors, async (req, res) => {
+router.post('/:spotId/images', requireAuth, async (req, res) => {
     const { url } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
@@ -83,15 +88,20 @@ router.post('/:spotId/images', requireAuth, handleValidationErrors, async (req, 
         err.status = 404;
         throw err;
     }
-    // else {
-    //     try {
-    //         const addImageToSpot = await
+    const addImageToSpot = await SpotImage.create({
+        spotId: req.params.spotId,
+        url
+    });
 
-    //     } catch {
+   const imageSuccessfullyAdded = {
+        id: req.params.spotId,
+        url: url,
+        preview: true
+   }
 
-    //     }
-    // }
+    return res.json(imageSuccessfullyAdded)
 });
+
 
 
 
