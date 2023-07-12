@@ -72,4 +72,27 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
 
 
 
+//Add an Image to a Spot based on the Spot's id
+router.post('/:spotId/images', requireAuth, handleValidationErrors, async (req, res) => {
+    const { url } = req.body;
+
+    const findSpotbyId = await Spot.findByPk(req.params.spotId);
+    if (!findSpotbyId){
+        const err = new Error(`Spot couldn't be found`);
+        err.title = "404 Not Found"
+        err.status = 404;
+        throw err;
+    }
+    // else {
+    //     try {
+    //         const addImageToSpot = await
+
+    //     } catch {
+
+    //     }
+    // }
+});
+
+
+
 module.exports = router;
