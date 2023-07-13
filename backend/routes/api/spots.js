@@ -7,8 +7,9 @@ const { Spot, SpotImage, Review } = require('../../db/models');
 const router = express.Router();
 
 
+/****************************************************** */
 //Get all spots
-router.get('/', async (req, res) => {
+router.get( '/', async (req, res) => {
     const getAllSpots = await Spot.findAll({
         include: [
         {
@@ -22,61 +23,59 @@ router.get('/', async (req, res) => {
     });
 
     const spotsList = [];
+
     getAllSpots.forEach(spot => {
-        spotsList.push(spot.toJSON());
-    })
+        spotsList.push(spot.toJSON())
+    });
 
     spotsList.forEach(attribute => {
         attribute.previewImage.forEach(key => {
-        if(key.url){
-            attribute.previewImage = key.url
-        }
-       })
+        if (key.url) { attribute.previewImage = key.url }
+        })
     });
 
     spotsList.forEach(attribute => {
         attribute.avgRating.forEach(key => {
-        if(key.stars){
-            attribute.avgRating = key.stars
-        }
+        if(key.stars){ attribute.avgRating = key.stars }
        })
     });
-
 
     return res.json(spotsList)
 });
 
 
-
+/****************************************************** */
 //Get all spots owned by the current user
-router.get('/current', requireAuth, async (req, res) => {
+router.get( '/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
 
     const getSpotsByCurrUser = await Spot.findAll({
         where: {ownerId}
-    })
+    });
+
     return res.json(getSpotsByCurrUser)
 });
 
 
-
+/****************************************************** */
 //Get details for a spot from an id
-router.get('/:spotId', async (req, res, next) => {
+router.get( '/:spotId', async (req, res, next) => {
+    const getSpotById = await Spot.findByPk(req.params.spotId);
 
-        const getSpotById = await Spot.findByPk(req.params.spotId);
-        if (!getSpotById){
-            const err = new Error(`Spot with an id of ${req.params.spotId} does not exist`);
-            err.title = "404 Not Found"
-            err.status = 404;
-            throw err;
-        }
-        return res.json(getSpotById)
+    if (!getSpotById){
+        const err = new Error(`Spot with an id of ${req.params.spotId} does not exist`);
+        err.title = "404 Not Found"
+        err.status = 404;
+        throw err;
+    }
+
+    return res.json(getSpotById)
 });
 
 
-
+/****************************************************** */
 //Create a spot
-router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => {
+router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) => {
     const { address, city, state,
             country, lat, lng,
             name, description, price } = req.body;
@@ -95,7 +94,9 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
             description,
             price
         });
+
     return res.status(201).json(createSpot);
+
     } catch (err) {
         err.status = 400
         next(err);
@@ -103,41 +104,43 @@ router.post('/', requireAuth, handleValidationErrors, async (req, res, next) => 
 });
 
 
-
+/****************************************************** */
 //Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', requireAuth, async (req, res) => {
+router.post( '/:spotId/images', requireAuth, async (req, res) => {
     const { url } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
+
     if (!findSpotbyId){
         const err = new Error(`Spot couldn't be found`);
         err.title = "404 Not Found"
         err.status = 404;
         throw err;
     }
-    const addImageToSpot = await SpotImage.create(
-        {
-        spotId: req.params.spotId,
-        url
+    else {
+        await SpotImage.create({
+            spotId: req.params.spotId,
+            url
+        });
+
+        const imageSuccessfullyAdded = {
+            id: req.params.spotId,
+            url: url,
+            preview: true
         }
-    );
 
-   const imageSuccessfullyAdded = {
-        id: req.params.spotId,
-        url: url,
-        preview: true
-   }
-
-    return res.status(201).json(imageSuccessfullyAdded)
+       return res.status(201).json(imageSuccessfullyAdded)
+    }
 });
 
 
-
+/****************************************************** */
 //Create a review for a spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, handleValidationErrors, async (req, res) => {
+router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req, res) => {
     const { review, stars } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
+
     if (!findSpotbyId){
         const err = new Error(`Spot couldn't be found`);
         err.title = "404 Not Found"
@@ -153,9 +156,9 @@ router.post('/:spotId/reviews', requireAuth, handleValidationErrors, async (req,
                     spotId: parseInt(req.params.spotId),
                     review,
                     stars
-                }
-            )
-            return res.status(201).json(addReviewToSpot)
+                })
+
+        return res.status(201).json(addReviewToSpot)
         }
         catch (err) {
             err.status = 400;
