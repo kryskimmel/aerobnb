@@ -3,7 +3,7 @@ const { Sequelize, Op, ValidationError } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage, Review } = require('../../db/models');
+const { Spot, SpotImage, Review, User } = require('../../db/models');
 const router = express.Router();
 
 
@@ -107,17 +107,17 @@ router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) =>
 /****************************************************** */
 //Add an Image to a Spot based on the Spot's id
 router.post( '/:spotId/images', requireAuth, async (req, res) => {
-    const { url } = req.body;
+    const { url, preview } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
 
-    if (!findSpotbyId){
-        const err = new Error(`Spot couldn't be found`);
+    if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
+        let err = new Error(`Spot couldn't be found`);
         err.title = "404 Not Found"
         err.status = 404;
         throw err;
     }
-    else {
+    else if (findSpotbyId && (req.user.id === findSpotbyId.ownerId) ) {
         await SpotImage.create({
             spotId: req.params.spotId,
             url
@@ -125,8 +125,8 @@ router.post( '/:spotId/images', requireAuth, async (req, res) => {
 
         const imageSuccessfullyAdded = {
             id: req.params.spotId,
-            url: url,
-            preview: true
+            url,
+            preview
         }
 
        return res.status(201).json(imageSuccessfullyAdded)
