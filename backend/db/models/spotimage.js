@@ -24,10 +24,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isUrl: true
+        isUrl: true,
+        notEmpty: false
       }
     }
-  }, {
+  },
+  {
     sequelize,
     modelName: 'SpotImage',
   });

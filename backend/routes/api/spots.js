@@ -4,7 +4,6 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage } = require('../../db/models');
-const user = require('../../db/models/user');
 const router = express.Router();
 
 
@@ -13,10 +12,23 @@ router.get('/', async (req, res) => {
     const getAllSpots = await Spot.findAll({
         include: {
             model: SpotImage,
-            as: 'previewImage'
+            as: 'previewImage',
         }
     });
-    return res.json(getAllSpots)
+
+    const spotsList = [];
+    getAllSpots.forEach(spot => {
+        spotsList.push(spot.toJSON());
+    })
+
+    spotsList.forEach(attribute => {
+        attribute.previewImage.forEach(key => {
+        if(key.url){
+            attribute.previewImage = key.url
+        }
+       })
+    });
+    return res.json(spotsList)
 });
 
 
