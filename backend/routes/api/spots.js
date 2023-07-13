@@ -3,17 +3,22 @@ const { Sequelize, Op, ValidationError } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage } = require('../../db/models');
+const { Spot, SpotImage, Review } = require('../../db/models');
 const router = express.Router();
 
 
 //Get all spots
 router.get('/', async (req, res) => {
     const getAllSpots = await Spot.findAll({
-        include: {
+        include: [
+        {
+            model: Review,
+            as: 'avgRating'
+        },
+        {
             model: SpotImage,
             as: 'previewImage',
-        }
+        }]
     });
 
     const spotsList = [];
@@ -28,6 +33,16 @@ router.get('/', async (req, res) => {
         }
        })
     });
+
+    spotsList.forEach(attribute => {
+        attribute.avgRating.forEach(key => {
+        if(key.stars){
+            attribute.avgRating = key.stars
+        }
+       })
+    });
+
+
     return res.json(spotsList)
 });
 
@@ -100,10 +115,12 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         err.status = 404;
         throw err;
     }
-    const addImageToSpot = await SpotImage.create({
+    const addImageToSpot = await SpotImage.create(
+        {
         spotId: req.params.spotId,
         url
-    });
+        }
+    );
 
    const imageSuccessfullyAdded = {
         id: req.params.spotId,
@@ -111,9 +128,41 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         preview: true
    }
 
-    return res.json(imageSuccessfullyAdded)
+    return res.status(201).json(imageSuccessfullyAdded)
 });
 
+
+
+//Create a review for a spot based on the Spot's id
+router.post('/:spotId/reviews', requireAuth, handleValidationErrors, async (req, res) => {
+    const { review, stars } = req.body;
+
+    const findSpotbyId = await Spot.findByPk(req.params.spotId);
+    if (!findSpotbyId){
+        const err = new Error(`Spot couldn't be found`);
+        err.title = "404 Not Found"
+        err.status = 404;
+        throw err;
+    }
+    else {
+        try {
+            const ownerId = req.user.id;
+            const addReviewToSpot = await Review.create(
+                {
+                    userId: ownerId,
+                    spotId: parseInt(req.params.spotId),
+                    review,
+                    stars
+                }
+            )
+            return res.status(201).json(addReviewToSpot)
+        }
+        catch (err) {
+            err.status = 400;
+            next(err)
+        }
+    }
+});
 
 
 
