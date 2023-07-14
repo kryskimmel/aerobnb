@@ -60,16 +60,16 @@ router.get( '/current', requireAuth, async (req, res) => {
 /****************************************************** */
 //Get details for a spot from an id
 router.get( '/:spotId', async (req, res, next) => {
-    const getSpotById = await Spot.findByPk(req.params.spotId);
+    const findSpotById = await Spot.findByPk(req.params.spotId);
 
-    if (!getSpotById){
+    if (!findSpotById){
         const err = new Error(`Spot with an id of ${req.params.spotId} does not exist`);
         err.title = "404 Not Found"
         err.status = 404;
         throw err;
     }
 
-    return res.json(getSpotById)
+    return res.json(findSpotById)
 });
 
 
@@ -176,6 +176,9 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 
 /****************************************************** */
 //Delete a spot
+router.delete( '/:spotId', requireAuth, async (req, res) => {
+    const findSpotbyId = await Spot.findByPk(req.params.spotId);
+})
 
 
 
