@@ -178,6 +178,16 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 //Delete a spot
 router.delete( '/:spotId', requireAuth, async (req, res) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
+    if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
+        let err = new Error(`Spot couldn't be found`);
+        err.title = "404 Not Found"
+        err.status = 404;
+        throw err;
+    }
+    else {
+        await findSpotbyId.destroy();
+        res.json({message: 'Successfully deleted'})
+    }
 })
 
 
