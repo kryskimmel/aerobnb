@@ -129,7 +129,7 @@ router.post( '/:spotId/images', requireAuth, async (req, res) => {
             preview
         }
 
-       return res.status(201).json(imageSuccessfullyAdded)
+       return res.status.json(imageSuccessfullyAdded)
     }
 });
 
@@ -158,7 +158,7 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
                     stars
                 })
 
-        return res.status(201).json(addReviewToSpot)
+        return res.status.json(addReviewToSpot)
         }
         catch (err) {
             err.status = 400;
@@ -166,6 +166,16 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
         }
     }
 });
+
+
+/****************************************************** */
+//Edit a spot
+
+
+
+
+/****************************************************** */
+//Delete a spot
 
 
 
