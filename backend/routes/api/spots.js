@@ -178,6 +178,31 @@ router.put( '/:spotId', requireAuth, async (req, res) => {
         err.status = 404;
         throw err;
     }
+    else {
+        try {
+            const { address, city, state,
+                country, lat, lng,
+                name, description, price } = req.body;
+
+            const editedSpot = await Spot.update({
+                ownerId,
+                address,
+                city,
+                state,
+                country,
+                lat,
+                lng,
+                name,
+                description,
+                price
+            });
+
+        return res.status.json(editedSpot);
+        } catch (err) {
+            err.status = 400
+            next(err);
+        }
+    }
 })
 
 
