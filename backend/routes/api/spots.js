@@ -170,6 +170,15 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 
 /****************************************************** */
 //Edit a spot
+router.put( '/:spotId', requireAuth, async (req, res) => {
+    const findSpotbyId = await Spot.findByPk(req.params.spotId);
+    if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
+        let err = new Error(`Spot couldn't be found`);
+        err.title = "404 Not Found"
+        err.status = 404;
+        throw err;
+    }
+})
 
 
 
