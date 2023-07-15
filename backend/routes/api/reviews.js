@@ -6,5 +6,13 @@ const { requireAuth } = require('../../utils/auth');
 const { Review } = require('../../db/models');
 const router = express.Router();
 
+router.get( '/current', requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    const getReviewsByCurrUser = await Review.findAll({
+        where: {userId}
+    });
+    return res.json(getReviewsByCurrUser)
+})
+
 
 module.exports = router;
