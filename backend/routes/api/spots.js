@@ -107,7 +107,7 @@ router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) =>
 
 /****************************************************** */
 //Add an Image to a Spot based on the Spot's id
-router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res) => {
+router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next) => {
     const { url } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
