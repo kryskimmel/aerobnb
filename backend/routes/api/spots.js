@@ -3,7 +3,8 @@ const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage, Review, User } = require('../../db/models');
+const { isAuthorized } = require('../../utils/authorization')
+const { Spot, SpotImage, Review } = require('../../db/models');
 const router = express.Router();
 
 
@@ -106,7 +107,7 @@ router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) =>
 
 /****************************************************** */
 //Add an Image to a Spot based on the Spot's id
-router.post( '/:spotId/images', requireAuth, async (req, res) => {
+router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next) => {
     const { url, preview } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
