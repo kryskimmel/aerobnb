@@ -1,5 +1,5 @@
 const express = require('express');
-const { Sequelize, Op, ValidationError } = require('sequelize');
+const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
@@ -170,40 +170,35 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 
 /****************************************************** */
 //Edit a spot
-router.put( '/:spotId', requireAuth, async (req, res) => {
+router.put( '/:spotId', requireAuth, async (req, res, next) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
     if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
-        let err = new Error(`Spot couldn't be found`);
+        let err = new Error({message: "Spot couldn't be found"});
         err.title = "404 Not Found"
         err.status = 404;
         throw err;
     }
-    else {
-        try {
+    else if (findSpotbyId && req.user.id === findSpotbyId.ownerId){
+        try{
             const { address, city, state,
+                    country, lat, lng,
+                    name, description, price } = req.body;
+
+            await Spot.update({
+                address, city, state,
                 country, lat, lng,
-                name, description, price } = req.body;
+                name, description, price
+            }, {
+                where: { id: req.params.spotId }
+            })
 
-            const editedSpot = await Spot.update({
-                ownerId,
-                address,
-                city,
-                state,
-                country,
-                lat,
-                lng,
-                name,
-                description,
-                price
-            });
-
-        return res.status.json(editedSpot);
-        } catch (err) {
-            err.status = 400
-            next(err);
-        }
-    }
-})
+            return res.json(findSpotbyId);
+            } catch(err) {
+                err.status =400;
+                next(err)
+            }
+     }
+});
 
 
 
