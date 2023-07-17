@@ -169,7 +169,7 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 
 /****************************************************** */
 //Edit a spot
-router.put( '/:spotId', requireAuth, isAuthorized, async (req, res, next) => {
+router.put( '/:spotId', notFound, requireAuth, isAuthorized, async (req, res, next) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
 
     try{
