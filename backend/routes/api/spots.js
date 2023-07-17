@@ -118,19 +118,19 @@ router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next
         err.status = 404;
         throw err;
     }
-    else if (findSpotbyId && (req.user.id === findSpotbyId.ownerId) ) {
-        await SpotImage.create({
+    else {
+        const createImage = await SpotImage.create({
             spotId: req.params.spotId,
             url
         });
 
-        const imageSuccessfullyAdded = {
-            id: req.params.spotId,
+        const newImage = {
+            id: createImage.id,
             url,
             preview
         }
 
-       return res.status.json(imageSuccessfullyAdded)
+       return res.json(newImage)
     }
 });
 
