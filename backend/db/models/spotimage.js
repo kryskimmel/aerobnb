@@ -25,6 +25,13 @@ module.exports = (sequelize, DataTypes) => {
         isUrl: true,
         notEmpty: false
       }
+    },
+    preview : {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: false
+      }
     }
   },
   {
@@ -32,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'SpotImage',
     defaultScope: {
       attributes: {
-        exclude: ['createdAt', 'updatedAt']
+        exclude: ['spotId', 'createdAt', 'updatedAt']
       }
     }
   });
