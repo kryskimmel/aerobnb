@@ -3,7 +3,8 @@ const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { isAuthorized } = require('../../utils/authorization')
+const { isAuthorized } = require('../../utils/authorization');
+const { notFound } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, User } = require('../../db/models');
 const router = express.Router();
 
@@ -48,10 +49,10 @@ router.get( '/', async (req, res) => {
 /****************************************************** */
 //Get all spots owned by the current user
 router.get( '/current', requireAuth, async (req, res) => {
-    const userId = req.user.id;
+    const ownerId = req.user.id;
 
     const getSpotsByCurrUser = await Spot.findAll({
-        where: {userId}
+        where: {ownerId}
     });
 
     return res.json(getSpotsByCurrUser)
@@ -60,7 +61,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Get details for a spot from an id
-router.get( '/:spotId', async (req, res, next) => {
+router.get( '/:spotId', notFound, async (req, res, next) => {
     const findSpotById = await Spot.findOne({
         where: {id: req.params.spotId},
         include: [{
@@ -75,28 +76,19 @@ router.get( '/:spotId', async (req, res, next) => {
             as: 'Owner',
         }]
     });
-
-    if (findSpotById){
         return res.json(findSpotById);
-    }
-    else {
-        let err = new Error('Spot couldn\'t be found');
-        err.message = 'Spot couldn\'t be found'
-        err.status = 404;
-        delete err.title;
-        throw err;
-    }
 });
 
 
 /****************************************************** */
 //Create a spot
 router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) => {
-    const { address, city, state,
+
+    try {
+        const { address, city, state,
             country, lat, lng,
             name, description, price } = req.body;
 
-    try {
         const createSpot = await Spot.create({
             ownerId: req.user.id,
             address,
@@ -121,18 +113,12 @@ router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) =>
 
 /****************************************************** */
 //Add an Image to a Spot based on the Spot's id
-router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next) => {
+router.post( '/:spotId/images', notFound, requireAuth, isAuthorized, async (req, res, next) => {
     const { url, preview } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
 
-    if (!findSpotbyId){
-        let err = new Error(`Spot couldn't be found`);
-        err.title = "404 Not Found"
-        err.status = 404;
-        throw err;
-    }
-    else {
+    if (findSpotbyId){
         const createImage = await SpotImage.create({
             spotId: req.params.spotId,
             url,
@@ -144,7 +130,7 @@ router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next
             url,
             preview
         });
-    };
+    }
 });
 
 
