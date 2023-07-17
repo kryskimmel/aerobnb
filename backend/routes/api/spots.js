@@ -171,7 +171,7 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 
 /****************************************************** */
 //Edit a spot
-router.put( '/:spotId', requireAuth, async (req, res, next) => {
+router.put( '/:spotId', requireAuth, isAuthorized, async (req, res, next) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
     if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
         let err = new Error({message: "Spot couldn't be found"});
@@ -179,7 +179,7 @@ router.put( '/:spotId', requireAuth, async (req, res, next) => {
         err.status = 404;
         throw err;
     }
-    else if (findSpotbyId && req.user.id === findSpotbyId.ownerId){
+    // else if (findSpotbyId && req.user.id === findSpotbyId.ownerId){
         try{
             const { address, city, state,
                     country, lat, lng,
@@ -198,7 +198,7 @@ router.put( '/:spotId', requireAuth, async (req, res, next) => {
                 err.status =400;
                 next(err)
             }
-     }
+    //  }
 });
 
 
