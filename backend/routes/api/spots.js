@@ -48,10 +48,10 @@ router.get( '/', async (req, res) => {
 /****************************************************** */
 //Get all spots owned by the current user
 router.get( '/current', requireAuth, async (req, res) => {
-    const ownerId = req.user.id;
+    const userId = req.user.id;
 
     const getSpotsByCurrUser = await Spot.findAll({
-        where: {ownerId}
+        where: {userId}
     });
 
     return res.json(getSpotsByCurrUser)
@@ -80,7 +80,7 @@ router.get( '/:spotId', async (req, res, next) => {
         return res.json(findSpotById);
     }
     else {
-        let err = new Error(`Spot couldn't be found`);
+        let err = new Error('Spot couldn\'t be found');
         err.message = 'Spot couldn\'t be found'
         err.status = 404;
         delete err.title;
@@ -96,10 +96,9 @@ router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) =>
             country, lat, lng,
             name, description, price } = req.body;
 
-            const ownerId = req.user.id;
     try {
         const createSpot = await Spot.create({
-            ownerId,
+            ownerId: req.user.id,
             address,
             city,
             state,
@@ -127,7 +126,7 @@ router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
 
-    if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
+    if (!findSpotbyId){
         let err = new Error(`Spot couldn't be found`);
         err.title = "404 Not Found"
         err.status = 404;
@@ -136,17 +135,16 @@ router.post( '/:spotId/images', requireAuth, isAuthorized, async (req, res, next
     else {
         const createImage = await SpotImage.create({
             spotId: req.params.spotId,
-            url
+            url,
+            preview
         });
 
-        const newImage = {
+        return res.json({
             id: createImage.id,
             url,
             preview
-        }
-
-       return res.json(newImage)
-    }
+        });
+    };
 });
 
 
@@ -165,10 +163,9 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
     }
     else {
         try {
-            const ownerId = req.user.id;
             const addReviewToSpot = await Review.create(
                 {
-                    userId: ownerId,
+                    userId: req.user.id,
                     spotId: parseInt(req.params.spotId),
                     review,
                     stars
@@ -188,34 +185,29 @@ router.post( '/:spotId/reviews', requireAuth, handleValidationErrors, async (req
 //Edit a spot
 router.put( '/:spotId', requireAuth, isAuthorized, async (req, res, next) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
-    if (!findSpotbyId || req.user.id !== findSpotbyId.ownerId){
-        let err = new Error({message: "Spot couldn't be found"});
-        err.title = "404 Not Found"
-        err.status = 404;
-        throw err;
-    }
-    // else if (findSpotbyId && req.user.id === findSpotbyId.ownerId){
-        try{
+
+    try{
+        if (findSpotbyId){
             const { address, city, state,
                     country, lat, lng,
                     name, description, price } = req.body;
 
-            await Spot.update({
+            const updatedSpot = await findSpotbyId.update({
                 address, city, state,
                 country, lat, lng,
                 name, description, price
             }, {
                 where: { id: req.params.spotId }
-            })
+            });
 
-            return res.json(findSpotbyId);
-            } catch(err) {
-                err.status =400;
-                next(err)
-            }
-    //  }
+            return res.json(updatedSpot);
+        }
+    }
+    catch (err) {
+        err.status = 400;
+        next(err)
+    }
 });
-
 
 
 
