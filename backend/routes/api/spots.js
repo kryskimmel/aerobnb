@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { isAuthorized } = require('../../utils/authorization')
-const { Spot, SpotImage, Review } = require('../../db/models');
+const { Spot, SpotImage, Review, User } = require('../../db/models');
 const router = express.Router();
 
 
@@ -61,16 +61,31 @@ router.get( '/current', requireAuth, async (req, res) => {
 /****************************************************** */
 //Get details for a spot from an id
 router.get( '/:spotId', async (req, res, next) => {
-    const findSpotById = await Spot.findByPk(req.params.spotId);
+    const findSpotById = await Spot.findOne({
+        where: {id: req.params.spotId},
+        include: [{
+            model: Review,
+            as: 'avgStarRating'
+        },
+        {
+            model: SpotImage,
+        },
+        {
+            model: User,
+            as: 'Owner',
+        }]
+    });
 
-    if (!findSpotById){
-        const err = new Error(`Spot with an id of ${req.params.spotId} does not exist`);
-        err.title = "404 Not Found"
+    if (findSpotById){
+        return res.json(findSpotById);
+    }
+    else {
+        let err = new Error(`Spot couldn't be found`);
+        err.message = 'Spot couldn\'t be found'
         err.status = 404;
+        delete err.title;
         throw err;
     }
-
-    return res.json(findSpotById)
 });
 
 
