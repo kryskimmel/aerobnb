@@ -6,12 +6,8 @@ const isAuthorized = async function (req, res, next) {
         return next();
     }
     else {
-        const err = new Error('Forbidden');
-        err.message = 'Forbidden';
-        err.status = 403
-        delete err.stack;
-        err.title = 'Forbidden Request';
-        return next(err)
+        const err = {message: 'Forbidden'}
+        res.status(403).json(err)
     }
 };
 
