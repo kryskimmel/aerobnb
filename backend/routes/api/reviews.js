@@ -52,15 +52,7 @@ router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, async
                 review, stars
             });
 
-            return res.json({
-                id: findReviewById.id,
-                userId: findReviewById.userId,
-                spotId: findReviewById.spotId,
-                review,
-                stars,
-                createdAt: findReviewById.createdAt,
-                updatedAt: findReviewById.updatedAt,
-            })
+            return res.json(updateReview);
         }
     }
     catch (err) {
