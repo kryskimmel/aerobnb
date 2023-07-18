@@ -136,7 +136,7 @@ router.post( '/:spotId/images', notFound, requireAuth, isAuthorized, async (req,
 
 /****************************************************** */
 //Create a review for a spot based on the Spot's id
-router.post( '/:spotId/reviews', notFound, requireAuth, handleValidationErrors, async (req, res) => {
+router.post( '/:spotId/reviews', notFound, requireAuth, handleValidationErrors, async (req, res, next) => {
     try {
         const { review, stars } = req.body;
         const findSpotbyId = await Spot.findByPk(req.params.spotId);
@@ -157,15 +157,16 @@ router.post( '/:spotId/reviews', notFound, requireAuth, handleValidationErrors, 
             return res.status(500).json({'message' : 'User already has a review for this spot'})
         }
     }
-    catch (e) {
-        e.status = 400;
-        next(e)
+    catch (err) {
+        err.status = 400;
+        next(err)
     }
 });
 
 
 /****************************************************** */
 //Get all reviews by a spot's id
+// router.get( '/:spotId/reviews', notFound, (req, res, next))
 
 
 /****************************************************** */
