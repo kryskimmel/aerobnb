@@ -180,6 +180,13 @@ router.get( '/:spotId/reviews', spotNotFound, async (req, res, next) => {
 })
 
 
+/****************************************************** */
+//Get all bookings for a spot based on the spot's id
+
+
+/****************************************************** */
+//Create a booking from a spot based on the spot's id
+
 
 /****************************************************** */
 //Edit a spot
