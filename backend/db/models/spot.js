@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'previewImage'
       });
 
+      Spot.hasMany(models.Review, { foreignKey: 'spotId' });
+
       Spot.hasMany(models.Review, {
         foreignKey: 'spotId',
         as: 'avgRating'
@@ -131,6 +133,14 @@ module.exports = (sequelize, DataTypes) => {
   {
     sequelize,
     modelName: 'Spot',
+    scopes: {
+      removeAttributes: {
+        attributes: {
+          exclude: ["id", "ownerId", "address", "city", "state", "country", "lat",
+                    "lng", "name", "description", "price", "createdAt", "updatedAt" ]
+        }
+      }
+    }
   });
   return Spot;
 };
