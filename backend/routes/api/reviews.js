@@ -32,6 +32,8 @@ router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedRevie
             url
         });
 
+        console.log()
+
         return res.json({
             id: createImage.id,
             url
