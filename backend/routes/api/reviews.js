@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { isAuthorized } = require('../../utils/authorization');
 const { notFound } = require('../../utils/notFound');
-const { Spot, SpotImage, Review, User } = require('../../db/models');
+const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
 const router = express.Router();
 
 
@@ -22,6 +22,10 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Add an image to a review based on the review's id
+router.post( '/:reviewId/images', async (req, res) => {
+    const { url } = req.body;
+    const findReviewById = await Review.findByPk(req.params.reviewId)
+})
 
 
 /****************************************************** */

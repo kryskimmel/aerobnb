@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { isAuthorized } = require('../../utils/authorization');
-const { notFound } = require('../../utils/notFound');
+const { spotNotFound } = require('../../utils/spotNotFound');
 const { Spot, SpotImage, Review, User } = require('../../db/models');
 const router = express.Router();
 
@@ -61,7 +61,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Get details for a spot from an id
-router.get( '/:spotId', notFound, async (req, res, next) => {
+router.get( '/:spotId', spotNotFound, async (req, res, next) => {
     const findSpotById = await Spot.findOne({
         where: {id: req.params.spotId},
         include: [{
@@ -113,7 +113,7 @@ router.post( '/', requireAuth, handleValidationErrors, async (req, res, next) =>
 
 /****************************************************** */
 //Add an Image to a Spot based on the Spot's id
-router.post( '/:spotId/images', notFound, requireAuth, isAuthorized, async (req, res, next) => {
+router.post( '/:spotId/images', spotNotFound, requireAuth, isAuthorized, async (req, res, next) => {
     const { url, preview } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
@@ -136,7 +136,7 @@ router.post( '/:spotId/images', notFound, requireAuth, isAuthorized, async (req,
 
 /****************************************************** */
 //Create a review for a spot based on the Spot's id
-router.post( '/:spotId/reviews', notFound, requireAuth, handleValidationErrors, async (req, res, next) => {
+router.post( '/:spotId/reviews', spotNotFound, requireAuth, handleValidationErrors, async (req, res, next) => {
     try {
         const { review, stars } = req.body;
         const findSpotbyId = await Spot.findByPk(req.params.spotId);
@@ -171,7 +171,7 @@ router.post( '/:spotId/reviews', notFound, requireAuth, handleValidationErrors, 
 
 /****************************************************** */
 //Edit a spot
-router.put( '/:spotId', notFound, requireAuth, isAuthorized, async (req, res, next) => {
+router.put( '/:spotId', spotNotFound, requireAuth, isAuthorized, async (req, res, next) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
 
     try{
