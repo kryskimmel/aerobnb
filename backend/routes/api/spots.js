@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { isAuthorizedSpot } = require('../../utils/isAuthorizedSpot');
 const { spotNotFound } = require('../../utils/spotNotFound');
-const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
+const { Spot, SpotImage, Review, ReviewImage, User, Booking } = require('../../db/models');
 const router = express.Router();
 
 
@@ -186,6 +186,37 @@ router.get( '/:spotId/reviews', spotNotFound, async (req, res, next) => {
 
 /****************************************************** */
 //Create a booking from a spot based on the spot's id
+router.post( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res, next) => {
+    const { startDate, endDate } = req.body;
+    const findSpotbyId = await Spot.findByPk(req.params.spotId);
+    const bookingExists = await Booking.findOne({where: {
+        spotId: req.params.spotId
+    }})
+    try{
+        if (findSpotbyId && req.user.id !== findSpotbyId.ownerId && !bookingExists) {
+            const createBooking = await Booking.create({
+                spotId: findSpotbyId.id,
+                userId: req.user.id,
+                startDate,
+                endDate
+            });
+            return res.json(createBooking)
+        }
+        // else if (bookingExists) {
+        //     return res.status(403).json({
+        //         message : 'Sorry, this spot is already booked for the specified dates',
+        //         errors: {
+        //             startDate: ''
+        //         }
+        //     })
+        // }
+    }
+    catch (err){
+        err.status = 400;
+        next(err);
+    }
+
+});
 
 
 /****************************************************** */
