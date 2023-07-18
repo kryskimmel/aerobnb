@@ -3,7 +3,7 @@ const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { isAuthorized } = require('../../utils/authorization');
+const { isAuthorizedReview } = require('../../utils/isAuthorizedReview');
 const { reviewNotFound } = require('../../utils/reviewNotFound');
 const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
 const router = express.Router();
@@ -22,7 +22,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Add an image to a review based on the review's id
-router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorized, async (req, res) => {
+router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res) => {
     const { url } = req.body;
     const findReviewById = await Review.findByPk(req.params.reviewId);
 
