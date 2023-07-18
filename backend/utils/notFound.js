@@ -1,8 +1,9 @@
-const { Spot } = require('../db/models');
+const { Spot, Review } = require('../db/models');
 
 const notFound = async function (req, res, next) {
     const findSpotbyId = await Spot.findByPk(req.params.spotId)
-    if (findSpotbyId){
+    const findReviewById = await Review.findByPk(req.params.reviewId)
+    if (findSpotbyId || findReviewById ){
         return next();
     }
     else {
