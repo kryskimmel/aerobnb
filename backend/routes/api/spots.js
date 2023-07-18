@@ -5,7 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { isAuthorizedSpot } = require('../../utils/isAuthorizedSpot');
 const { spotNotFound } = require('../../utils/spotNotFound');
-const { Spot, SpotImage, Review, User } = require('../../db/models');
+const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
 const router = express.Router();
 
 
@@ -166,7 +166,19 @@ router.post( '/:spotId/reviews', spotNotFound, requireAuth, handleValidationErro
 
 /****************************************************** */
 //Get all reviews by a spot's id
-// router.get( '/:spotId/reviews', notFound, (req, res, next))
+router.get( '/:spotId/reviews', spotNotFound, async (req, res, next) => {
+
+    const removeSpotAttributes = Spot.scope('removeAttributes')
+    const findSpotbyId = await removeSpotAttributes.findOne({
+        where: {id : req.params.spotId},
+        include: [{
+            model: Review,
+            include: [{model: User}, {model: ReviewImage}]
+        }]
+    });
+    return res.json(findSpotbyId)
+})
+
 
 
 /****************************************************** */
