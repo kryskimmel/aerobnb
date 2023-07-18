@@ -22,7 +22,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Add an image to a review based on the review's id
-router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res) => {
+router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
     const { url } = req.body;
     const findReviewById = await Review.findByPk(req.params.reviewId);
 
@@ -31,8 +31,6 @@ router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedRevie
             reviewId: parseInt(req.params.reviewId),
             url
         });
-
-        console.log()
 
         return res.json({
             id: createImage.id,
@@ -44,6 +42,36 @@ router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedRevie
 
 /****************************************************** */
 //Edit a review
+router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
+    const findReviewById = await Review.findByPk(req.params.reviewId);
+    try{
+        if (findReviewById){
+            const { review, stars } = req.body;
+
+            const updateReview = await findReviewById.update({
+                review, stars
+            });
+
+            return res.json({
+                id: findReviewById.id,
+                userId: findReviewById.userId,
+                spotId: findReviewById.spotId,
+                review,
+                stars,
+                createdAt: findReviewById.createdAt,
+                updatedAt: findReviewById.updatedAt,
+            })
+        }
+    }
+    catch (err) {
+        err.status = 400;
+        delete err.title;
+        delete err.stack;
+        next(err);
+    }
+
+
+})
 
 
 /****************************************************** */
