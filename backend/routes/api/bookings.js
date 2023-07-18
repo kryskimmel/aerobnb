@@ -17,7 +17,6 @@ router.get( '/current', requireAuth, async (req, res) => {
 
     const getBookingsByCurrUser = await Booking.findAll({
         where: {userId},
-        attributes: ['id', 'spotId'],
         include: {
             model: Spot,
             attributes: {exclude: ['description', 'createdAt', 'updatedAt']},
@@ -43,14 +42,17 @@ router.delete ('/:bookingId', bookingNotFound, requireAuth, async (req, res) => 
         include: {model: Spot}
     });
 
-
+    console.log(new Date())
     if (req.user.id !== findBookingbyId.userId){
-        const err = {message: 'Forbidden'}
-        res.status(403).json(err)
+        return res.status(403).json({message: "Forbidden"})
+    }
+
+    if (new Date() >= findBooking.startDate && new Date() < findBooking.endDate) {
+        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
     }
     else {
         await findBooking.destroy();
-        res.json({message: 'Successfully deleted'})
+        return res.json({message: 'Successfully deleted'})
     }
 })
 
