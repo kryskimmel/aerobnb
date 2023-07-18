@@ -182,6 +182,32 @@ router.get( '/:spotId/reviews', spotNotFound, async (req, res, next) => {
 
 /****************************************************** */
 //Get all bookings for a spot based on the spot's id
+router.get( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res) => {
+
+    const findSpotbyId = await Spot.findByPk(req.params.spotId);
+    const removeSpotAttributes = Spot.scope('removeAttributes');
+
+    if (req.user.id !== findSpotbyId.ownerId) {
+        const notSpotOwner = await removeSpotAttributes.findOne({
+            where: {id : req.params.spotId},
+            include:
+            {model: Booking, attributes: ["spotId", "startDate", "endDate"]}
+        });
+        return res.json(notSpotOwner)
+    }
+
+    else {
+        const spotOwner = await removeSpotAttributes.findOne({
+            where: {id: req.params.spotId},
+            include:
+            {
+                model: Booking,
+                include: {model: User},
+            }
+        });
+        return res.json(spotOwner)
+    }
+});
 
 
 /****************************************************** */
