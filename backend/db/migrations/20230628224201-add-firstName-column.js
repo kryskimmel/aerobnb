@@ -7,7 +7,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 options.tableName = "Users";
 
-
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.addColumn(options, 'firstName', {
