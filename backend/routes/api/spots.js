@@ -330,12 +330,13 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
 /****************************************************** */
 //Create a booking from a spot based on the spot's id
 router.post( '/:spotId/bookings', requireAuth, existSpot, async (req, res, next) => {
-    const { startDate, endDate } = req.body;
-    const findSpotbyId = await Spot.findByPk(req.params.spotId);
-    const bookingExists = await Booking.findOne({where: {
-        spotId: req.params.spotId
-    }})
     try{
+        const { startDate, endDate } = req.body;
+        const findSpotbyId = await Spot.findByPk(req.params.spotId);
+        const bookingExists = await Booking.findAll({
+            where: {spotId: req.params.spotId}
+        });
+
         if (findSpotbyId && req.user.id !== findSpotbyId.ownerId && !bookingExists) {
             const createBooking = await Booking.create({
                 spotId: findSpotbyId.id,
@@ -358,8 +359,12 @@ router.post( '/:spotId/bookings', requireAuth, existSpot, async (req, res, next)
         err.status = 400;
         next(err);
     }
+    })
 
-});
+
+
+
+
 
 
 /****************************************************** */
