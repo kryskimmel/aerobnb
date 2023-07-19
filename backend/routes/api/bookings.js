@@ -104,22 +104,23 @@ router.delete ('/:bookingId', requireAuth, existBooking, async (req, res) => {
         include: {model: Spot}
     });
 
-    if (req.user.id !== findBookingbyId.userId){
-        return res.status(403).json({message: "Forbidden"})
-    }
-
+    const bookingList = findBookingbyId.toJSON();
     const currDateISO = new Date().toISOString();
     const currDateOnly = currDateISO.slice(0,10);
 
-    if (currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
-        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
-    }
-
-    else {
+    if (req.user.id === bookingList.Spot.ownerId || req.user.id === findBookingbyId.userId){
         await findBooking.destroy();
         return res.json({message: 'Successfully deleted'})
     }
-})
+
+    else if (currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
+        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
+    }
+
+    else if (req.user.id !== bookingList.Spot.ownerId || req.user.id !== findBookingbyId.userId) {
+        return res.status(403).json({message: "Forbidden"})
+    }
+});
 
 
 module.exports = router;
