@@ -73,10 +73,57 @@ router.get( '/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
 
     const getSpotsByCurrUser = await Spot.findAll({
-        where: {ownerId}
+        where: {ownerId},
+        include: [
+            {
+                model: Review,
+                as: 'avgRating',
+            },
+            {
+                model: SpotImage,
+                as: 'previewImage',
+            }]
+    });
+    const spotsList = [];
+    getSpotsByCurrUser.forEach(spot => {
+        spotsList.push(spot.toJSON())
     });
 
-    return res.json(getSpotsByCurrUser)
+    spotsList.forEach(attribute => {
+        attribute.previewImage.forEach(key => {
+        if (key.preview === true){ attribute.previewImage = key.url }
+        })
+    });
+
+    const averageRatingObj = {};
+
+    spotsList.forEach(attribute => {
+        attribute.avgRating.forEach(key => {
+
+            const { spotId, stars } = key;
+
+            if (!averageRatingObj[spotId]){
+                averageRatingObj[spotId] = {
+                    sum: 0,
+                    count: 0
+                }
+            }
+            averageRatingObj[spotId].sum += stars;
+            averageRatingObj[spotId].count++;
+
+
+            Object.keys(averageRatingObj).map(spotId => {
+                const { sum, count } = averageRatingObj[spotId];
+                const avg = sum/count
+                averageRatingObj[spotId].average = avg
+                console.log(spotId, avg)
+
+                if(key.stars) { attribute.avgRating = avg }
+            })
+       })
+    });
+
+    return res.json({"Spots": spotsList})
 });
 
 
@@ -97,6 +144,7 @@ router.get( '/:spotId', spotNotFound, async (req, res, next) => {
             as: 'Owner',
         }]
     });
+
         return res.json(findSpotById);
 });
 
