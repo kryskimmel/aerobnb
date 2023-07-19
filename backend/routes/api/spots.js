@@ -3,8 +3,8 @@ const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { isAuthorizedSpot } = require('../../utils/isAuthorizedSpot');
-const { spotNotFound } = require('../../utils/spotNotFound');
+const { isAuthorizedSpot } = require('../../utils/authorization');
+const { existSpot } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User, Booking } = require('../../db/models');
 const router = express.Router();
 
@@ -201,7 +201,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Get details of a spot from an id
-router.get( '/:spotId', spotNotFound, async (req, res, next) => {
+router.get( '/:spotId', existSpot, async (req, res, next) => {
     const findSpotById = await Spot.findOne({
         where: {id: req.params.spotId},
         include: [{
@@ -292,7 +292,7 @@ router.post( '/', requireAuth, validateSpot, async (req, res, next) => {
 
 /****************************************************** */
 //Add an Image to a Spot based on the Spot's id
-router.post( '/:spotId/images', spotNotFound, requireAuth, isAuthorizedSpot, async (req, res, next) => {
+router.post( '/:spotId/images', requireAuth, existSpot, isAuthorizedSpot, async (req, res, next) => {
     const { url, preview } = req.body;
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
@@ -315,7 +315,7 @@ router.post( '/:spotId/images', spotNotFound, requireAuth, isAuthorizedSpot, asy
 
 /****************************************************** */
 //Create a review for a spot based on the Spot's id
-router.post( '/:spotId/reviews', spotNotFound, requireAuth, validateReview, async (req, res, next) => {
+router.post( '/:spotId/reviews', requireAuth, existSpot, validateReview, async (req, res, next) => {
     try {
         const { review, stars } = req.body;
         const findSpotbyId = await Spot.findByPk(req.params.spotId);
@@ -355,7 +355,7 @@ router.post( '/:spotId/reviews', spotNotFound, requireAuth, validateReview, asyn
 
 /****************************************************** */
 //Get all reviews by a spot's id
-router.get( '/:spotId/reviews', spotNotFound, async (req, res, next) => {
+router.get( '/:spotId/reviews', existSpot, async (req, res, next) => {
 
     const removeSpotAttributes = Spot.scope('removeAttributes')
     const findSpotbyId = await removeSpotAttributes.findOne({
@@ -371,7 +371,7 @@ router.get( '/:spotId/reviews', spotNotFound, async (req, res, next) => {
 
 /****************************************************** */
 //Get all bookings for a spot based on the spot's id
-router.get( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res) => {
+router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
 
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
     const removeSpotAttributes = Spot.scope('removeAttributes');
@@ -401,7 +401,7 @@ router.get( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res) => 
 
 /****************************************************** */
 //Create a booking from a spot based on the spot's id
-router.post( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res, next) => {
+router.post( '/:spotId/bookings', requireAuth, existSpot, async (req, res, next) => {
     const { startDate, endDate } = req.body;
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
     const bookingExists = await Booking.findOne({where: {
@@ -436,7 +436,7 @@ router.post( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res, ne
 
 /****************************************************** */
 //Edit a spot
-router.put( '/:spotId', spotNotFound, requireAuth, isAuthorizedSpot, validateSpot, async (req, res, next) => {
+router.put( '/:spotId', requireAuth, existSpot, isAuthorizedSpot, validateSpot, async (req, res, next) => {
     try{
         const findSpotById = await Spot.findByPk(req.params.spotId);
         if (findSpotById){
@@ -463,7 +463,7 @@ router.put( '/:spotId', spotNotFound, requireAuth, isAuthorizedSpot, validateSpo
 
 /****************************************************** */
 //Delete a spot
-router.delete( '/:spotId', spotNotFound, requireAuth, isAuthorizedSpot, async (req, res) => {
+router.delete( '/:spotId', requireAuth, existSpot, isAuthorizedSpot, async (req, res) => {
     const findSpotbyId = await Spot.findByPk(req.params.spotId);
 
     if (findSpotbyId){

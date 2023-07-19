@@ -3,8 +3,8 @@ const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { isAuthorizedReview } = require('../../utils/isAuthorizedReview');
-const { reviewNotFound } = require('../../utils/reviewNotFound');
+const { isAuthorizedReview } = require('../../utils/authorization');
+const { existReview } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
 const router = express.Router();
 
@@ -59,7 +59,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Add an image to a review based on the review's id
-router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
+router.post( '/:reviewId/images', requireAuth, existReview, isAuthorizedReview, async (req, res, next) => {
     const { url } = req.body;
     const findReviewById = await Review.findByPk(req.params.reviewId);
     const getReviewImages = await ReviewImage.findAll({where: {reviewId: req.params.reviewId}})
@@ -81,7 +81,7 @@ router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedRevie
 
 /****************************************************** */
 //Edit a review
-router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, validateReview, async (req, res, next) => {
+router.put( '/:reviewId', requireAuth, existReview, isAuthorizedReview, validateReview, async (req, res, next) => {
     try{
         const findReviewById = await Review.findByPk(req.params.reviewId);
         if (findReviewById){
@@ -103,7 +103,7 @@ router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, valid
 
 /****************************************************** */
 //Delete a review
-router.delete( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res) => {
+router.delete( '/:reviewId', requireAuth, existReview, isAuthorizedReview, async (req, res) => {
     const findReviewById = await Review.findByPk(req.params.reviewId);
 
     await findReviewById.destroy();

@@ -3,9 +3,9 @@ const { Sequelize, Op, ValidationError, DATEONLY } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { bookingNotFound } = require('../../utils/bookingNotFound');
-const { isAuthorizedSpot } = require('../../utils/isAuthorizedSpot');
-const { isAuthorizedBooking } = require('../../utils/isAuthorizedBooking');
+const { existBooking } = require('../../utils/notFound');
+const { isAuthorizedSpot } = require('../../utils/authorization');
+const { isAuthorizedBooking } = require('../../utils/authorization');
 const { Booking, Spot } = require('../../db/models');
 const router = express.Router();
 
@@ -34,7 +34,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Delete a booking
-router.delete ('/:bookingId', bookingNotFound, requireAuth, async (req, res) => {
+router.delete ('/:bookingId', requireAuth, existBooking, async (req, res) => {
     const findBooking = await Booking.findByPk(req.params.bookingId);
 
     const findBookingbyId = await Booking.findOne({
