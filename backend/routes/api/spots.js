@@ -134,6 +134,10 @@ router.get( '/:spotId', spotNotFound, async (req, res, next) => {
         where: {id: req.params.spotId},
         include: [{
             model: Review,
+            as: 'numReviews'
+        },
+        {
+            model: Review,
             as: 'avgStarRating'
         },
         {
@@ -171,8 +175,11 @@ router.get( '/:spotId', spotNotFound, async (req, res, next) => {
                 averageRatingObj[spotId].average = avg
                 console.log(spotId, avg)
 
-                if(key.stars) { attribute.avgStarRating = avg }
-            })
+                if (key.stars){
+                    attribute.numReviews = count
+                    attribute.avgStarRating = avg
+                }
+            });
        })
     });
 
