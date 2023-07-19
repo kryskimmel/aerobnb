@@ -9,7 +9,7 @@ const { Spot, SpotImage, Review, ReviewImage, User, Booking } = require('../../d
 const router = express.Router();
 
 
-const validateSignup = [
+const validateSpot = [
     check('address')
       .exists({ checkFalsy: true })
       .isString().withMessage('Please provide a street address that uses letters or alphanumeric characters')
@@ -245,7 +245,7 @@ router.get( '/:spotId', spotNotFound, async (req, res, next) => {
 
 /****************************************************** */
 //Create a spot
-router.post( '/', requireAuth, validateSignup, async (req, res, next) => {
+router.post( '/', requireAuth, validateSpot, async (req, res, next) => {
 
     try {
         const { address, city, state,
@@ -410,21 +410,18 @@ router.post( '/:spotId/bookings', spotNotFound, requireAuth, async (req, res, ne
 
 /****************************************************** */
 //Edit a spot
-router.put( '/:spotId', spotNotFound, requireAuth, isAuthorizedSpot, async (req, res, next) => {
-    const findSpotbyId = await Spot.findByPk(req.params.spotId);
-
+router.put( '/:spotId', spotNotFound, requireAuth, isAuthorizedSpot, validateSpot, async (req, res, next) => {
     try{
-        if (findSpotbyId){
+        const findSpotById = await Spot.findByPk(req.params.spotId);
+        if (findSpotById){
             const { address, city, state,
                     country, lat, lng,
                     name, description, price } = req.body;
 
-            const updatedSpot = await findSpotbyId.update({
+            const updatedSpot = await findSpotById.update({
                 address, city, state,
                 country, lat, lng,
                 name, description, price
-            }, {
-                where: { id: req.params.spotId }
             });
 
             return res.json(updatedSpot);
