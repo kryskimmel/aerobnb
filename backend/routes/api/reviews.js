@@ -62,9 +62,11 @@ router.get( '/current', requireAuth, async (req, res) => {
 router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
     const { url } = req.body;
     const findReviewById = await Review.findByPk(req.params.reviewId);
+    const getReviewImages = await ReviewImage.findAll({where: {reviewId: req.params.reviewId}})
 
-    if (findReviewById) {
-        const createImage = await ReviewImage.create({
+    if (getReviewImages.length > 10) return res.status(403).json({message: 'Maximum number of images for this resource was reached'});
+    else {
+            const createImage = await ReviewImage.create({
             reviewId: parseInt(req.params.reviewId),
             url
         });
