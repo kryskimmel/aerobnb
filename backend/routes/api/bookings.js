@@ -22,7 +22,18 @@ router.get( '/current', requireAuth, async (req, res) => {
         },
     });
 
-    return res.json(getBookingsByCurrUser)
+    const bookingsList = [];
+    getBookingsByCurrUser.forEach(booking => {
+        bookingsList.push(booking.toJSON())
+    });
+
+    bookingsList.forEach(attribute => {
+        const {previewImage} = attribute.Spot;
+        previewImage.forEach(key => {
+            if (key.preview === true){attribute.Spot.previewImage = key.url}
+       })
+    });
+    return res.json({"Bookings": bookingsList})
 });
 
 
