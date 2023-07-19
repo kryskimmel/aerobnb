@@ -14,9 +14,29 @@ const router = express.Router();
 router.get( '/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const getReviewsByCurrUser = await Review.findAll({
-        where: {userId}
+        where: {userId},
+        include:[
+        {model: User},
+        {model: Spot,
+        attributes: {exclude: ['description', 'createdAt', 'updatedAt']},
+        include: {model: SpotImage, as: 'previewImage'}},
+        {model: ReviewImage}]
     });
-    return res.json(getReviewsByCurrUser)
+
+    const reviewsList = [];
+    getReviewsByCurrUser.forEach(spot => {
+        reviewsList.push(spot.toJSON())
+    });
+    // console.log(reviewsList)
+
+    reviewsList.forEach(attribute => {
+        const {previewImage} = attribute.Spot;
+        previewImage.forEach(key => {
+            if (key.preview === true){attribute.Spot.previewImage = key.url}
+       })
+
+    });
+    return res.json({"Reviews": reviewsList})
 });
 
 
