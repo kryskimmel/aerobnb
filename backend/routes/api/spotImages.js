@@ -3,7 +3,7 @@ const { Sequelize, Op, ValidationError } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { SpotImage, Spot } = require('../../db/models');
 const router = express.Router();
-const { isAuthorizedSpot } = require('../../utils/authorization');
+
 
 router.delete( '/:imageId', requireAuth, async (req, res) => {
     const findSpotImage = await SpotImage.findByPk(req.params.imageId)

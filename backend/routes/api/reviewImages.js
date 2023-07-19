@@ -1,8 +1,6 @@
 const express = require('express');
 const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
-const { isAuthorizedReview } = require('../../utils/authorization');
-const { existReview } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
 const router = express.Router();
 
