@@ -128,7 +128,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 
 /****************************************************** */
-//Get details for a spot from an id
+//Get details of a spot from an id
 router.get( '/:spotId', spotNotFound, async (req, res, next) => {
     const findSpotById = await Spot.findOne({
         where: {id: req.params.spotId},
@@ -145,7 +145,38 @@ router.get( '/:spotId', spotNotFound, async (req, res, next) => {
         }]
     });
 
-        return res.json(findSpotById);
+    const spotsList = [];
+    spotsList.push(findSpotById.toJSON());
+
+    const averageRatingObj = {};
+
+    spotsList.forEach(attribute => {
+        attribute.avgStarRating.forEach(key => {
+
+            const { spotId, stars } = key;
+
+            if (!averageRatingObj[spotId]){
+                averageRatingObj[spotId] = {
+                    sum: 0,
+                    count: 0
+                }
+            }
+            averageRatingObj[spotId].sum += stars;
+            averageRatingObj[spotId].count++;
+
+
+            Object.keys(averageRatingObj).map(spotId => {
+                const { sum, count } = averageRatingObj[spotId];
+                const avg = sum/count
+                averageRatingObj[spotId].average = avg
+                console.log(spotId, avg)
+
+                if(key.stars) { attribute.avgStarRating = avg }
+            })
+       })
+    });
+
+        return res.json(...spotsList);
 });
 
 
