@@ -3,6 +3,7 @@ const { Sequelize, Op, ValidationError, where } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { validateSpot } = require('../../utils/validate');
 const { validateReview } = require('../../utils/validate');
+const { validateBooking } = require('../../utils/validate');
 const { isAuthorizedSpot } = require('../../utils/authorization');
 const { existSpot } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User, Booking } = require('../../db/models');
@@ -329,32 +330,51 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
 
 /****************************************************** */
 //Create a booking from a spot based on the spot's id
-router.post( '/:spotId/bookings', requireAuth, existSpot, async (req, res, next) => {
+router.post( '/:spotId/bookings', requireAuth, existSpot, validateBooking, async (req, res, next) => {
+    const findSpotById = await Spot.findByPk(req.params.spotId);
+    if (req.user.id === findSpotById.ownerId) {return res.status(403).json({message: "You cannot create a booking for a spot that you own"})}
     try{
         const { startDate, endDate } = req.body;
-        const findSpotbyId = await Spot.findByPk(req.params.spotId);
         const bookingExists = await Booking.findAll({
             where: {spotId: req.params.spotId}
         });
 
-        if (findSpotbyId && req.user.id !== findSpotbyId.ownerId && !bookingExists) {
-            const createBooking = await Booking.create({
-                spotId: findSpotbyId.id,
-                userId: req.user.id,
-                startDate,
-                endDate
-            });
-            return res.json(createBooking)
-        }
-        // else if (bookingExists) {
-        //     return res.status(403).json({
-        //         message : 'Sorry, this spot is already booked for the specified dates',
-        //         errors: {
-        //             startDate: ''
-        //         }
-        //     })
-        // }
-    }
+        const bookingsList = [];
+
+        bookingExists.forEach(booking => {
+            bookingsList.push(booking.toJSON())
+        });
+
+        for (let booking of bookingsList){
+
+            if (startDate === booking.startDate && endDate === booking.endDate)
+                { return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates"})}
+
+            else if (   startDate === booking.startDate ||
+                        startDate ===  booking.endDate ||
+                        startDate >= booking.startDate && (endDate > booking.startDate && endDate <= booking.endDate) ||
+                        startDate <= booking.startDate && (endDate > booking.startDate && endDate <= booking.endDate)
+                    )
+                    { return res.status(403).json({message: "Start date conflicts with an existing booking"})}
+
+            else if (   endDate === booking.endDate ||
+                        endDate === booking.startDate
+                    )
+                    { return res.status(403).json({message: "End date conflicts with an existing booking"})}
+
+            else {
+                const createBooking = await Booking.create({
+                    spotId : parseInt(req.params.spotId),
+                    userId: req.user.id,
+                    startDate,
+                    endDate
+                })
+
+                return res.json(createBooking)
+            }
+        }}
+
+
     catch (err){
         err.status = 400;
         next(err);

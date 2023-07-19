@@ -2,6 +2,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../utils/validation');
 
 
+
 const validateLogin = [
 check('credential')
     .exists({ checkFalsy: true })
@@ -12,6 +13,7 @@ check('password')
     .withMessage('Please provide a password.'),
 handleValidationErrors
 ];
+
 
 const validateSignup = [
 check('email')
@@ -32,6 +34,7 @@ check('password')
     .withMessage('Password must be 6 characters or more.'),
 handleValidationErrors
 ];
+
 
 
 const validateSpot = [
@@ -90,6 +93,7 @@ handleValidationErrors
 ];
 
 
+
 const validateReview = [
 check('review')
     .exists({ checkFalsy: true })
@@ -108,6 +112,35 @@ handleValidationErrors
 
 
 
+const currDateISO = new Date().toISOString();
+const currDateOnly = currDateISO.slice(0,10);
+const isValidDate = /^\d{4}-\d{2}-\d{2}$/;
+
+const validateBooking = [
+check('startDate')
+    .exists({ checkFalsy: true })
+    .custom((value, {req}) => {
+        if (value <= currDateOnly) {throw new Error('startDate cannot be on or before current date')}
+        if (value > req.body.endDate) {throw new Error('startDate cannot be after endDate')}
+        if (!isValidDate.test(value)) {throw new Error('Please provide an startDate in YYYY-MM-DD format')}
+    })
+    .isDate({format: "YYYY-MM-DD"})
+    .notEmpty().withMessage('Please provide a startDate'),
+
+
+check('endDate')
+    .exists({ checkFalsy: true })
+    .custom((value, {req}) => {
+        if (value <= currDateOnly) {throw new Error('endDate cannot be on or before current date')}
+        if (value <= req.body.startDate) {throw new Error('endDate cannot be on or before startDate')}
+        if (!isValidDate.test(value)) {throw new Error('Please provide an endDate in YYYY-MM-DD format')}
+    })
+    .isDate({format: "YYYY-MM-DD"})
+    .notEmpty().withMessage('Please provide an endDate'),
+
+handleValidationErrors
+];
+
 
 
 module.exports = {
@@ -115,4 +148,5 @@ module.exports = {
     validateSignup,
     validateSpot,
     validateReview,
+    validateBooking
   };
