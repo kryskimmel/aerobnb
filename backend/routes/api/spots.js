@@ -382,11 +382,6 @@ router.post( '/:spotId/bookings', requireAuth, existSpot, validateBooking, async
     })
 
 
-
-
-
-
-
 /****************************************************** */
 //Edit a spot
 router.put( '/:spotId', requireAuth, existSpot, isAuthorizedSpot, validateSpot, async (req, res, next) => {

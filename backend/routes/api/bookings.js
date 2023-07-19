@@ -5,6 +5,7 @@ const { existBooking } = require('../../utils/notFound');
 const { isAuthorizedSpot } = require('../../utils/authorization');
 const { isAuthorizedBooking } = require('../../utils/authorization');
 const { Booking, Spot } = require('../../db/models');
+const { validateBooking } = require('../../utils/validate');
 const router = express.Router();
 
 
@@ -39,6 +40,58 @@ router.get( '/current', requireAuth, async (req, res) => {
 
 /****************************************************** */
 //Edit a booking
+router.put('/:bookingId', requireAuth, existBooking, isAuthorizedBooking, validateBooking, async (req, res, next) => {
+    try{
+        const findBookingbyId = await Booking.findByPk(req.params.bookingId);
+        if (findBookingbyId){
+            const { startDate, endDate } = req.body;
+            const currDateISO = new Date().toISOString();
+            const currDateOnly = currDateISO.slice(0,10);
+
+            if (currDateOnly > findBookingbyId.endDate)
+                { return res.status(403).json({message: "Past bookings can't be modified"})}
+
+            else if (currDateOnly > findBookingbyId.startDate && currDateOnly < findBookingbyId.endDate)
+                { return res.status(403).json({message: "Past bookings can't be modified"})}
+
+            else if (startDate === findBookingbyId.startDate && endDate === findBookingbyId.endDate)
+                { return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates"})}
+
+            else if (   startDate === findBookingbyId.startDate ||
+                        startDate === findBookingbyId.endDate ||
+                        startDate >= findBookingbyId.startDate && (endDate > findBookingbyId.startDate && endDate <= findBookingbyId.endDate) ||
+                        startDate <= findBookingbyId.startDate && (endDate > findBookingbyId.startDate && endDate <= findBookingbyId.endDate)
+                    )
+                    { return res.status(403).json({message: "Start date conflicts with an existing booking"})}
+
+            else if (   endDate === findBookingbyId.endDate ||
+                        endDate === findBookingbyId.startDate
+                    )
+                    { return res.status(403).json({message: "End date conflicts with an existing booking"})}
+
+            else {
+                const updatedBooking = await findBookingbyId.update({
+                    startDate,
+                    endDate
+                })
+
+                return res.json({
+                    id: findBookingbyId.id,
+                    spotId: findBookingbyId.spotId,
+                    userId: findBookingbyId.userId,
+                    startDate,
+                    endDate,
+                    createdAt: findBookingbyId.createdAt,
+                    updatedAt: findBookingbyId.updatedAt
+                })
+            }
+        }
+    }
+    catch (err){
+        err.status = 400
+        next(err)
+    }
+});
 
 
 /****************************************************** */
