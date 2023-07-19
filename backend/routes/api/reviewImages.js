@@ -1,7 +1,5 @@
 const express = require('express');
 const { Sequelize, Op, ValidationError, where } = require('sequelize');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { isAuthorizedReview } = require('../../utils/authorization');
 const { existReview } = require('../../utils/notFound');
