@@ -269,7 +269,6 @@ router.post( '/', requireAuth, validateSignup, async (req, res, next) => {
 
     } catch (err) {
         err.status = 400
-        delete err.title
         next(err);
     }
 });
