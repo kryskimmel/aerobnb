@@ -16,7 +16,7 @@ router.get( '/', async (req, res) => {
         include: [
         {
             model: Review,
-            as: 'avgRating'
+            as: 'avgRating',
         },
         {
             model: SpotImage,
@@ -32,7 +32,7 @@ router.get( '/', async (req, res) => {
 
     spotsList.forEach(attribute => {
         attribute.previewImage.forEach(key => {
-        if (key.url) { attribute.previewImage = key.url }
+        if (key.preview === true){ attribute.previewImage = key.url }
         })
     });
 
@@ -42,7 +42,7 @@ router.get( '/', async (req, res) => {
        })
     });
 
-    return res.json(spotsList)
+    return res.json({"Spots": spotsList})
 });
 
 
