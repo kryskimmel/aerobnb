@@ -1,5 +1,5 @@
 const express = require('express');
-const { Sequelize, Op, ValidationError } = require('sequelize');
+const { Sequelize, Op, ValidationError, DATEONLY } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
@@ -42,14 +42,17 @@ router.delete ('/:bookingId', bookingNotFound, requireAuth, async (req, res) => 
         include: {model: Spot}
     });
 
-    console.log(new Date())
     if (req.user.id !== findBookingbyId.userId){
         return res.status(403).json({message: "Forbidden"})
     }
 
-    if (new Date() >= findBooking.startDate && new Date() < findBooking.endDate) {
+    const currDateISO = new Date().toISOString();
+    const currDateOnly = currDateISO.slice(0,10);
+
+    if (currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
         return res.status(403).json({message: "Bookings that have been started can't be deleted"})
     }
+
     else {
         await findBooking.destroy();
         return res.json({message: 'Successfully deleted'})
