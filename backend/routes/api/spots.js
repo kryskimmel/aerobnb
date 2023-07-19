@@ -25,7 +25,6 @@ router.get( '/', async (req, res) => {
     });
 
     const spotsList = [];
-
     getAllSpots.forEach(spot => {
         spotsList.push(spot.toJSON())
     });
@@ -36,12 +35,34 @@ router.get( '/', async (req, res) => {
         })
     });
 
+
+    const averageRatingObj = {};
+
     spotsList.forEach(attribute => {
         attribute.avgRating.forEach(key => {
-        if(key.stars){ attribute.avgRating = key.stars }
+
+            const { spotId, stars } = key;
+
+            if (!averageRatingObj[spotId]){
+                averageRatingObj[spotId] = {
+                    sum: 0,
+                    count: 0
+                }
+            }
+            averageRatingObj[spotId].sum += stars;
+            averageRatingObj[spotId].count++;
+
+
+            Object.keys(averageRatingObj).map(spotId => {
+                const { sum, count } = averageRatingObj[spotId];
+                const avg = sum/count
+                averageRatingObj[spotId].average = avg
+                console.log(spotId, avg)
+
+                if(key.stars) { attribute.avgRating = avg }
+            })
        })
     });
-
     return res.json({"Spots": spotsList})
 });
 
