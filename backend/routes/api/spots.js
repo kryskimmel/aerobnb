@@ -64,6 +64,22 @@ const validateSpot = [
     handleValidationErrors
   ];
 
+  const validateReview = [
+    check('review')
+      .exists({ checkFalsy: true })
+      .isString().withMessage('Please provide a review that uses letters or alphanumeric characters')
+      .isLength({min: 2}).withMessage('Review must have a minimum of 2 characters')
+      .isLength({max: 500}).withMessage('Review must be less than 500 characters')
+      .notEmpty().withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isDecimal()
+        .not().isString().withMessage('Star rating is not valid')
+        .isIn([1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]).withMessage('Stars must be an integer from 1 to 5')
+        .notEmpty().withMessage('Star rating is not valid'),
+    handleValidationErrors
+  ];
+
 
 /****************************************************** */
 //Get all spots
@@ -299,24 +315,34 @@ router.post( '/:spotId/images', spotNotFound, requireAuth, isAuthorizedSpot, asy
 
 /****************************************************** */
 //Create a review for a spot based on the Spot's id
-router.post( '/:spotId/reviews', spotNotFound, requireAuth, handleValidationErrors, async (req, res, next) => {
+router.post( '/:spotId/reviews', spotNotFound, requireAuth, validateReview, async (req, res, next) => {
     try {
         const { review, stars } = req.body;
         const findSpotbyId = await Spot.findByPk(req.params.spotId);
-        const reviewExists = await Review.findOne({where: {
-            spotId: req.params.spotId
-        }})
-        if (findSpotbyId && !reviewExists) {
+        const reviewExists = await Review.findAll({
+            where: { spotId: req.params.spotId },
+        });
+
+        const reviewsList = [];
+        const userIdList = [];
+        reviewExists.forEach(spot => {
+            reviewsList.push(spot.toJSON())
+        });
+
+        reviewsList.forEach(attribute => {
+            userIdList.push(attribute.userId)
+        })
+
+        if (findSpotbyId && !userIdList.includes(req.user.id)) {
             const addReview = await Review.create({
                 userId: req.user.id,
                 spotId: parseInt(req.params.spotId),
                 review,
                 stars
             })
-
             return res.status(201).json(addReview)
         }
-        else if (reviewExists){
+         if (userIdList.includes(req.user.id)){
             return res.status(500).json({'message' : 'User already has a review for this spot'})
         }
     }
