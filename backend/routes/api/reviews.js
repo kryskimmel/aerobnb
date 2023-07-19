@@ -81,28 +81,24 @@ router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedRevie
 
 /****************************************************** */
 //Edit a review
-router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
-    const findReviewById = await Review.findByPk(req.params.reviewId);
+router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, validateReview, async (req, res, next) => {
     try{
+        const findReviewById = await Review.findByPk(req.params.reviewId);
         if (findReviewById){
             const { review, stars } = req.body;
 
-            const updateReview = await findReviewById.update({
+            const updatedReview = await findReviewById.update({
                 review, stars
             });
 
-            return res.json(updateReview);
+            return res.json(updatedReview);
         }
     }
     catch (err) {
         err.status = 400;
-        delete err.title;
-        delete err.stack;
         next(err);
     }
-
-
-})
+});
 
 
 /****************************************************** */
