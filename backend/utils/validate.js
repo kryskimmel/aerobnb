@@ -119,24 +119,15 @@ const isValidDate = /^\d{4}-\d{2}-\d{2}$/;
 
 const validateBooking = [
 check('startDate')
-    .exists({ checkFalsy: true })
-    .custom((value, {req}) => {
-        if (value <= currDateOnly) {throw new Error('startDate cannot be on or before current date')}
-        if (value > req.body.endDate) {throw new Error('startDate cannot be after endDate')}
-        if (!isValidDate.test(value)) {throw new Error('Please provide a startDate in YYYY-MM-DD format')}
-    })
-    // .isDate({format: "YYYY-MM-DD"})
-    .notEmpty().withMessage('Please provide a startDate'),
-
+    .custom((value, {req, location, path}) => {
+        if (value >= req.body.endDate) {throw new Error('startDate cannot be on or after endDate')} return true;
+    }),
 check('endDate')
-    .exists({ checkFalsy: true })
-    .custom((value, {req}) => {
-        if (value <= currDateOnly) {throw new Error('endDate cannot be on or before current date')}
-        if (value <= req.body.startDate) {throw new Error('endDate cannot be on or before startDate')}
-        if (!isValidDate.test(value)) {throw new Error('Please provide an endDate in YYYY-MM-DD format')}
-    })
-    // .isDate({format: "YYYY-MM-DD"})
-    .notEmpty().withMessage('Please provide an endDate'),
+    .custom((value, {req, location, path}) => {
+        if (value <= req.body.startDate) {throw new Error('endDate cannot be on or before startDate')} return true;
+    }),
+check('startDate').isDate({format: "YYYY-MM-DD"}).withMessage("startDate must be in YYYY-MM-DD format"),
+check('endDate').isDate({format: "YYYY-MM-DD"}).withMessage("endDate must be in YYYY-MM-DD format"),
 handleValidationErrors
 ];
 
