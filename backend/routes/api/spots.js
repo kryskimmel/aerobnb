@@ -388,7 +388,6 @@ router.post( '/:spotId/bookings', requireAuth, existSpot, validateBooking, async
         });
 
 
-
         for (let booking of bookingsList){
 
             if (startDate === booking.startDate && endDate === booking.endDate)
