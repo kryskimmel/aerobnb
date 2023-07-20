@@ -1,4 +1,5 @@
 const { check } = require('express-validator');
+const { query } = require('express-validator');
 const { handleValidationErrors } = require('../utils/validation');
 
 
@@ -126,8 +127,6 @@ check('startDate')
     })
     .isDate({format: "YYYY-MM-DD"})
     .notEmpty().withMessage('Please provide a startDate'),
-
-
 check('endDate')
     .exists({ checkFalsy: true })
     .custom((value, {req}) => {
@@ -137,10 +136,55 @@ check('endDate')
     })
     .isDate({format: "YYYY-MM-DD"})
     .notEmpty().withMessage('Please provide an endDate'),
-
 handleValidationErrors
 ];
 
+
+const validateQueryParameter = [
+query('page')
+    .optional()
+    .isInt({min: 1}).withMessage('Page must be greater than or equal to 1')
+    .isInt({max: 10}).withMessage('Page must be less than 10')
+    .not().isAlpha().withMessage('Page numbers must be a whole number')
+    .notEmpty().withMessage('Please input a page number in the URL'),
+query('size')
+    .optional()
+    .isInt({min: 1}).withMessage('Size must be greater than or equal to 1')
+    .isInt({max: 20}).withMessage('Size must be less than 20')
+    .not().isAlpha().withMessage('Size must be a whole number')
+    .notEmpty().withMessage('Please input a size in the URL'),
+query('maxLat')
+    .optional()
+    .isFloat({min: -190, max: 190}).withMessage('Maximum latitude is invalid')
+    .not().isAlpha().withMessage('Maxiumum latitude must be a decimal')
+    .notEmpty().withMessage('Please input a maximum latitude in the URL'),
+query('minLat')
+    .optional()
+    .isFloat({min: -190, max: 190}).withMessage('Minimum latitude is invalid')
+    .not().isAlpha().withMessage('Minimum latitude must be a decimal')
+    .notEmpty().withMessage('Please input a minimum latitude in the URL'),
+query('maxLng')
+    .optional()
+    .isFloat({min: -190, max: 190}).withMessage('Maximum longitude is invalid')
+    .not().isAlpha().withMessage('Maxiumum longitude must be a decimal')
+    .notEmpty().withMessage('Please input a maximum longitude in the URL'),
+query('minLng')
+    .optional()
+    .isFloat({min: -190, max: 190}).withMessage('Minimum longitude is invalid')
+    .not().isAlpha().withMessage('Minimum longitude must be a decimal')
+    .notEmpty().withMessage('Please input a minimum longitude in the URL'),
+query('minPrice')
+    .optional()
+    .isInt({min: 0}).withMessage('Minimum price must be greater than or equal to 0')
+    .not().isAlpha().withMessage('Minimum price must be a decimal or whole number')
+    .notEmpty().withMessage('Please input a minimum price in the URL'),
+query('maxPrice')
+    .optional()
+    .isInt({min: 0}).withMessage('Maximum price must be greater than or equal to 0')
+    .not().isAlpha().withMessage('Maximum price must be a decimal or whole number')
+    .notEmpty().withMessage('Please input a maximum price in the URL'),
+ handleValidationErrors
+]
 
 
 module.exports = {
@@ -148,5 +192,6 @@ module.exports = {
     validateSignup,
     validateSpot,
     validateReview,
-    validateBooking
+    validateBooking,
+    validateQueryParameter
   };
