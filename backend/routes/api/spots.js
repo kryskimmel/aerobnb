@@ -4,6 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const { validateSpot } = require('../../utils/validate');
 const { validateReview } = require('../../utils/validate');
 const { validateBooking } = require('../../utils/validate');
+const { validateQueryParameter } = require('../../utils/validate');
 const { isAuthorizedSpot } = require('../../utils/authorization');
 const { existSpot } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User, Booking } = require('../../db/models');
@@ -12,8 +13,44 @@ const router = express.Router();
 
 /****************************************************** */
 //Get all spots
-router.get( '/', async (req, res) => {
+router.get( '/', validateQueryParameter, async (req, res) => {
+
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+    const pagination = {};
+    page = parseInt(page);
+    size = parseInt(size);
+    minLat = Number(minLat);
+    maxLat = Number(maxLat);
+    minLng = Number(minLng);
+    maxLng = Number(maxLng);
+    minPrice = Number(minPrice);
+    maxPrice = Number(maxPrice);
+
+    if (isNaN(page) || !page || page <= 0 || page > 10) page = 1;
+    if (isNaN(size) || !size || size <= 0 || size > 20) size = 20;
+
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
+
+    let where = {}
+
+    if (minLat && !maxLat){where.lat = {[Op.gte]: minLat}}
+    if (!minLat && maxLat){where.lat = {[Op.lte]: maxLat}}
+    if (minLat && maxLat){where.lat = {[Op.gte]: minLat, [Op.lte]: maxLat}}
+
+    if (minLng && !maxLng){where.lng = {[Op.gte]: minLng}}
+    if (!minLng && maxLng){where.lng = {[Op.lte]: maxLng}}
+    if (minLng && maxLng){where.lng = {[Op.gte]: minLng, [Op.lte]: maxLng}}
+
+    if (minPrice && !maxPrice){where.price = {[Op.gte]: minPrice}}
+    if (!minPrice && maxPrice){where.price = {[Op.lte]: maxPrice}}
+    if (minPrice && maxPrice){where.price = {[Op.gte]: minPrice, [Op.lte]: maxPrice}}
+
+
+
     const getAllSpots = await Spot.findAll({
+        where, ...pagination,
         include: [
         {
             model: Review,
@@ -64,7 +101,7 @@ router.get( '/', async (req, res) => {
             })
        })
     });
-    return res.json({"Spots": spotsList})
+    return res.json({"Spots": spotsList, page, size})
 });
 
 
