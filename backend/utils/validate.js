@@ -123,16 +123,17 @@ check('startDate')
     .custom((value, {req}) => {
         if (value <= currDateOnly) {throw new Error('startDate cannot be on or before current date')}
         if (value > req.body.endDate) {throw new Error('startDate cannot be after endDate')}
-        // if (!isValidDate.test(value)) {throw new Error('Please provide a startDate in YYYY-MM-DD format')}
+        if (!isValidDate.test(value)) {throw new Error('Please provide a startDate in YYYY-MM-DD format')}
     })
     // .isDate({format: "YYYY-MM-DD"})
     .notEmpty().withMessage('Please provide a startDate'),
+
 check('endDate')
     .exists({ checkFalsy: true })
     .custom((value, {req}) => {
         if (value <= currDateOnly) {throw new Error('endDate cannot be on or before current date')}
         if (value <= req.body.startDate) {throw new Error('endDate cannot be on or before startDate')}
-        // if (!isValidDate.test(value)) {throw new Error('Please provide an endDate in YYYY-MM-DD format')}
+        if (!isValidDate.test(value)) {throw new Error('Please provide an endDate in YYYY-MM-DD format')}
     })
     // .isDate({format: "YYYY-MM-DD"})
     .notEmpty().withMessage('Please provide an endDate'),
