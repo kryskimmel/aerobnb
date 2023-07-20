@@ -369,7 +369,7 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
 
 /****************************************************** */
 //Create a booking from a spot based on the spot's id
-router.post( '/:spotId/bookings', requireAuth, existSpot,  async (req, res, next) => {
+router.post( '/:spotId/bookings', requireAuth, existSpot, validateBooking, async (req, res, next) => {
     const findSpotById = await Spot.findByPk(req.params.spotId);
     if (req.user.id === findSpotById.ownerId) {return res.status(403).json({message: "You cannot create a booking for a spot that you own"})}
 
@@ -396,13 +396,13 @@ router.post( '/:spotId/bookings', requireAuth, existSpot,  async (req, res, next
 
             if (startDate === booking.startDate ||
                 startDate === booking.endDate ||
-                startDate <= booking.startDate && endDate >= booking.startDate
+                startDate >= booking.startDate && endDate <= booking.endDate
                 )
             { return res.status(403).json({message: "Start date conflicts with an existing booking"})}
 
             if (endDate === booking.endDate ||
                 endDate === booking.startDate ||
-                startDate >= booking.startDate && endDate <= booking.endDate
+                startDate <= booking.startDate && endDate >= booking.startDate
                 )
             { return res.status(403).json({message: "End date conflicts with an existing booking"})}
         }
