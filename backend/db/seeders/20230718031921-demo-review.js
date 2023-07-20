@@ -32,6 +32,18 @@ module.exports = {
       "userId": 1,
       "review": 'Lovely apartment.',
       "stars": 4.0,
+    },
+    {
+      "spotId": 4,
+      "userId": 3,
+      "review": 'New Buffalo is such a charming beach town. What a great place to stay at.',
+      "stars": 5.0,
+    },
+    {
+      "spotId": 1,
+      "userId": 2,
+      "review": 'Good enough place to stay. Wish there was more to do within walking distance.',
+      "stars": 3.0,
     }
   ], {});
   },

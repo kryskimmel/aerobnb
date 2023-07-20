@@ -1,12 +1,11 @@
 const express = require('express');
 const { Sequelize, Op, ValidationError, DATEONLY } = require('sequelize');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
-const { bookingNotFound } = require('../../utils/bookingNotFound');
-const { isAuthorizedSpot } = require('../../utils/isAuthorizedSpot');
-const { isAuthorizedBooking } = require('../../utils/isAuthorizedBooking');
+const { existBooking } = require('../../utils/notFound');
+const { isAuthorizedSpot } = require('../../utils/authorization');
+const { isAuthorizedBooking } = require('../../utils/authorization');
 const { Booking, Spot } = require('../../db/models');
+const { validateBooking } = require('../../utils/validate');
 const router = express.Router();
 
 
@@ -24,17 +23,95 @@ router.get( '/current', requireAuth, async (req, res) => {
         },
     });
 
-    return res.json(getBookingsByCurrUser)
+    const bookingsList = [];
+    getBookingsByCurrUser.forEach(booking => {
+        bookingsList.push(booking.toJSON())
+    });
+
+    bookingsList.forEach(attribute => {
+        const {previewImage} = attribute.Spot;
+        previewImage.forEach(key => {
+            if (key.preview === true){attribute.Spot.previewImage = key.url}
+       })
+    });
+    return res.json({"Bookings": bookingsList})
 });
 
 
 /****************************************************** */
 //Edit a booking
+router.put('/:bookingId', requireAuth, existBooking, isAuthorizedBooking, validateBooking, async (req, res, next) => {
+    try{
+        const findBookingbyId = await Booking.findByPk(req.params.bookingId);
+        if (findBookingbyId){
+            const { startDate, endDate } = req.body;
+            const currDateISO = new Date().toISOString();
+            const currDateOnly = currDateISO.slice(0,10);
+
+            if (currDateOnly > findBookingbyId.endDate)
+                { return res.status(403).json({message: "Past bookings can't be modified"})}
+
+            if (currDateOnly > findBookingbyId.startDate && currDateOnly < findBookingbyId.endDate)
+                { return res.status(403).json({message: "Past bookings can't be modified"})}
+
+
+            const {spotId} = findBookingbyId;
+
+            const allBookings = await Booking.findAll({
+                where: {
+                    spotId: spotId,
+                }
+            });
+
+            const bookingsList = [];
+
+            allBookings.forEach(booking => {
+                bookingsList.push(booking.toJSON())
+            });
+
+            for (let booking of bookingsList){
+
+                if (startDate === booking.startDate && endDate === booking.endDate)
+                    { return res.status(403).json(
+                        {
+                            message:"Sorry, this spot is already booked for the specified dates",
+                            errors: {"startDate": "Start date conflicts with an existing booking",
+                                "endDate": "End date conflicts with an existing booking"}
+                        }
+                    )}
+
+                if (startDate === booking.startDate ||
+                    startDate === booking.endDate ||
+                    startDate >= booking.startDate && endDate <= booking.endDate
+                    )
+                { return res.status(403).json({message: "Start date conflicts with an existing booking"})}
+
+                if (endDate === booking.endDate ||
+                    endDate === booking.startDate ||
+                    startDate <= booking.startDate && endDate >= booking.startDate
+                    )
+                { return res.status(403).json({message: "End date conflicts with an existing booking"})}
+                }
+
+
+                const updatedBooking = await findBookingbyId.update({
+                    startDate,
+                    endDate
+                });
+
+            return res.json(updatedBooking)
+        }
+    }
+    catch (err){
+        err.status = 400
+        next(err)
+    }
+});
 
 
 /****************************************************** */
 //Delete a booking
-router.delete ('/:bookingId', bookingNotFound, requireAuth, async (req, res) => {
+router.delete ('/:bookingId', requireAuth, existBooking, async (req, res) => {
     const findBooking = await Booking.findByPk(req.params.bookingId);
 
     const findBookingbyId = await Booking.findOne({
@@ -42,22 +119,23 @@ router.delete ('/:bookingId', bookingNotFound, requireAuth, async (req, res) => 
         include: {model: Spot}
     });
 
-    if (req.user.id !== findBookingbyId.userId){
-        return res.status(403).json({message: "Forbidden"})
-    }
-
+    const bookingList = findBookingbyId.toJSON();
     const currDateISO = new Date().toISOString();
     const currDateOnly = currDateISO.slice(0,10);
 
-    if (currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
-        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
-    }
-
-    else {
+    if (req.user.id === bookingList.Spot.ownerId || req.user.id === findBookingbyId.userId){
         await findBooking.destroy();
         return res.json({message: 'Successfully deleted'})
     }
-})
+
+    else if (currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
+        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
+    }
+
+    else if (req.user.id !== bookingList.Spot.ownerId || req.user.id !== findBookingbyId.userId) {
+        return res.status(403).json({message: "Forbidden"})
+    }
+});
 
 
 module.exports = router;

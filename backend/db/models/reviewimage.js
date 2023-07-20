@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ReviewImage.belongsTo(models.Review, { foreignKey: 'reviewId' });
+      ReviewImage.belongsTo(models.Review, {
+        foreignKey: 'reviewId',
+        onDelete: 'cascade'
+      });
     }
   }
   ReviewImage.init({
@@ -34,6 +37,16 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ['reviewId', 'createdAt', 'updatedAt']
+      }
+    },
+    hooks: {
+      beforeCreate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      },
+      beforeUpdate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
       }
     }
   });

@@ -33,11 +33,17 @@ module.exports = {
       "startDate": "2023-08-05",
       "endDate": "2023-08-06"
     },
+    {
+      "spotId": 2,
+      "userId": 2,
+      "startDate": "2023-08-05",
+      "endDate": "2023-08-06"
+    },
   ], {});
   },
 
   async down (queryInterface, Sequelize) {
-    options.tableName = 'Bookigns';
+    options.tableName = 'Bookings';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {}, {});
   }

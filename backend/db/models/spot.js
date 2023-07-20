@@ -7,17 +7,26 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Spot.belongsTo(models.User, {
         foreignKey: 'ownerId' ,
-        as: 'Owner'
+        as: 'Owner',
+        onDelete: 'cascade'
       });
 
-      Spot.hasMany(models.SpotImage, { foreignKey: 'spotId' });
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: 'spotId',
+        onDelete: 'cascade',
+        hooks: true
+      });
 
       Spot.hasMany(models.SpotImage, {
         foreignKey: 'spotId',
         as: 'previewImage'
       });
 
-      Spot.hasMany(models.Review, { foreignKey: 'spotId' });
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId',
+        onDelete: 'cascade',
+        hooks: true
+      });
 
       Spot.hasMany(models.Review, {
         foreignKey: 'spotId',
@@ -29,7 +38,16 @@ module.exports = (sequelize, DataTypes) => {
         as: 'avgStarRating'
       });
 
-      Spot.hasMany(models.Booking, { foreignKey: 'spotId'});
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId',
+        as: 'numReviews'
+      });
+
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId',
+        onDelete: 'cascade',
+        hooks: true
+      });
     }
   }
   Spot.init({
@@ -139,6 +157,16 @@ module.exports = (sequelize, DataTypes) => {
           exclude: ["id", "ownerId", "address", "city", "state", "country", "lat",
                     "lng", "name", "description", "price", "createdAt", "updatedAt" ]
         }
+      }
+    },
+    hooks: {
+      beforeCreate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      },
+      beforeUpdate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
       }
     }
   });

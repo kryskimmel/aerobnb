@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      SpotImage.belongsTo(models.Spot, { foreignKey: 'spotId' });
+      SpotImage.belongsTo(models.Spot, {
+        foreignKey: 'spotId',
+        onDelete: 'cascade'
+      });
     }
   }
   SpotImage.init({
@@ -40,6 +43,16 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ['spotId', 'createdAt', 'updatedAt']
+      }
+    },
+    hooks: {
+      beforeCreate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      },
+      beforeUpdate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
       }
     }
   });

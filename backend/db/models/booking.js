@@ -10,9 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Booking.belongsTo(models.User, { foreignKey: 'userId' });
+      Booking.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'cascade'
+      });
 
-      Booking.belongsTo(models.Spot, { foreignKey: 'spotId' });
+      Booking.belongsTo(models.Spot, {
+        foreignKey: 'spotId',
+        onDelete: 'cascade'
+      });
     }
   }
   Booking.init({
@@ -26,15 +32,25 @@ module.exports = (sequelize, DataTypes) => {
     },
     startDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
     },
     endDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
     }
   }, {
     sequelize,
     modelName: 'Booking',
+    hooks: {
+      beforeCreate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      },
+      beforeUpdate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      }
+    }
   });
   return Booking;
 };

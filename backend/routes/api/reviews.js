@@ -1,10 +1,9 @@
 const express = require('express');
 const { Sequelize, Op, ValidationError, where } = require('sequelize');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { validateReview } = require('../../utils/validate')
 const { requireAuth } = require('../../utils/auth');
-const { isAuthorizedReview } = require('../../utils/isAuthorizedReview');
-const { reviewNotFound } = require('../../utils/reviewNotFound');
+const { isAuthorizedReview } = require('../../utils/authorization');
+const { existReview } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User } = require('../../db/models');
 const router = express.Router();
 
@@ -14,20 +13,42 @@ const router = express.Router();
 router.get( '/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const getReviewsByCurrUser = await Review.findAll({
-        where: {userId}
+        where: {userId},
+        include:[
+        {model: User},
+        {model: Spot,
+        attributes: {exclude: ['description', 'createdAt', 'updatedAt']},
+        include: {model: SpotImage, as: 'previewImage'}},
+        {model: ReviewImage}]
     });
-    return res.json(getReviewsByCurrUser)
+
+    const reviewsList = [];
+    getReviewsByCurrUser.forEach(spot => {
+        reviewsList.push(spot.toJSON())
+    });
+    // console.log(reviewsList)
+
+    reviewsList.forEach(attribute => {
+        const {previewImage} = attribute.Spot;
+        previewImage.forEach(key => {
+            if (key.preview === true){attribute.Spot.previewImage = key.url}
+       })
+
+    });
+    return res.json({"Reviews": reviewsList})
 });
 
 
 /****************************************************** */
 //Add an image to a review based on the review's id
-router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
+router.post( '/:reviewId/images', requireAuth, existReview, isAuthorizedReview, async (req, res, next) => {
     const { url } = req.body;
     const findReviewById = await Review.findByPk(req.params.reviewId);
+    const getReviewImages = await ReviewImage.findAll({where: {reviewId: req.params.reviewId}})
 
-    if (findReviewById) {
-        const createImage = await ReviewImage.create({
+    if (getReviewImages.length > 10) return res.status(403).json({message: 'Maximum number of images for this resource was reached'});
+    else {
+            const createImage = await ReviewImage.create({
             reviewId: parseInt(req.params.reviewId),
             url
         });
@@ -42,33 +63,29 @@ router.post( '/:reviewId/images', reviewNotFound, requireAuth, isAuthorizedRevie
 
 /****************************************************** */
 //Edit a review
-router.put( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res, next) => {
-    const findReviewById = await Review.findByPk(req.params.reviewId);
+router.put( '/:reviewId', requireAuth, existReview, isAuthorizedReview, validateReview, async (req, res, next) => {
     try{
+        const findReviewById = await Review.findByPk(req.params.reviewId);
         if (findReviewById){
             const { review, stars } = req.body;
 
-            const updateReview = await findReviewById.update({
+            const updatedReview = await findReviewById.update({
                 review, stars
             });
 
-            return res.json(updateReview);
+            return res.json(updatedReview);
         }
     }
     catch (err) {
         err.status = 400;
-        delete err.title;
-        delete err.stack;
         next(err);
     }
-
-
-})
+});
 
 
 /****************************************************** */
 //Delete a review
-router.delete( '/:reviewId', reviewNotFound, requireAuth, isAuthorizedReview, async (req, res) => {
+router.delete( '/:reviewId', requireAuth, existReview, isAuthorizedReview, async (req, res) => {
     const findReviewById = await Review.findByPk(req.params.reviewId);
 
     await findReviewById.destroy();
