@@ -129,8 +129,9 @@ router.get( '/current', requireAuth, async (req, res) => {
 
     spotsList.forEach(attribute => {
         attribute.previewImage.forEach(key => {
-        if (key.preview === true){ attribute.previewImage = key.url }
-        else if (key.preview === false){attribute.previewImage = []}
+            if (key.preview === true){
+                attribute.previewImage = key.url
+            }
         })
     });
 
