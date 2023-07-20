@@ -44,6 +44,15 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['spotId', 'createdAt', 'updatedAt']
       }
+    },
+    hooks: {
+      beforeCreate: (record, options) => {
+        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      },
+      beforeUpdate: (record, options) => {
+        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+      }
     }
   });
   return SpotImage;

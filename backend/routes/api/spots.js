@@ -369,13 +369,16 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
 
 /****************************************************** */
 //Create a booking from a spot based on the spot's id
-router.post( '/:spotId/bookings', requireAuth, existSpot, validateBooking, async (req, res, next) => {
+router.post( '/:spotId/bookings', requireAuth, existSpot,  async (req, res, next) => {
     const findSpotById = await Spot.findByPk(req.params.spotId);
     if (req.user.id === findSpotById.ownerId) {return res.status(403).json({message: "You cannot create a booking for a spot that you own"})}
+
     try{
         const { startDate, endDate } = req.body;
         const bookingExists = await Booking.findAll({
-            where: {spotId: req.params.spotId}
+            where: {
+                spotId: req.params.spotId,
+            }
         });
 
         const bookingsList = [];
@@ -384,41 +387,40 @@ router.post( '/:spotId/bookings', requireAuth, existSpot, validateBooking, async
             bookingsList.push(booking.toJSON())
         });
 
+
+
         for (let booking of bookingsList){
 
             if (startDate === booking.startDate && endDate === booking.endDate)
                 { return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates"})}
 
-            else if (   startDate === booking.startDate ||
-                        startDate ===  booking.endDate ||
-                        startDate >= booking.startDate && (endDate > booking.startDate && endDate <= booking.endDate) ||
-                        startDate <= booking.startDate && (endDate > booking.startDate && endDate <= booking.endDate)
-                    )
-                    { return res.status(403).json({message: "Start date conflicts with an existing booking"})}
+            if (startDate === booking.startDate ||
+                startDate === booking.endDate ||
+                startDate <= booking.startDate && endDate >= booking.startDate
+                )
+            { return res.status(403).json({message: "Start date conflicts with an existing booking"})}
 
-            else if (   endDate === booking.endDate ||
-                        endDate === booking.startDate
-                    )
-                    { return res.status(403).json({message: "End date conflicts with an existing booking"})}
+            if (endDate === booking.endDate ||
+                endDate === booking.startDate ||
+                startDate >= booking.startDate && endDate <= booking.endDate
+                )
+            { return res.status(403).json({message: "End date conflicts with an existing booking"})}
+        }
 
-            else {
-                const createBooking = await Booking.create({
-                    spotId : parseInt(req.params.spotId),
-                    userId: req.user.id,
-                    startDate,
-                    endDate
-                })
+        const createBooking = await Booking.create({
+            spotId: parseInt(req.params.spotId),
+            userId: req.user.id,
+            startDate,
+            endDate
+        });
 
-                return res.json(createBooking)
-            }
-        }}
-
-
+        return res.json(createBooking)
+}
     catch (err){
         err.status = 400;
         next(err);
     }
-    })
+});
 
 
 /****************************************************** */
