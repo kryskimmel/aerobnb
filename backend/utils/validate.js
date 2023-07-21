@@ -101,6 +101,7 @@ check('review')
     .notEmpty().withMessage('Review text is required'),
 check('stars')
     .exists({ checkFalsy: true })
+    .isInt()
     .not().isString().withMessage('Star rating is not valid')
     .isIn([1, 2, 3, 4, 5]).withMessage('Stars must be an integer from 1 to 5')
     .notEmpty().withMessage('Star rating is not valid'),
