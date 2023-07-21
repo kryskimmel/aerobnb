@@ -48,8 +48,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     stars: {
-      type: DataTypes.DECIMAL,
-      allowNull: false
+      type: DataTypes.DECIMAL(1,1),
+      allowNull: false,
+      validate: {
+        isDecimal: true,
+        notEmpty: true,
+      }
     }
   }, {
     sequelize,
