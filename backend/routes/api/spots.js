@@ -75,7 +75,7 @@ router.get( '/', validateQueryParameter, async (req, res) => {
         const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
         const averageStars = starsSum/ratingCount
 
-        spot.avgRating = averageStars;
+        spot.avgRating = Number(averageStars.toFixed(1));
 
     })
 
@@ -121,7 +121,7 @@ router.get( '/current', requireAuth, async (req, res) => {
         const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
         const averageStars = starsSum/ratingCount
 
-        spot.avgRating = averageStars;
+        spot.avgRating = Number(averageStars.toFixed(1));
 
     })
 
@@ -164,7 +164,7 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
         const averageStars = starsSum/ratingCount
 
         spot.numReviews = ratingCount;
-        spot.avgStarRating = averageStars;
+        spot.avgStarRating = Number(averageStars.toFixed(1));
 
 
     })
