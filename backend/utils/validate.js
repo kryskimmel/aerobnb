@@ -17,20 +17,38 @@ handleValidationErrors
 const validateSignup = [
 check('email')
     .exists({ checkFalsy: true })
-    .isEmail()
-    .withMessage('Please provide a valid email.'),
+    .isEmail().withMessage('Invalid email')
+    .notEmpty().withMessage('Email is required')
+    .isLength({min: 3}).withMessage('Please provide an email with at least 3 characters')
+    .isLength({max: 256}).withMessage('Email address must not exceed 256 chacracters'),
 check('username')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 4 })
-    .withMessage('Please provide a username with at least 4 characters.'),
-check('username')
-    .not()
-    .isEmail()
-    .withMessage('Username cannot be an email.'),
+    .exists({ checkFalsy: true }).withMessage('Username is required')
+    .custom((value, {req, location, path}) => {
+        if (value === "") {throw new Error('Username is required')} return true;
+    })
+    .not().isEmail().withMessage('Username cannot be an email.'),
+    // .isLength({ min: 4 }).withMessage('Please provide a username with at least 4 characters')
+    // .isLength({max: 256}).withMessage('Username must not exceed 30 chacracters'),
 check('password')
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters or more.'),
+check('firstName')
+    .exists({checkFalsy: true})
+    .isAlpha().withMessage('First Name must use letters only')
+    .custom((value, {req, location, path}) => {
+        if (value === "") {throw new Error('Username is required')} return true;
+    })
+    .isLength({ min: 2 }).withMessage('Please provide a first name with at least 2 characters')
+    .isLength({max: 50}).withMessage('First Name must not exceed 50 chacracters'),
+check('lastName')
+    .exists({checkFalsy: true})
+    .isAlpha().withMessage('Last Name must use letters only')
+    .custom((value, {req, location, path}) => {
+        if (value === "") {throw new Error('Username is required')} return true;
+    })
+    .isLength({ min: 2 }).withMessage('Please provide a last name with at least 2 characters')
+    .isLength({max: 50}).withMessage('Last Name must not exceed 50 chacracters'),
 handleValidationErrors
 ];
 
