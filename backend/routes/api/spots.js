@@ -8,6 +8,7 @@ const { validateQueryParameter } = require('../../utils/validate');
 const { isAuthorizedSpot } = require('../../utils/authorization');
 const { existSpot } = require('../../utils/notFound');
 const { Spot, SpotImage, Review, ReviewImage, User, Booking } = require('../../db/models');
+const review = require('../../db/models/review');
 const router = express.Router();
 
 
@@ -62,46 +63,24 @@ router.get( '/', validateQueryParameter, async (req, res) => {
         }]
     });
 
+
     const spotsList = [];
     getAllSpots.forEach(spot => {
         spotsList.push(spot.toJSON())
     });
+    const averageSpotRating = spotsList.map((spot) => {
+        const reviews = spot.avgRating;
 
-    spotsList.forEach(attribute => {
-        attribute.previewImage.forEach(key => {
-        if (key.preview === true){ attribute.previewImage = key.url }
-        })
-    });
+        const ratingCount = reviews.length;
+        const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
+        const averageStars = starsSum/ratingCount
 
+        spot.avgRating = averageStars;
 
-    const averageRatingObj = {};
+    })
 
-    spotsList.forEach(attribute => {
-        attribute.avgRating.forEach(key => {
+     return res.json({"Spots": spotsList, page, size})
 
-            const { spotId, stars } = key;
-
-            if (!averageRatingObj[spotId]){
-                averageRatingObj[spotId] = {
-                    sum: 0,
-                    count: 0
-                }
-            }
-            averageRatingObj[spotId].sum += stars;
-            averageRatingObj[spotId].count++;
-
-
-            Object.keys(averageRatingObj).map(spotId => {
-                const { sum, count } = averageRatingObj[spotId];
-                const avg = sum/count
-                averageRatingObj[spotId].average = avg
-                console.log(spotId, avg)
-
-                if(key.stars) { attribute.avgRating = avg }
-            })
-       })
-    });
-    return res.json({"Spots": spotsList, page, size})
 });
 
 
@@ -135,33 +114,16 @@ router.get( '/current', requireAuth, async (req, res) => {
         })
     });
 
-    const averageRatingObj = {};
+    const averageSpotRating = spotsList.map((spot) => {
+        const reviews = spot.avgRating;
 
-    spotsList.forEach(attribute => {
-        attribute.avgRating.forEach(key => {
+        const ratingCount = reviews.length;
+        const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
+        const averageStars = starsSum/ratingCount
 
-            const { spotId, stars } = key;
+        spot.avgRating = averageStars;
 
-            if (!averageRatingObj[spotId]){
-                averageRatingObj[spotId] = {
-                    sum: 0,
-                    count: 0
-                }
-            }
-            averageRatingObj[spotId].sum += stars;
-            averageRatingObj[spotId].count++;
-
-
-            Object.keys(averageRatingObj).map(spotId => {
-                const { sum, count } = averageRatingObj[spotId];
-                const avg = sum/count
-                averageRatingObj[spotId].average = avg
-                console.log(spotId, avg)
-
-                if(key.stars) { attribute.avgRating = avg }
-            })
-       })
-    });
+    })
 
     return res.json({"Spots": spotsList})
 });
@@ -190,40 +152,23 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
     });
 
     const spotsList = [];
-    spotsList.push(findSpotById.toJSON());
-
-    const averageRatingObj = {};
-
-    spotsList.forEach(attribute => {
-        attribute.avgStarRating.forEach(key => {
-
-            const { spotId, stars } = key;
-
-            if (!averageRatingObj[spotId]){
-                averageRatingObj[spotId] = {
-                    sum: 0,
-                    count: 0
-                }
-            }
-            averageRatingObj[spotId].sum += stars;
-            averageRatingObj[spotId].count++;
+    spotsList.push(findSpotById.toJSON())
 
 
-            Object.keys(averageRatingObj).map(spotId => {
-                const { sum, count } = averageRatingObj[spotId];
-                const avg = sum/count
-                averageRatingObj[spotId].average = avg
-                console.log(spotId, avg)
+    const averageSpotRating = spotsList.map((spot) => {
 
-                if (key.stars){
-                    attribute.numReviews = count
-                    attribute.avgStarRating = avg
-                }
-            });
-       })
-    });
+        const reviews = spot.avgStarRating;
 
-        return res.json(...spotsList);
+        const ratingCount = reviews.length;
+        const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
+        const averageStars = starsSum/ratingCount
+
+        spot.numReviews = ratingCount;
+        spot.avgStarRating = averageStars;
+
+
+    })
+    return res.json(...spotsList);
 });
 
 
