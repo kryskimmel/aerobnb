@@ -151,22 +151,31 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
         }]
     });
 
+    const count = await Review.count({where: {spotId: req.params.spotId}})
+    const sum = await Review.sum('stars', {where: {spotId: req.params.spotId}});
+    const avg = sum/count
+    console.log(avg)
+
     const spotsList = [];
     spotsList.push(findSpotById.toJSON())
+    const averageSpotRating= spotsList.map((spot) => {
+        spot.numReviews = count;
+        spot.avgStarRating = avg;
 
+        // const reviews = spot.avgStarRating;
 
-    const averageSpotRating = spotsList.map((spot) => {
+        // const ratingCount = reviews.length;
+        // const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
+        // const averageStars = starsSum/ratingCount
 
-        const reviews = spot.avgStarRating;
-
-        const ratingCount = reviews.length;
-        const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
-        const averageStars = starsSum/ratingCount
-
-        spot.numReviews = ratingCount;
-        spot.avgStarRating = averageStars;
+        // spot.numReviews = ratingCount;
+        // spot.avgStarRating = averageStars;
 
     })
+
+
+
+
     return res.json(...spotsList);
 });
 
