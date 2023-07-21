@@ -25,15 +25,24 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isUrl: true,
-        notEmpty: false
+        isUrl: {
+          args: true,
+          msg: "URL is not valid"
+        },
+        notEmpty: {
+          args: true,
+          msg: "URL is required"
+        },
       }
     },
     preview : {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       validate: {
-        notEmpty: false
+        notEmpty: {
+          args: false,
+          msg: "Please provide a value for preview"
+        },
       }
     }
   },

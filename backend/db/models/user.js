@@ -28,30 +28,52 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 50],
-        isAlpha: true
+        len: {
+          args: [2, 50],
+          msg: "First name must be between 2 and 50 characters"
+        },
+        isAlpha: {
+          args: true,
+          msg: "First name must use letters only"
+        },
       }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 50],
-        isAlpha: true}
+        len: {
+          args: [2, 50],
+          msg: "Last name must be between 2 and 50 characters"
+        },
+        isAlpha: {
+          args: true,
+          msg: "Last name must use letters only"
+        },
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [3, 256],
-        isEmail: true
+        len: {
+          args: [3, 256],
+          msg: "Email must be between 3 and 256 characters"
+        },
+        isEmail: {
+          args: true,
+          msg: 'Invalid email'
+        }
       }
     },
     username:{
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [4, 30],
+          msg: "Username must be between 4 and 30 characters"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -71,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
     defaultScope: {
       attributes: {
-        exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
+        exclude: ["hashedPassword", "email", "username", "createdAt", "updatedAt"]
       }
     },
     hooks: {

@@ -16,39 +16,20 @@ handleValidationErrors
 
 const validateSignup = [
 check('email')
-    .exists({ checkFalsy: true })
-    .isEmail().withMessage('Invalid email')
-    .notEmpty().withMessage('Email is required')
-    .isLength({min: 3}).withMessage('Please provide an email with at least 3 characters')
-    .isLength({max: 256}).withMessage('Email address must not exceed 256 chacracters'),
+    .exists({ checkFalsy: true }).withMessage('Email is required')
+    .isEmail().withMessage('Invalid email'),
 check('username')
     .exists({ checkFalsy: true }).withMessage('Username is required')
-    .custom((value, {req, location, path}) => {
-        if (value === "") {throw new Error('Username is required')} return true;
-    })
     .not().isEmail().withMessage('Username cannot be an email.'),
-    // .isLength({ min: 4 }).withMessage('Please provide a username with at least 4 characters')
-    // .isLength({max: 256}).withMessage('Username must not exceed 30 chacracters'),
 check('password')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage('Password must be 6 characters or more.'),
+    .exists({ checkFalsy: true }).withMessage('Password is required')
+    .isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
 check('firstName')
-    .exists({checkFalsy: true})
-    .isAlpha().withMessage('First Name must use letters only')
-    .custom((value, {req, location, path}) => {
-        if (value === "") {throw new Error('Username is required')} return true;
-    })
-    .isLength({ min: 2 }).withMessage('Please provide a first name with at least 2 characters')
-    .isLength({max: 50}).withMessage('First Name must not exceed 50 chacracters'),
+    .exists({checkFalsy: true}).withMessage('First Name is required')
+    .notEmpty().withMessage('First Name is required'),
 check('lastName')
-    .exists({checkFalsy: true})
-    .isAlpha().withMessage('Last Name must use letters only')
-    .custom((value, {req, location, path}) => {
-        if (value === "") {throw new Error('Username is required')} return true;
-    })
-    .isLength({ min: 2 }).withMessage('Please provide a last name with at least 2 characters')
-    .isLength({max: 50}).withMessage('Last Name must not exceed 50 chacracters'),
+    .exists({checkFalsy: true}).withMessage('Last Name is required')
+    .notEmpty().withMessage('Last Name is required'),
 handleValidationErrors
 ];
 
@@ -81,12 +62,12 @@ check('country')
     .notEmpty().withMessage('Country is required'),
 check('lat')
     .exists({ checkFalsy: true })
-    .isDecimal()
+    .isDecimal().withMessage('Latitude is not valid')
     .not().isString().withMessage('Latitude is not valid')
     .notEmpty().withMessage('Latitude is not valid'),
 check('lng')
     .exists({ checkFalsy: true })
-    .isDecimal()
+    .isDecimal().withMessage('Longitude is not valid')
     .not().isString().withMessage('Longitude is not valid')
     .notEmpty().withMessage('Longitude is not valid'),
 check('name')
@@ -122,7 +103,7 @@ check('stars')
     .exists({ checkFalsy: true })
     .isDecimal()
     .not().isString().withMessage('Star rating is not valid')
-    .isIn([1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]).withMessage('Stars must be an integer from 1 to 5')
+    .isIn([1, 2, 3, 4, 5]).withMessage('Stars must be an integer from 1 to 5')
     .notEmpty().withMessage('Star rating is not valid'),
 handleValidationErrors
 ];

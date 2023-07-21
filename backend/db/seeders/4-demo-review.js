@@ -25,7 +25,7 @@ module.exports = {
       "spotId": 1,
       "userId": 3,
       "review": 'I needed a break away from the city and this home which was only a few blocks away from the beach was what I needed.',
-      "stars": 4.5,
+      "stars": 4,
     },
     {
       "spotId": 3,

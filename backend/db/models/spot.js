@@ -64,20 +64,32 @@ module.exports = (sequelize, DataTypes) => {
           args: /^[\w\-\s]+$/,
           msg: "The address field must contain only alphanumeric characters and spaces"
         },
-        len: [5, 50],
-        notEmpty: true,
+        len: {
+          args: [5, 50],
+          msg: "Address must be between 5 and 50 characters"
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Street address is required'
+        },
       }
     },
     city: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-          is: {
-            args: /^[a-z\s]*$/i,
-            msg: "The city field must contain only alphabetical characters and spaces"
-          },
-          len: [2, 20],
-          notEmpty: true,
+        is: {
+          args: /^[a-z\s]*$/i,
+          msg: "The city field must contain only alphabetical characters and spaces"
+        },
+        len: {
+          args: [2, 20],
+          msg: "City must be between 2 and 20 characters"
+        },
+        notEmpty: {
+          args: true,
+          msg: 'City is required'
+        },
       }
     },
     state: {
@@ -88,8 +100,14 @@ module.exports = (sequelize, DataTypes) => {
             args: /^[a-z\s]*$/i,
             msg: "The state field must contain only alphabetical characters and spaces"
           },
-          len: [2, 20],
-          notEmpty: true,
+          len: {
+            args: [2, 20],
+            msg: "State must be between 2 and 20 characters"
+          },
+          notEmpty: {
+            args: true,
+            msg: 'State is required'
+          },
       }
     },
     country: {
@@ -100,24 +118,42 @@ module.exports = (sequelize, DataTypes) => {
           args: /^[a-z\s]*$/i,
           msg: "The country field must contain only alphabetical characters and spaces"
         },
-        len: [2, 20],
-        notEmpty: true,
+        len: {
+          args: [2, 20],
+          msg: "Country must be between 2 and 20 characters"
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Country is required'
+        },
       }
     },
     lat: {
       type: DataTypes.DECIMAL(5,10),
       allowNull: false,
       validate: {
-        isDecimal: true,
-        notEmpty: true,
+        isDecimal: {
+          args: true,
+          msg: 'Latitude is not valid'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Latitude is required'
+        },
       }
     },
     lng: {
       type: DataTypes.DECIMAL(5,10),
       allowNull: false,
       validate: {
-        isDecimal: true,
-        notEmpty: true,
+        isDecimal: {
+          args: true,
+          msg: 'Longitude is not valid'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Longitude is required'
+        },
       }
     },
     name: {
@@ -128,23 +164,38 @@ module.exports = (sequelize, DataTypes) => {
           args: /^[\w\-\s]+$/,
           msg: "The name field must contain only alphanumeric characters and spaces"
         },
-        len: [2, 50],
-        notEmpty: true,
+        len: {
+          args: [2, 50],
+          msg: "Name must be less than 50 characters"
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Name is required'
+        },
       }
     },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 500],
-        notEmpty: true,
+        len: {
+          args: [2, 500],
+          msg: "Description must be between 2 and 500 characters"
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Description is required'
+        },
       }
     },
     price: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          args: true,
+          msg: 'Price per day is required'
+        }
       }
     }
   },

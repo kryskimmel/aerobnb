@@ -33,10 +33,22 @@ module.exports = (sequelize, DataTypes) => {
     startDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
+      validate: {
+        contains: {
+          args: "-",
+          msg: "Invalid format for start date"
+        }
+      }
     },
     endDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
+      validate: {
+        contains: {
+          args: "-",
+          msg: "Invalid format for end date"
+        }
+      }
     }
   }, {
     sequelize,

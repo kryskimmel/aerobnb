@@ -27,8 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate:
       {
-        isUrl: true,
-        notEmpty: true
+        isUrl: {
+          args: true,
+          msg: "URL is not valid"
+        },
+        notEmpty: {
+          args: true,
+          msg: "URL is required"
+        },
       }
     },
   }, {
