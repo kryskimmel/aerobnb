@@ -121,7 +121,7 @@ router.get( '/current', requireAuth, async (req, res) => {
         const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
         const averageStars = starsSum/ratingCount
 
-        spot.avgRating = averageStars;
+        spot.avgRating = Number(averageStars.toFixed(1));
 
     })
 
