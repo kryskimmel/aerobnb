@@ -43,21 +43,20 @@ router.get( '/current', requireAuth, async (req, res) => {
 //Add an image to a review based on the review's id
 router.post( '/:reviewId/images', requireAuth, existReview, isAuthorizedReview, async (req, res, next) => {
     const { url } = req.body;
-    const findReviewById = await Review.findByPk(req.params.reviewId);
-    const getReviewImages = await ReviewImage.findAll({where: {reviewId: req.params.reviewId}})
 
-    if (getReviewImages.length > 10) return res.status(403).json({message: 'Maximum number of images for this resource was reached'});
+    const reviewImageCount = await ReviewImage.count({where: {reviewId: req.params.reviewId}})
+    if (reviewImageCount >= 10) return res.status(403).json({message: 'Maximum number of images for this resource was reached'});
     else {
-            const createImage = await ReviewImage.create({
+        const createImage = await ReviewImage.create({
             reviewId: parseInt(req.params.reviewId),
             url
         });
-
+        console.log('IMAGE COUNT',reviewImageCount)
         return res.json({
             id: createImage.id,
             url
         });
-    };
+    }
 });
 
 
