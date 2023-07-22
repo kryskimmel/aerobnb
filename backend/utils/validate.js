@@ -77,7 +77,6 @@ check('address')
     .exists({ checkFalsy: true })
     .notEmpty().withMessage('Street address is required')
     .isString().withMessage('Street address is required')
-    .matches(/^[\w\-\s]+$/).withMessage('Street address is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
           throw new Error('Street address is required');

@@ -69,8 +69,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "The address field must contain only alphanumeric characters and spaces"
         },
         len: {
-          args: [5],
-          msg: "Address must be at least 5 characters long"
+          args: [2],
+          msg: "Address must be at least 2 characters long"
         },
       }
     },
