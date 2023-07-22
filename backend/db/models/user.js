@@ -34,8 +34,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         isAlpha: {
           args: true,
-          msg: "First name must use letters only"
+          msg: "First name is required"
         },
+        notEmpty: {
+          args: true,
+          msg: "First name is required"
+        }
       }
     },
     lastName: {
@@ -48,8 +52,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         isAlpha: {
           args: true,
-          msg: "Last name must use letters only"
+          msg: "Last name is required"
         },
+        notEmpty: {
+          args: true,
+          msg: "Last name is required"
+        }
       }
     },
     email: {
@@ -63,6 +71,10 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: {
           args: true,
           msg: 'Invalid email'
+        },
+        notEmpty: {
+          args: true,
+          msg: "Invalid email"
         }
       }
     },
@@ -73,6 +85,14 @@ module.exports = (sequelize, DataTypes) => {
         len: {
           args: [4, 30],
           msg: "Username must be between 4 and 30 characters"
+        },
+        notEmpty: {
+          args: true,
+          msg: "Username is required"
+        },
+        isAlphanumeric: {
+          args: true,
+          msg: "Username is required"
         },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {

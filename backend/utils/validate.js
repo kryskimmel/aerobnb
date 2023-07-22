@@ -22,17 +22,21 @@ check('email')
 check('username')
     .exists({ checkFalsy: true }).withMessage('Username is required')
     .notEmpty().withMessage('Username is required')
+    .isAlphanumeric().withMessage('Username is required')
     .not().isEmail().withMessage('Username cannot be an email.'),
 check('password')
     .exists({ checkFalsy: true }).withMessage('Password is required')
     .notEmpty().withMessage('Password is required')
+    .isAlphanumeric().withMessage('Password is required')
     .isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
 check('firstName')
     .exists({checkFalsy: true}).withMessage('First Name is required')
-    .notEmpty().withMessage('First Name is required'),
+    .notEmpty().withMessage('First Name is required')
+    .isAlpha().withMessage('First name is required'),
 check('lastName')
     .exists({checkFalsy: true}).withMessage('Last Name is required')
-    .notEmpty().withMessage('Last Name is required'),
+    .notEmpty().withMessage('Last Name is required')
+    .isAlpha().withMessage('Last name is required'),
 handleValidationErrors
 ];
 
