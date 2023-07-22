@@ -68,16 +68,19 @@ router.get( '/', validateQueryParameter, async (req, res) => {
     getAllSpots.forEach(spot => {
         spotsList.push(spot.toJSON())
     });
-    const averageSpotRating = spotsList.map((spot) => {
-        const reviews = spot.avgRating;
 
-        const ratingCount = reviews.length;
-        const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
-        const averageStars = starsSum/ratingCount;
+    for (let spot of spotsList){
+        const count = await Review.count({where: {spotId: spot.id}})
+        const sum = await Review.sum('stars', {where: {spotId: spot.id}})
+        let avg = sum/count
+        avg = Number(avg.toFixed(1))
+        spot.avgRating = avg;
 
-        spot.avgRating = Number(averageStars.toFixed(1));
-
-    });
+        for (let prevImgInfo of spot.previewImage) {
+            if (prevImgInfo.preview === true)
+                {spot.previewImage = prevImgInfo.url}
+       }
+    }
 
      return res.json({"Spots": spotsList, page, size})
 
