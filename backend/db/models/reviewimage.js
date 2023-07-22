@@ -47,12 +47,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     hooks: {
       beforeCreate: (record, options) => {
-        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
-        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        record.dataValues.updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
       },
       beforeUpdate: (record, options) => {
-        record.dataValues.createdAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
-        record.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');
+        record.dataValues.createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        record.dataValues.updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
       }
     }
   });
