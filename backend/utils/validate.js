@@ -44,56 +44,98 @@ handleValidationErrors
 
 const validateSpot = [
 check('address')
-.exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a street address that uses letters or alphanumeric characters')
-    .isLength({min: 5}).withMessage('Street address must have a minimum of 5 characters')
-    .isLength({max: 50}).withMessage('Street address must be less than 50 characters')
-    .notEmpty().withMessage('Street address is required'),
+    .exists({ checkFalsy: true })
+    .notEmpty().withMessage('Street address is required')
+    .isString().withMessage('The address field must contain only alphanumeric characters and spaces')
+    .matches(/^[\w\-\s]+$/).withMessage('Street address is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Street address is required');
+        }
+        return true;
+      }),
 check('city')
-    .exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a city that uses alphabetic characters')
-    .isLength({min: 2}).withMessage('City must have a minimum of 2 characters')
-    .isLength({max: 20}).withMessage('City must be less than 20 characters')
-    .notEmpty().withMessage('City is required'),
+    .exists({ checkFalsy: true }).withMessage('City is required')
+    .notEmpty().withMessage('City is required')
+    .isString().withMessage('The city field must contain only alphabetical characters and spaces')
+    .not().isNumeric().withMessage('The city field must contain only alphabetical characters and spaces')
+    .not().isNumeric().withMessage('The city field must contain only alphabetical characters and spaces')
+    .matches(/^[a-z\s]*$/i).withMessage('City is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('City is required');
+        }
+        return true;
+      }),
 check('state')
-    .exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a state that uses alphabetic characters')
-    .isLength({min: 2}).withMessage('State must have a minimum of 2 characters')
-    .isLength({max: 20}).withMessage('State must be less than 20 characters')
-    .notEmpty().withMessage('State is required'),
+    .exists({ checkFalsy: true }).withMessage('State is required')
+    .notEmpty().withMessage('State is required')
+    .isString().withMessage('The state field must contain only alphabetical characters and spaces')
+    .not().isNumeric().withMessage('The state field must contain only alphabetical characters and spaces')
+    .matches(/^[a-z\s]*$/i).withMessage('State is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('State is required');
+        }
+        return true;
+      }),
 check('country')
-    .exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a country that uses alphabetic characters')
-    .isLength({min: 2}).withMessage('Country must have a minimum of 2 characters')
-    .isLength({max: 20}).withMessage('Country must be less than 20 characters')
-    .notEmpty().withMessage('Country is required'),
+    .exists({ checkFalsy: true }).withMessage('Country is required')
+    .notEmpty().withMessage('Country is required')
+    .isString().withMessage('The country field must contain only alphabetical characters and spaces')
+    .not().isNumeric().withMessage('The country field must contain only alphabetical characters and spaces')
+    .matches(/^[a-z\s]*$/i).withMessage('Country is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Country is required');
+        }
+        return true;
+      }),
 check('lat')
-    .exists({ checkFalsy: true })
+    .exists({ checkFalsy: true }).withMessage('Latitude is not valid')
+    .notEmpty().withMessage('Latitude is not valid')
     .isDecimal().withMessage('Latitude is not valid')
+    .isFloat({min: 0}).withMessage('Latitude is not valid')
+    .isNumeric().withMessage('Latitude is not valid')
     .not().isString().withMessage('Latitude is not valid')
-    .notEmpty().withMessage('Latitude is not valid'),
+    .not().isInt().withMessage('Latitude is not valid'),
 check('lng')
     .exists({ checkFalsy: true })
+    .notEmpty().withMessage('Longitude is not valid')
     .isDecimal().withMessage('Longitude is not valid')
+    .isFloat({min: 0}).withMessage('Longitude is not valid')
+    .isNumeric().withMessage('Longitude is not valid')
     .not().isString().withMessage('Longitude is not valid')
-    .notEmpty().withMessage('Longitude is not valid'),
+    .not().isInt().withMessage('Longitude is not valid'),
 check('name')
-    .exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a name that uses alphabetic characters')
-    .isLength({min: 2}).withMessage('Name must have a minimum of 2 characters')
+    .exists({ checkFalsy: true }).withMessage('Name is required')
+    .notEmpty().withMessage('Name is required')
+    .isString().withMessage('The name field must contain only alphanumeric characters and spaces')
+    .isLength({min: 1}).withMessage('Name is required')
     .isLength({max: 50}).withMessage('Name must be less than 50 characters')
-    .notEmpty().withMessage('Name is required'),
+    .matches(/^[\w\-\s]+$/).withMessage("Name must be less than 50 characters")
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Name is required');
+        }
+        return true;
+      }),
 check('description')
     .exists({ checkFalsy: true })
     .isString().withMessage('Please provide a description that uses alphabetic characters')
-    .isLength({min: 2}).withMessage('Description must have a minimum of 2 characters')
-    .isLength({max: 500}).withMessage('Description must be less than 500 characters')
-    .notEmpty().withMessage('Description is required'),
+    .notEmpty().withMessage('Description is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Description is required');
+        }
+        return true;
+      }),
 check('price')
     .exists({ checkFalsy: true })
-    .isNumeric()
-    .not().isString().withMessage('Price is not valid')
-    .notEmpty().withMessage('Price per day is required'),
+    .notEmpty().withMessage('Price per day is required')
+    .isNumeric().withMessage('Price per day is required')
+    .isInt({min: 0}).withMessage('Price per day is required')
+    .not().isString().withMessage('Price per day is required'),
 handleValidationErrors
 ];
 
