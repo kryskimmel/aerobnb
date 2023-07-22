@@ -213,6 +213,7 @@ router.post( '/', requireAuth, validateSpot, async (req, res, next) => {
             description,
             price
         });
+    console.log(createSpot.toJSON())
 
     return res.status(201).json(createSpot);
 
