@@ -101,29 +101,25 @@ router.get( '/current', requireAuth, async (req, res) => {
                 as: 'previewImage',
             }]
     });
+
+
     const spotsList = [];
-    getSpotsByCurrUser.forEach(spot => {
-        spotsList.push(spot.toJSON())
+    getSpotsByCurrUser.forEach(spots => {
+        spotsList.push(spots.toJSON())
     });
 
-    spotsList.forEach(attribute => {
-        attribute.previewImage.forEach(key => {
-            if (key.preview === true){
-                attribute.previewImage = key.url
-            }
-        })
-    });
+    for (let spot of spotsList){
+        const count = await Review.count({where: {spotId: spot.id}})
+        const sum = await Review.sum('stars', {where: {spotId: spot.id}})
+        let avg = sum/count
+        avg = Number(avg.toFixed(1))
+        spot.avgRating = avg;
 
-    const averageSpotRating = spotsList.map((spot) => {
-        const reviews = spot.avgRating;
-
-        const ratingCount = reviews.length;
-        const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
-        const averageStars = starsSum/ratingCount
-
-        spot.avgRating = Number(averageStars.toFixed(1));
-
-    })
+       for (let prevImgInfo of spot.previewImage) {
+            if (prevImgInfo.preview === true)
+                {spot.previewImage = prevImgInfo.url}
+       }
+    }
 
     return res.json({"Spots": spotsList})
 });
@@ -153,7 +149,7 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
 
     const count = await Review.count({where: {spotId: req.params.spotId}})
     const sum = await Review.sum('stars', {where: {spotId: req.params.spotId}});
-    const avg = sum/count
+    let avg = sum/count
     avg = Number(avg.toFixed(1))
 
     const spotsList = [];
@@ -173,9 +169,6 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
         // spot.avgStarRating = averageStars;
 
     })
-
-
-
 
     return res.json(...spotsList);
 });
