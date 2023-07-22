@@ -13,7 +13,7 @@ module.exports = {
     dialect: 'postgres',
     seederStorage: 'sequelize',
     dialectOptions: {
-      "decimalNumbers": true,
+      decimalNumbers: true,
       ssl: {
         require: true,
         rejectUnauthorized: false
