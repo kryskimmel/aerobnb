@@ -33,6 +33,11 @@ router.get( '/current', requireAuth, async (req, res) => {
         previewImage.forEach(key => {
             if (key.preview === true){attribute.Spot.previewImage = key.url}
        })
+
+       let {createdAt, updatedAt} = attribute;
+
+       attribute.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+       attribute.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
     });
     return res.json({"Bookings": bookingsList})
 });

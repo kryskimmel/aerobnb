@@ -230,7 +230,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeUpdate: (record, options) => {
         record.dataValues.createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
         record.dataValues.updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      }
+      },
     }
   });
   return Spot;

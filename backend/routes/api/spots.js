@@ -60,7 +60,7 @@ router.get( '/', validateQueryParameter, async (req, res) => {
         {
             model: SpotImage,
             as: 'previewImage',
-        }]
+        }],
     });
 
 
@@ -80,6 +80,11 @@ router.get( '/', validateQueryParameter, async (req, res) => {
             if (prevImgInfo.preview === true)
                 {spot.previewImage = prevImgInfo.url}
        }
+
+       let {createdAt, updatedAt} = spot;
+
+       spot.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+       spot.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
     }
 
      return res.json({"Spots": spotsList, page, size})
@@ -122,6 +127,11 @@ router.get( '/current', requireAuth, async (req, res) => {
             if (prevImgInfo.preview === true)
                 {spot.previewImage = prevImgInfo.url}
        }
+
+       let {createdAt, updatedAt} = spot;
+
+       spot.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+       spot.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
     }
 
     return res.json({"Spots": spotsList})
@@ -160,6 +170,11 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
     const averageSpotRating= spotsList.map((spot) => {
         spot.numReviews = count;
         spot.avgStarRating = avg;
+
+    let {createdAt, updatedAt} = spot;
+
+    spot.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+    spot.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
 
 
         // const reviews = spot.avgStarRating;
@@ -278,12 +293,33 @@ router.get( '/:spotId/reviews', existSpot, async (req, res, next) => {
     const removeSpotAttributes = Spot.scope('removeAttributes')
     const findSpotbyId = await removeSpotAttributes.findOne({
         where: {id : req.params.spotId},
-        include: [{
+        include: {
             model: Review,
             include: [{model: User}, {model: ReviewImage}]
-        }]
+        }
     });
-    return res.json(findSpotbyId)
+
+    const reviewsList = findSpotbyId.toJSON();
+    const {Reviews} = reviewsList
+    for (let review of Reviews){
+        let {createdAt, updatedAt} = review;
+
+        review.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+        review.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
+    }
+
+
+    // const reviewList =  Object.values(findSpotbyId.toJSON())
+    // for (let reviews of reviewList){
+    //     for (let review of reviews ){
+    //         let {createdAt, updatedAt} = review;
+    //         review.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+    //         review.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
+    //     }
+    // }
+
+
+    return res.json(reviewsList)
 })
 
 
@@ -300,7 +336,8 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
             include:
             {model: Booking, attributes: ["spotId", "startDate", "endDate"]}
         });
-        return res.json(notSpotOwner)
+
+    return res.json(notSpotOwner)
     }
 
     else {
@@ -312,7 +349,17 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
                 include: {model: User},
             }
         });
-        return res.json(spotOwner)
+
+        const bookingsList = spotOwner.toJSON();
+        const {Bookings} = bookingsList
+        for (let booking of Bookings){
+            let {createdAt, updatedAt} = booking;
+
+            booking.createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ');
+            booking.updatedAt = updatedAt.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        return res.json(bookingsList)
     }
 });
 
