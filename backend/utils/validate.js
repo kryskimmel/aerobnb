@@ -113,7 +113,6 @@ check('country')
     .notEmpty().withMessage('Country is required')
     .isString().withMessage('Country is required')
     .not().isNumeric().withMessage('Country is required')
-    .matches(/^[a-z\s]*$/i).withMessage('Country is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
           throw new Error('Country is required');
