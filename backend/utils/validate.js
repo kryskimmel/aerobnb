@@ -17,12 +17,15 @@ handleValidationErrors
 const validateSignup = [
 check('email')
     .exists({ checkFalsy: true }).withMessage('Email is required')
+    .notEmpty().withMessage('Invalid email')
     .isEmail().withMessage('Invalid email'),
 check('username')
     .exists({ checkFalsy: true }).withMessage('Username is required')
+    .notEmpty().withMessage('Username is required')
     .not().isEmail().withMessage('Username cannot be an email.'),
 check('password')
     .exists({ checkFalsy: true }).withMessage('Password is required')
+    .notEmpty().withMessage('Password is required')
     .isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
 check('firstName')
     .exists({checkFalsy: true}).withMessage('First Name is required')
