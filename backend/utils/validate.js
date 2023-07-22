@@ -18,25 +18,55 @@ const validateSignup = [
 check('email')
     .exists({ checkFalsy: true }).withMessage('Email is required')
     .notEmpty().withMessage('Invalid email')
-    .isEmail().withMessage('Invalid email'),
+    .isEmail().withMessage('Invalid email')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Invalid email');
+        }
+        return true;
+      }),
 check('username')
     .exists({ checkFalsy: true }).withMessage('Username is required')
     .notEmpty().withMessage('Username is required')
     .isAlphanumeric().withMessage('Username is required')
-    .not().isEmail().withMessage('Username cannot be an email.'),
+    .not().isEmail().withMessage('Username cannot be an email.')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Username is required');
+        }
+        return true;
+      }),
 check('password')
     .exists({ checkFalsy: true }).withMessage('Password is required')
     .notEmpty().withMessage('Password is required')
     .isAlphanumeric().withMessage('Password is required')
-    .isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
+    .isLength({ min: 6 }).withMessage('Password must be 6 characters or more.')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Password is required');
+        }
+        return true;
+      }),
 check('firstName')
     .exists({checkFalsy: true}).withMessage('First Name is required')
     .notEmpty().withMessage('First Name is required')
-    .isAlpha().withMessage('First name is required'),
+    .isAlpha().withMessage('First name is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('First Name is required');
+        }
+        return true;
+      }),
 check('lastName')
     .exists({checkFalsy: true}).withMessage('Last Name is required')
     .notEmpty().withMessage('Last Name is required')
-    .isAlpha().withMessage('Last name is required'),
+    .isAlpha().withMessage('Last name is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Last Name is required');
+        }
+        return true;
+      }),
 handleValidationErrors
 ];
 
@@ -138,7 +168,6 @@ check('price')
     .not().isString().withMessage('Price per day is required'),
 handleValidationErrors
 ];
-
 
 
 const validateReview = [
