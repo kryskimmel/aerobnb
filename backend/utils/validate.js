@@ -76,7 +76,7 @@ const validateSpot = [
 check('address')
     .exists({ checkFalsy: true })
     .notEmpty().withMessage('Street address is required')
-    .isString().withMessage('The address field must contain only alphanumeric characters and spaces')
+    .isString().withMessage('Street address is required')
     .matches(/^[\w\-\s]+$/).withMessage('Street address is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
@@ -87,9 +87,9 @@ check('address')
 check('city')
     .exists({ checkFalsy: true }).withMessage('City is required')
     .notEmpty().withMessage('City is required')
-    .isString().withMessage('The city field must contain only alphabetical characters and spaces')
-    .not().isNumeric().withMessage('The city field must contain only alphabetical characters and spaces')
-    .not().isNumeric().withMessage('The city field must contain only alphabetical characters and spaces')
+    .isString().withMessage('City is required')
+    .not().isNumeric().withMessage('City is required')
+    .not().isNumeric().withMessage('City is required')
     .matches(/^[a-z\s]*$/i).withMessage('City is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
@@ -100,8 +100,8 @@ check('city')
 check('state')
     .exists({ checkFalsy: true }).withMessage('State is required')
     .notEmpty().withMessage('State is required')
-    .isString().withMessage('The state field must contain only alphabetical characters and spaces')
-    .not().isNumeric().withMessage('The state field must contain only alphabetical characters and spaces')
+    .isString().withMessage('State is required')
+    .not().isNumeric().withMessage('State is required')
     .matches(/^[a-z\s]*$/i).withMessage('State is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
@@ -112,8 +112,8 @@ check('state')
 check('country')
     .exists({ checkFalsy: true }).withMessage('Country is required')
     .notEmpty().withMessage('Country is required')
-    .isString().withMessage('The country field must contain only alphabetical characters and spaces')
-    .not().isNumeric().withMessage('The country field must contain only alphabetical characters and spaces')
+    .isString().withMessage('Country is required')
+    .not().isNumeric().withMessage('Country is required')
     .matches(/^[a-z\s]*$/i).withMessage('Country is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
@@ -140,7 +140,7 @@ check('lng')
 check('name')
     .exists({ checkFalsy: true }).withMessage('Name is required')
     .notEmpty().withMessage('Name is required')
-    .isString().withMessage('The name field must contain only alphanumeric characters and spaces')
+    .isString().withMessage('Name is required')
     .isLength({min: 1}).withMessage('Name is required')
     .isLength({max: 50}).withMessage('Name must be less than 50 characters')
     .matches(/^[\w\-\s]+$/).withMessage("Name must be less than 50 characters")
@@ -152,7 +152,7 @@ check('name')
       }),
 check('description')
     .exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a description that uses alphabetic characters')
+    .isString().withMessage('Description is required')
     .notEmpty().withMessage('Description is required')
     .custom((value, { req }) => {
         if (value.trim().length === 0) {
