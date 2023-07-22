@@ -75,9 +75,9 @@ router.get( '/', validateQueryParameter, async (req, res) => {
         const starsSum = reviews.reduce((acc, avgRating) => acc + avgRating.stars, 0);
         const averageStars = starsSum/ratingCount;
 
-        spot.avgRating = averageStars;
+        spot.avgRating = Number(averageStars.toFixed(1));
 
-    })
+    });
 
      return res.json({"Spots": spotsList, page, size})
 
@@ -154,13 +154,14 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
     const count = await Review.count({where: {spotId: req.params.spotId}})
     const sum = await Review.sum('stars', {where: {spotId: req.params.spotId}});
     const avg = sum/count
-    console.log(avg)
+    avg = Number(avg.toFixed(1))
 
     const spotsList = [];
     spotsList.push(findSpotById.toJSON())
     const averageSpotRating= spotsList.map((spot) => {
         spot.numReviews = count;
         spot.avgStarRating = avg;
+
 
         // const reviews = spot.avgStarRating;
 
