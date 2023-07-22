@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: "The country field must contain only alphabetical characters and spaces"
         },
         len: {
-          args: [1],
+          args: [1, 200],
           msg: "Country is required"
         },
       }
