@@ -172,17 +172,23 @@ handleValidationErrors
 
 const validateReview = [
 check('review')
-    .exists({ checkFalsy: true })
-    .isString().withMessage('Please provide a review that uses letters or alphanumeric characters')
-    .isLength({min: 2}).withMessage('Review must have a minimum of 2 characters')
-    .isLength({max: 500}).withMessage('Review must be less than 500 characters')
-    .notEmpty().withMessage('Review text is required'),
+    .exists({ checkFalsy: true }).withMessage('Review text is required')
+    .notEmpty().withMessage('Review text is required')
+    .isString().withMessage('Review text is required')
+    .isLength({min: 1}).withMessage('Review text is required')
+    .custom((value, { req }) => {
+        if (value.trim().length === 0) {
+          throw new Error('Review text is required');
+        }
+        return true;
+      }),
 check('stars')
-    .exists({ checkFalsy: true })
-    .isInt()
-    .not().isString().withMessage('Star rating is not valid')
-    .isIn([1, 2, 3, 4, 5]).withMessage('Stars must be an integer from 1 to 5')
-    .notEmpty().withMessage('Star rating is not valid'),
+    .exists({ checkFalsy: true }).withMessage('Stars must be an integer from 1 to 5')
+    .notEmpty().withMessage('Stars must be an integer from 1 to 5')
+    .isNumeric().withMessage('Stars must be an integer from 1 to 5')
+    .isInt().withMessage('Stars must be an integer from 1 to 5')
+    .not().isString().withMessage('Stars must be an integer from 1 to 5')
+    .isIn([1, 2, 3, 4, 5]).withMessage('Stars must be an integer from 1 to 5'),
 handleValidationErrors
 ];
 

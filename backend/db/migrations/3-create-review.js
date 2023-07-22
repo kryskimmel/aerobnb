@@ -34,7 +34,7 @@ module.exports = {
         }
       },
       review: {
-        type: Sequelize.STRING(500),
+        type: Sequelize.TEXT,
         allowNull: false
       },
       stars: {

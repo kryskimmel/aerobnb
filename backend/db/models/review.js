@@ -40,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     review: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         len: {
-          args: [2, 500],
-          msg: "Review must be between 2 and 500 characters"
+          args: [1],
+          msg: "Review text is required"
         },
         notEmpty: {
           args: true,
