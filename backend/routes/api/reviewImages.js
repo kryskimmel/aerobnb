@@ -22,7 +22,6 @@ router.delete ('/:imageId', requireAuth, async (req, res) => {
 
     const reviewObj = reviewImageInfo.toJSON();
     const {userId} = reviewObj.Review;
-    console.log(userId)
 
     if (req.user.id !== userId) {
         return res.status(403).json({message: 'Forbidden'})

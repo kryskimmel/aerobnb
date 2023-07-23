@@ -27,7 +27,6 @@ module.exports = {
       url: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       preview: {
         type: Sequelize.BOOLEAN,
@@ -36,12 +35,18 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        get() {
+          return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss')
+        }
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        get() {
+          return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss')
+        }
       }
     }, options);
   },

@@ -26,7 +26,6 @@ router.get( '/current', requireAuth, async (req, res) => {
     getReviewsByCurrUser.forEach(spot => {
         reviewsList.push(spot.toJSON())
     });
-    // console.log(reviewsList)
 
     reviewsList.forEach(attribute => {
         const {previewImage} = attribute.Spot;
@@ -56,7 +55,7 @@ router.post( '/:reviewId/images', requireAuth, existReview, isAuthorizedReview, 
             reviewId: parseInt(req.params.reviewId),
             url
         });
-        console.log('IMAGE COUNT',reviewImageCount)
+
         return res.json({
             id: createImage.id,
             url
