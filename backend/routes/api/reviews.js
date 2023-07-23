@@ -17,7 +17,7 @@ router.get( '/current', requireAuth, async (req, res) => {
         include:[
         {model: User},
         {model: Spot,
-        attributes: {exclude: ['description', 'createdAt', 'updatedAt']},
+        attributes: {exclude: ['email', 'username', 'hashedPassword', 'createdAt', 'updatedAt']},
         include: {model: SpotImage, as: 'previewImage'}},
         {model: ReviewImage}]
     });

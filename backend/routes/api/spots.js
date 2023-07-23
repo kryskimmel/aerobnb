@@ -157,6 +157,7 @@ router.get( '/:spotId', existSpot, async (req, res, next) => {
         {
             model: User,
             as: 'Owner',
+            attributes: {exclude: ['email', 'username', 'hashedPassword', 'createdAt', 'updatedAt']}
         }]
     });
 
@@ -295,7 +296,7 @@ router.get( '/:spotId/reviews', existSpot, async (req, res, next) => {
         where: {id : req.params.spotId},
         include: {
             model: Review,
-            include: [{model: User}, {model: ReviewImage}]
+            include: [{model: User,  attributes: {exclude: ['email', 'username', 'hashedPassword', 'createdAt', 'updatedAt']}}, {model: ReviewImage}]
         }
     });
 
