@@ -346,7 +346,7 @@ router.get( '/:spotId/bookings', requireAuth, existSpot, async (req, res) => {
             include:
             {
                 model: Booking,
-                include: {model: User},
+                include: {model: User, attributes: {exclude: ['email', 'username', 'hashedPassword', 'createdAt', 'updatedAt']}},
             }
         });
 
