@@ -56,7 +56,7 @@ router.put('/:bookingId', requireAuth, existBooking, isAuthorizedBooking, valida
             if (currDateOnly > findBookingbyId.endDate)
                 { return res.status(403).json({message: "Past bookings can't be modified"})}
 
-            if (currDateOnly > findBookingbyId.startDate && currDateOnly < findBookingbyId.endDate)
+            if (currDateOnly >= findBookingbyId.startDate && currDateOnly <= findBookingbyId.endDate)
                 { return res.status(403).json({message: "Past bookings can't be modified"})}
 
 
@@ -128,18 +128,21 @@ router.delete ('/:bookingId', requireAuth, existBooking, async (req, res) => {
     const currDateISO = new Date().toISOString();
     const currDateOnly = currDateISO.slice(0,10);
 
-    if (req.user.id === bookingList.Spot.ownerId || req.user.id === findBookingbyId.userId){
+
+
+    if (currDateOnly > findBooking.endDate || currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
+        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
+    }
+
+    if (req.user.id === bookingList.Spot.ownerId || req.user.id === findBookingbyId.userId) {
         await findBooking.destroy();
         return res.json({message: 'Successfully deleted'})
     }
 
-    else if (currDateOnly >= findBooking.startDate && currDateOnly <= findBooking.endDate) {
-        return res.status(403).json({message: "Bookings that have been started can't be deleted"})
+    if (req.user.id !== bookingList.Spot.ownerId || req.user.id !== findBookingbyId.userId) {
+        res.status(403).json({message: "Forbidden"})
     }
 
-    else if (req.user.id !== bookingList.Spot.ownerId || req.user.id !== findBookingbyId.userId) {
-        return res.status(403).json({message: "Forbidden"})
-    }
 });
 
 
