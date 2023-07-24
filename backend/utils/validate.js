@@ -215,13 +215,11 @@ const validateQueryParameter = [
 query('page')
     .optional()
     .isInt({min: 1}).withMessage('Page must be greater than or equal to 1')
-    .isInt({max: 10}).withMessage('Page must be less than 10')
     .not().isAlpha().withMessage('Page must be greater than or equal to 1')
     .notEmpty().withMessage('Page must be greater than or equal to 1'),
 query('size')
     .optional()
     .isInt({min: 1}).withMessage('Size must be greater than or equal to 1')
-    .isInt({max: 20}).withMessage('Size must be less than 20')
     .not().isAlpha().withMessage('Size must be greater than or equal to 1')
     .notEmpty().withMessage('Size must be greater than or equal to 1'),
 query('maxLat')
