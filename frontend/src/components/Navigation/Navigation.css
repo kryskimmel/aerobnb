@@ -1,0 +1,13 @@
+.hidden {
+    display: none;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+}
+
+.nav-links li {
+    margin: 0 10px
+}
