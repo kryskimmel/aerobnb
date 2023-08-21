@@ -1,4 +1,11 @@
 /* TODO Add site wide styles */
-body {
-    width: 100%;
+@media (min-width: 1024px) and (max-width: 1024px) {
+
+
+html, body {
+    max-width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 }
