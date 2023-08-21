@@ -84,7 +84,7 @@ const sessionReducer = (state = initialState, action) => {
             newState.user = action.payload;
             return newState;
         case REMOVE_USER:
-            return state;
+            return {...state, user: null};
         default:
             return state;
     }
