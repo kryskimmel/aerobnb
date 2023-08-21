@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
@@ -29,22 +30,43 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    setShowMenu(false)
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
+      {user ? (
+        <>
+          <button onClick={openMenu}>
+            <i className="fas fa-user-circle" />
+          </button>
+        </>
+      ) : (
+        <>
+          <button onClick={openMenu}>
+            <i class="fa-solid fa-bars" style={{color: "#000000"}}></i>
+          </button>
+        </>
+      )}
+
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
+        {user ? (
+          <>
+            <li>{user.username}</li>
+            <li>{user.firstName} {user.lastName}</li>
+            <li>{user.email}</li>
+            <li>
+              <button className="logout-button" onClick={logout}>Log Out</button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li onClick={() => setShowMenu(false)}><NavLink to="/login">Log In</NavLink></li>
+            <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li>
+          </>
+        )}
       </ul>
     </>
   );
