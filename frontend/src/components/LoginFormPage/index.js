@@ -29,7 +29,7 @@ const LoginFormPage = () => {
 
 
     return (
-        <div className="container-div">
+        <div className="form-container-div">
         <h1>Log In</h1>
         <form onSubmit={handleSubmit} className="form-div">
         <fieldset>
