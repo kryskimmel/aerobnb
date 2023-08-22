@@ -1,5 +1,30 @@
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+}
+
+.apply-overlay {
+position: fixed; /* Sit on top of the page content */
+
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+
+}
+
+
 .login-modal-container {
-    width: 300px;
+    position: fixed;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    width: 600px;
     height: 300px;
-    border: 1px solid black
+    border: 1px solid #000000;
+    border-radius: 30px;
+    background-color: #FFFFFF;
 }
