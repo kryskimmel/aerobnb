@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
-function ProfileButton({ user }) {
+
+function ProfileButton({ user, toggleLoginModal}) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -63,7 +64,7 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            <li onClick={() => setShowMenu(false)}><NavLink to="/login">Log In</NavLink></li>
+            <li onClick={() => {setShowMenu(false); toggleLoginModal(true)}} className="login"><NavLink to="/login">Log In</NavLink></li>
             <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li>
           </>
         )}

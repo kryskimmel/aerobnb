@@ -27,6 +27,8 @@ const LoginFormPage = () => {
 
     };
 
+    const buttonClassName = "enabled-button" + (!errors ? "" : " disabled-button");
+
 
     return (
         <div className="form-container-div">
@@ -57,8 +59,8 @@ const LoginFormPage = () => {
         <div className="errors-div">
             {errors.credential && <p>{errors.credential}</p>}
         </div>
-        <div className="login-button-div">
-            <button type="submit">Log In</button>
+        <div className={"login-button-div"}>
+            <button type="submit" className={buttonClassName}>Log In</button>
         </div>
         </fieldset>
         </form>

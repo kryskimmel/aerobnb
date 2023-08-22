@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./LoginModal.css";
+import LoginFormPage from "../LoginFormPage";
 
-export default function Modal() {
-  const [loginModal, setLoginModal] = useState(false);
+const LogInModal = ({open}) => {
 
-  return (
-        <>
-        <li onClick={() => {setShowMenu(false), toggleModal}}><NavLink to="/login">Log In</NavLink></li>
+    let body = document.querySelector("body");
 
-    </>
-    );
+    if (open) body.setAttribute("class", "apply-overlay")
+
+    if (!open) return null;
+    else {
+        return (
+            <div className="overlay">
+                <div className="login-modal-container">
+                    <LoginFormPage/>
+                </div>
+            </div>
+        )
+    }
+
+
 }
+
+
+export default LogInModal;
