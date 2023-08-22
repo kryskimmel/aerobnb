@@ -16,7 +16,7 @@ function Navigation({ isLoaded }){
 
   return (
     <>
-    <ul className='nav-links'>
+    <ul className='nav-links-div'>
       <li>
         <NavLink exact to="/">Home</NavLink>
       </li>
