@@ -30,8 +30,18 @@ fieldset {
     justify-content: center;
 }
 
+.enabled-button {
+    background-color: #FF5A5F;
+}
+
+.disabled-button {
+    background-color: #FFFFFF;
+    color: #CCCCCC;
+    border: 1px solid #CCCCCC;
+}
+
 .errors-div {
-    color: red;
+    color: #FF5A5F;
     display: flex;
     justify-content: center;
 }
