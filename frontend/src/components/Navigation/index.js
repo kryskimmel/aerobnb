@@ -12,6 +12,8 @@ function Navigation({ isLoaded }){
 
   const [openLoginModal, setOpenLoginModal] = useState(false);
 
+
+
   return (
     <>
     <ul className='nav-links'>
@@ -25,7 +27,7 @@ function Navigation({ isLoaded }){
       )}
     </ul>
     <div>
-      <LogInModal open={openLoginModal}/>
+      <LogInModal open={openLoginModal} toggleLoginModal={setOpenLoginModal}/>
     </div>
     </>
   );

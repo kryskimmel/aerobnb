@@ -1,21 +1,20 @@
-import React, {useState} from "react";
+import React from "react";
 import "./LoginModal.css";
 import LoginFormPage from "../LoginFormPage";
 
 const LogInModal = ({open}) => {
 
-    let body = document.querySelector("body");
-
-    if (open) body.setAttribute("class", "apply-overlay")
+    let page = document.querySelector('body');
 
     if (!open) return null;
     else {
+        page.setAttribute("class", "apply-overlay")
         return (
-            <div className="overlay">
-                <div className="login-modal-container">
-                    <LoginFormPage/>
+                <div className="modal-div">
+                    <div className="login-modal-container">
+                        <LoginFormPage/>
+                    </div>
                 </div>
-            </div>
         )
     }
 

@@ -32,9 +32,11 @@ function ProfileButton({ user, toggleLoginModal}) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     setShowMenu(false)
+    toggleLoginModal(false)
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+
 
   return (
     <>
