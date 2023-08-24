@@ -10,10 +10,15 @@
 } */
 
 .spots img {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
 }
 
 .spots img:hover {
     cursor: pointer;
+}
+
+.spot-info-div {
+    display: flex;
+    justify-content: space-between;
 }

@@ -2,6 +2,10 @@
     display: none;
 }
 
+.home:hover, .user-options-button:hover {
+    cursor: pointer;
+}
+
 .nav-links-div {
     display: flex;
     justify-content: space-between;

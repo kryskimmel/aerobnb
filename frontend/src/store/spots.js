@@ -18,11 +18,14 @@ const getAllSpots = (data) => {
 
 //Thunk Action Creators:
 export const fetchAllSpots = () => async (dispatch) => {
-    const response = await csrfFetch('/api/spots', {
-        method: 'GET'
-    });
-    const allSpots = await response.json();
-    dispatch(getAllSpots(allSpots));
+        const response = await csrfFetch('/api/spots', {
+            method: 'GET'
+        });
+        if (response.ok) {
+            const allSpots = await response.json();
+            dispatch(getAllSpots(allSpots));
+        }
+        else throw Error("Could not fetch all spots");
 };
 
 
@@ -35,7 +38,7 @@ const spotReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_SPOTS:
             const newState = {};
-            action.payload.Spots.forEach((spot) => { newState[spot.id] = spot});
+            action.payload.Spots.forEach((spot) => { newState[spot.id] = spot });
             return newState;
         default:
             return state;

@@ -45,14 +45,14 @@ function ProfileButton({ user }) {
     <>
       {user ? (
         <>
-          <button onClick={openMenu}>
+          <button onClick={openMenu} className="user-options-button">
             <i className="fas fa-user-circle" />
           </button>
         </>
       ) : (
         <>
-          <button onClick={openMenu}>
-            <i class="fa-solid fa-bars" style={{color: "#000000"}}></i>
+          <button onClick={openMenu} className="user-options-button">
+            <i className="fa-solid fa-bars" style={{color: "#000000"}}></i>
           </button>
         </>
       )}
