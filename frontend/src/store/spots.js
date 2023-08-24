@@ -8,33 +8,34 @@ const DELETE_SPOT = "spots/DELETE_SPOT";
 
 
 //Actions:
-const getSpots = (spots) => {
+const getAllSpots = (data) => {
     return {
         type: GET_SPOTS,
-        payload: spots
+        payload: data
     }
 };
 
 
 //Thunk Action Creators:
-export const fetchAllSpots = (spots) => async (dispatch) => {
-    const response = await csrfFetch('/api/spots');
-    const data = await response.json();
-    dispatch(getSpots(data.spots));
-    return response;
+export const fetchAllSpots = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots', {
+        method: 'GET'
+    });
+    const allSpots = await response.json();
+    dispatch(getAllSpots(allSpots));
 };
 
 
 
 //Reducer:
-const initialState = {};
+const initialState = {spots: null};
 
 const spotReducer = (state = initialState, action) => {
-    let newState;
+
     switch (action.type) {
         case GET_SPOTS:
-            newState = Object.assign({}, state);
-            newState.spots = action.payload;
+            const newState = {};
+            action.payload.Spots.forEach((spot) => { newState[spot.id] = spot});
             return newState;
         default:
             return state;
