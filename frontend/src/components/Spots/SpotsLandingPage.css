@@ -1,3 +1,19 @@
-.spots {
-    border: 2px solid pink
+.all-spots-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    /* border: 5px dashed blue; */
+}
+
+/* .spots {
+    border: 2px solid red;
+} */
+
+.spots img {
+    width: 300px;
+    height: 300px;
+}
+
+.spots img:hover {
+    cursor: pointer;
 }
