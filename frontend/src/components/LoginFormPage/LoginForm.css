@@ -21,10 +21,7 @@ h1 {
 .credential-div {
     width: 300px;
     text-align: center;
-}
-
-#user-credential-div {
-    margin-bottom: 5px
+    margin-bottom: 5px;
 }
 
 input {
@@ -32,12 +29,6 @@ input {
     width: 300px;
 }
 
-
-.demo-user-div {
-    display: flex;
-    justify-content: center;
-    width: 500px;
-}
 
 .demo-user {
     text-align: center;
@@ -52,18 +43,10 @@ input {
     cursor: pointer;
 }
 
-
-.login-button-div {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    width: 300px;
-    height: 40px;
-}
-
 .enabled-button {
     background-color: #FF5A5F;
     box-shadow: 0px 2px 4px #000000;
+    margin-top: 10px;
     width: 300px;
     height: 40px;
 }
@@ -73,6 +56,7 @@ input {
     color: #CCCCCC;
     border: 1px solid #CCCCCC;
     box-shadow: 0px 2px 4px #CCCCCC;
+    margin-top: 10px;
     width: 300px;
     height: 40px;
 
