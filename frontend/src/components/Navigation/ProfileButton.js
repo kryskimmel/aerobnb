@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useRef} from "react";
 import { useDispatch } from 'react-redux';
+import { NavLink } from "react-router-dom";
 import * as sessionActions from '../../store/session';
-import { LoginContext } from "../../context/LoginModalContext";
+import OpenModalMenuItem from "../Modals/OpenModalMenuItem";
+import LoginFormPage from "../LoginFormPage";
+
+import LoginFormModal from "../Modals/LoginFormModal";
 
 
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const {setOpenLogin} = useContext(LoginContext);
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+
 
   const openMenu = () => {
     if (showMenu) return;
@@ -31,11 +34,12 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
+    const closeMenu = () => setShowMenu(false)
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
-    setShowMenu(false)
-    setOpenLogin(false)
+    closeMenu();
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -43,19 +47,9 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      {user ? (
-        <>
-          <button onClick={openMenu} className="user-options-button">
-            <i className="fas fa-user-circle" />
-          </button>
-        </>
-      ) : (
-        <>
-          <button onClick={openMenu} className="user-options-button">
-            <i className="fa-solid fa-bars" style={{color: "#000000"}}></i>
-          </button>
-        </>
-      )}
+      <button onClick={openMenu} className="user-options-button">
+        <i className="fas fa-user-circle" />
+      </button>
 
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
@@ -69,8 +63,18 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            <li onClick={() => {setShowMenu(false); setOpenLogin(true)}} className="login"><NavLink to="/login">Log In</NavLink></li>
-            <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li>
+            {/* <li onClick={() => {setShowMenu(false)}} className="login"><NavLink to="/login">Log In</NavLink></li>
+            <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li> */}
+            <OpenModalMenuItem
+              itemText="Log In"
+              onItemClick={closeMenu}
+              modalComponent={<LoginFormModal/>}
+              />
+            <OpenModalMenuItem
+                itemText="Sign Up"
+                onItemClick={closeMenu}
+                // modalComponent={}
+            />
           </>
         )}
       </ul>

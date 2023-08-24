@@ -7,7 +7,7 @@ import App from './App';
 import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 
-import { LoginProvider } from './context/LoginModalContext';
+import { OpenModalMenuProvider } from './context/OpenModalContext';
 
 
 const store = configureStore();
@@ -23,11 +23,11 @@ if (process.env.NODE_ENV !== 'production') {
 function Root() {
   return (
     <ReduxProvider store={store}>
-      <LoginProvider>
+      <OpenModalMenuProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </LoginProvider>
+      </OpenModalMenuProvider>
     </ReduxProvider>
   );
 }
