@@ -23,6 +23,10 @@ const SpotsLandingPage = () => {
              {allSpots.map(spot => (
                 <div key={spot.id} class="spots" id={`spot-${spot.id}`}>
                     <img src={spot.previewImage} alt={spot.name}></img>
+                    <div>
+                        <p>{spot.city}, {spot.state}</p>
+                        <p><span style={{fontWeight:"bold"}}>${spot.price}</span> night</p>
+                    </div>
                 </div>
             ))}
         </div>
