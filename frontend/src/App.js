@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
+import * as spotActions from "./store/spots";
 import Navigation from "./components/Navigation";
 import LoginFormPage from "./components/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage";
@@ -17,8 +18,11 @@ function App() {
 
 
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+    dispatch(sessionActions.restoreUser())
+      .then(() => dispatch(spotActions.fetchAllSpots()))
+      .then(() => setIsLoaded(true));
   }, [dispatch]);
+
 
 
 
