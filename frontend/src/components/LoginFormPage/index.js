@@ -5,15 +5,16 @@ import { Redirect } from "react-router-dom";
 import "./LoginForm.css";
 
 
-const LoginFormPage = ({toggleLoginModal}) => {
+const LoginFormPage = () => {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
-    const [canSubmit, setCanSubmit] = useState(false)
 
     if (sessionUser) return <Redirect to="/" />;
+
+
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -36,7 +37,7 @@ const LoginFormPage = ({toggleLoginModal}) => {
         <div className="errors-div">
             {errors.credential && <p>The provided credentials were invalid.</p>}
         </div>
-        <div className="credential-div" id="user-credential-div">
+        <div className="credential-div">
             <input
                 type="text"
                 name="username"
@@ -46,7 +47,7 @@ const LoginFormPage = ({toggleLoginModal}) => {
                 required
                 />
         </div>
-        <div className="credential-div" id="password-credential-div">
+        <div className="credential-div">
             <input
                 type="password"
                 name="password"
@@ -59,7 +60,7 @@ const LoginFormPage = ({toggleLoginModal}) => {
         <div className={"login-button-div"}>
             <button type="submit" className={buttonClassName}>Log In</button>
         </div>
-        <div className="demo-user-div">
+        <div>
             <ul className="demo-user">
                 <li
                     onClick={() => {

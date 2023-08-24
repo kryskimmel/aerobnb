@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import { LoginContext } from "../../context/LoginModalContext";
 
 
-function ProfileButton({ user, toggleLoginModal}) {
+
+function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const {setOpenLogin} = useContext(LoginContext);
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -32,7 +35,7 @@ function ProfileButton({ user, toggleLoginModal}) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     setShowMenu(false)
-    toggleLoginModal(false)
+    setOpenLogin(false)
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -66,7 +69,7 @@ function ProfileButton({ user, toggleLoginModal}) {
           </>
         ) : (
           <>
-            <li onClick={() => {setShowMenu(false); toggleLoginModal(true)}} className="login"><NavLink to="/login">Log In</NavLink></li>
+            <li onClick={() => {setShowMenu(false); setOpenLogin(true)}} className="login"><NavLink to="/login">Log In</NavLink></li>
             <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li>
           </>
         )}

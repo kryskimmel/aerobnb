@@ -1,17 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
+// import { LoginContext } from '../../context/LoginModalContext';
+// import LoginModal from '../Modals/LoginModal';
+import * as sessionActions from "../../store/spots";
 
-import LogInModal from '../Modals/LoginModal';
+
+
 
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
+  // const {openLogin, setOpenLogin} = useContext(LoginContext);
 
-  const [openLoginModal, setOpenLoginModal] = useState(false);
-
+  // if (sessionUser) setOpenLogin(false) //works but causes rendering issue (see console)
 
 
   return (
@@ -22,13 +26,10 @@ function Navigation({ isLoaded }){
       </li>
       {isLoaded && (
         <li>
-          <ProfileButton user={sessionUser} toggleLoginModal={setOpenLoginModal} />
+          <ProfileButton user={sessionUser} />
         </li>
       )}
     </ul>
-    <div>
-      <LogInModal open={openLoginModal} toggleLoginModal={setOpenLoginModal}/>
-    </div>
     </>
   );
 }

@@ -7,6 +7,9 @@ import App from './App';
 import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 
+import { LoginProvider } from './context/LoginModalContext';
+
+
 const store = configureStore();
 
 if (process.env.NODE_ENV !== 'production') {
@@ -20,9 +23,11 @@ if (process.env.NODE_ENV !== 'production') {
 function Root() {
   return (
     <ReduxProvider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <LoginProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </LoginProvider>
     </ReduxProvider>
   );
 }

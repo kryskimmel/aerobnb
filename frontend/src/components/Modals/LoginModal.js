@@ -1,25 +1,22 @@
 import React from "react";
+// import { LoginContext } from "../../context/LoginModalContext";
 import "./LoginModal.css";
-import LoginFormPage from "../LoginFormPage";
+import LoginFormPage from "../LoginFormPage/index.js"
 
-const LogInModal = ({open}) => {
+const LoginModal = () => {
 
-    let page = document.querySelector('body');
+    // const {openLogin} = useContext(LoginContext);
 
-    if (!open) return null;
-    else {
-        page.setAttribute("class", "apply-overlay")
-        return (
-                <div className="modal-div">
-                    <div className="login-modal-container">
-                        <LoginFormPage/>
-                    </div>
-                </div>
-        )
-    }
+
+    return (
+        <div className="login-modal-container">
+            <div className="login-modal">
+                <LoginFormPage/>
+            </div>
+        </div>
+    )
 
 
 }
 
-
-export default LogInModal;
+export default LoginModal;
