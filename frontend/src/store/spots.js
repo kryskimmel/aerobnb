@@ -1,16 +1,16 @@
 import { csrfFetch } from "./csrf";
 
 
-const GET_SPOTS = "spots/GET_SPOTS";
+const LOAD_SPOTS = "spots/GET_SPOTS";
 const CREATE_SPOT = "spots/CREATE_SPOTS";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
 const DELETE_SPOT = "spots/DELETE_SPOT";
 
 
 //Actions:
-const getAllSpots = (data) => {
+const loadSpots = (data) => {
     return {
-        type: GET_SPOTS,
+        type: LOAD_SPOTS,
         payload: data
     }
 };
@@ -23,7 +23,7 @@ export const fetchAllSpots = () => async (dispatch) => {
         });
         if (response.ok) {
             const allSpots = await response.json();
-            dispatch(getAllSpots(allSpots));
+            dispatch(loadSpots(allSpots));
         }
         else throw Error("Could not fetch all spots");
 };
@@ -34,9 +34,8 @@ export const fetchAllSpots = () => async (dispatch) => {
 const initialState = {spots: null};
 
 const spotReducer = (state = initialState, action) => {
-
     switch (action.type) {
-        case GET_SPOTS:
+        case LOAD_SPOTS:
             const newState = {};
             action.payload.Spots.forEach((spot) => { newState[spot.id] = spot });
             return newState;
