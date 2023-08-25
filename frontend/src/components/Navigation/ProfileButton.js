@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useRef} from "react";
 import { useDispatch } from 'react-redux';
-import { NavLink } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from "../Modals/OpenModalMenuItem";
-import LoginFormPage from "../LoginFormPage";
-
 import LoginFormModal from "../Modals/LoginFormModal";
-
+import useModal from "../../context/OpenModalContext";
 
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const { setOnModalContent } = useModal();
 
 
   const openMenu = () => {
@@ -34,12 +32,13 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-    const closeMenu = () => setShowMenu(false)
+  const closeMenu = () => setShowMenu(false)
 
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    setOnModalContent(null)
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -58,7 +57,7 @@ function ProfileButton({ user }) {
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
-              <button className="logout-button" onClick={logout}>Log Out</button>
+              <button onClick={logout} className="logout-button">Log Out</button>
             </li>
           </>
         ) : (
@@ -68,7 +67,7 @@ function ProfileButton({ user }) {
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
-              modalComponent={<LoginFormModal/>}
+              modalComponent={<LoginFormModal />}
               />
             <OpenModalMenuItem
                 itemText="Sign Up"

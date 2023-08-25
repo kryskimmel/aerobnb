@@ -1,23 +1,23 @@
 import React, {useContext} from "react";
+import { useSelector } from "react-redux";
 
 import { OpenModalMenuContext } from "../../context/OpenModalContext";
 import "./LoginFormModal.css";
 import LoginFormPage from "../LoginFormPage";
 
-
-
-
-
-
-
 const LoginFormModal = () => {
-    const {onModalComponent} = useContext(OpenModalMenuContext)
-    const loginModalClassName = onModalComponent ? "show-modal" : "hide-modal"
-    const toggleOverlay = onModalComponent ? "add-overlay" : null
+
+    const currUser = useSelector(state => state.session.user);
+    console.log('THE CURRENT USER:', currUser)
+
+
+    const modalContainerClassName = currUser ? "hidden" : "show";
+    const toggleOverlay = currUser ? null : "overlay";
+
 
     return (
-        <div className={toggleOverlay}>
-            <div className={loginModalClassName}>
+        <div className={modalContainerClassName} id={toggleOverlay}>
+            <div className={modalContainerClassName} id="login-modal">
               <LoginFormPage/>
             </div>
         </div>

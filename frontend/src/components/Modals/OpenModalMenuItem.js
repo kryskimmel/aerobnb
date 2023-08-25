@@ -1,18 +1,18 @@
-import React, {useContext} from 'react';
-import { OpenModalMenuContext } from '../../context/OpenModalContext';
+import React from 'react';
+import useModal from '../../context/OpenModalContext';
 
 
 function OpenModalMenuItem({
-    modalComponent, // component to render inside the modal
-    itemText, // text of the menu item that opens the modal
-    onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
-    onModalClose // optional: callback function that will be called once the modal is closed
+    modalComponent,
+    itemText,
+    onItemClick,
+    onModalClose
   }) {
-    const { setOnModalComponent, setOnModalClose } = useContext(OpenModalMenuContext);
+    const { setOnModalContent, setOnModalClose } = useModal();
 
     const onClick = () => {
       if (onModalClose) setOnModalClose(onModalClose);
-      setOnModalComponent(modalComponent)
+      setOnModalContent(modalComponent);
       if (onItemClick) onItemClick();
     };
 

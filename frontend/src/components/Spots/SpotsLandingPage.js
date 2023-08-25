@@ -1,4 +1,5 @@
 import React, {useEffect} from "react";
+import { useHistory, useParams } from "react-router-dom";
 import * as sessionActions from "../../store/spots";
 import { useDispatch, useSelector } from "react-redux";
 import "./SpotsLandingPage.css";
@@ -8,25 +9,32 @@ import "./SpotsLandingPage.css";
 const SpotsLandingPage = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const allSpots = useSelector(state => Object.values(state.spots));
+    const {id} = useParams();
+
 
     useEffect(() => {
         dispatch(sessionActions.fetchAllSpots())
     }, [dispatch]);
 
+    const handleSpotClick = (id) => {
+        history.push(`/spots/${id}`)
+    };
 
-    const spot =  allSpots.map(spot => (
-        <div key={spot.id} className="spots">
+
+    const spot = allSpots.map(spot => (
+        <div key={spot.id} className="spots" onClick={() => handleSpotClick(spot.id)} >
             <img src={spot.previewImage} alt={spot.name}></img>
-        <div className="spot-info-div">
-        <div>
-            <p>{spot.city}, {spot.state}</p>
-                <p><span style={{fontWeight:"bold"}}>${spot.price}</span> night</p>
-        </div>
-        <div>
-            <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{spot.avgRating}</p>
-        </div>
-        </div>
+            <div className="spot-info-div">
+                <div>
+                    <p>{spot.city}, {spot.state}</p>
+                        <p><span style={{fontWeight:"bold"}}>${spot.price}</span> night</p>
+                </div>
+                <div>
+                    <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{spot.avgRating}</p>
+                </div>
+            </div>
         </div>
     ))
 

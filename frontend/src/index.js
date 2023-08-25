@@ -10,6 +10,7 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import { OpenModalMenuProvider } from './context/OpenModalContext';
 
 
+
 const store = configureStore();
 
 if (process.env.NODE_ENV !== 'production') {
