@@ -37,21 +37,21 @@ const LoginFormPage = () => {
         <div className="errors-div">
             {errors.credential && <p>The provided credentials were invalid.</p>}
         </div>
-        <div className="credential-div">
+        <div className="field-div" id="field-div-1">
+            <label>Username or email</label>
             <input
                 type="text"
                 name="username"
-                placeholder="Username or Email"
                 value={credential}
                 onChange={(e) => setCredential(e.target.value)}
                 required
                 />
         </div>
-        <div className="credential-div">
+        <div className="field-div">
+        <label>Password</label>
             <input
                 type="password"
                 name="password"
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
