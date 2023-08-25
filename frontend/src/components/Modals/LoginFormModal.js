@@ -8,9 +8,6 @@ import LoginFormPage from "../LoginFormPage";
 const LoginFormModal = () => {
 
     const currUser = useSelector(state => state.session.user);
-    console.log('THE CURRENT USER:', currUser)
-
-
     const modalContainerClassName = currUser ? "hidden" : "show";
     const toggleOverlay = currUser ? null : "overlay";
 
