@@ -1,0 +1,25 @@
+.hidden {
+    display: none;
+  }
+
+  .show {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  #overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    inset: 0;
+  }
+
+  #signup-modal {
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    width: 350px;
+    /* height: 450px; */
+    margin: 0 auto;
+    margin-top: 105px;
+
+  }
