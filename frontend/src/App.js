@@ -5,8 +5,13 @@ import * as sessionActions from "./store/session";
 import * as spotActions from "./store/spots";
 import Navigation from "./components/Navigation";
 import LoginFormPage from "./components/LoginFormPage";
+
 import SignupFormPage from "./components/SignupFormPage";
 import SpotsLandingPage from "./components/Spots/SpotsLandingPage";
+import SpotDetailPage from "./components/Spots/SpotDetail";
+
+import ModalContainer from "./components/Modals/ModalContainer";
+
 
 
 
@@ -27,9 +32,12 @@ function App() {
 
 
 
+
+
   return (
     <>
       <Navigation isLoaded={isLoaded} />
+      <ModalContainer/>
       {isLoaded && (
         <Switch>
           <Route exact path ="/">
@@ -39,7 +47,10 @@ function App() {
             <LoginFormPage/>
           </Route>
           <Route path="/signup">
-            <SignupFormPage />
+            <SignupFormPage/>
+          </Route>
+          <Route path ="/spots/:id">
+            <SpotDetailPage/>
           </Route>
         </Switch>
       )}
