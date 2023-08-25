@@ -1,0 +1,63 @@
+h1 {
+    font-size: 2rem;
+}
+
+
+.form-container-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-div {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.label {
+    width: 308px
+}
+.field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+#field-group-2, #field-group-3 {
+    margin-top: 25px
+}
+
+input {
+    background-color: #E8F0FE;
+    width: 300px;
+}
+
+
+
+.enabled-button {
+    background-color: #FF5A5F;
+    box-shadow: 0px 2px 4px #000000;
+    margin-top: 25px;
+    width: 300px;
+    height: 40px;
+}
+
+.disabled-button {
+    background-color: #FFFFFF;
+    color: #CCCCCC;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0px 2px 4px #CCCCCC;
+    margin-top: 25px;
+    width: 300px;
+    height: 40px;
+
+}
+
+.errors-div {
+    color: #FF5A5F;
+    display: flex;
+    justify-content: center;
+}
