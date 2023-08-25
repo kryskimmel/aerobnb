@@ -18,17 +18,21 @@ h1 {
     align-items: center;
 }
 
-.credential-div {
-    width: 300px;
-    text-align: center;
-    margin-bottom: 5px;
+.label {
+    width: 308px
+}
+.field-div {
+    display: flex;
+    flex-direction: column;
+}
+#field-div-1 {
+    margin-bottom: 15px;
 }
 
 input {
     background-color: #E8F0FE;
     width: 300px;
 }
-
 
 .demo-user {
     text-align: center;
@@ -37,6 +41,7 @@ input {
     color: #00525E;
     width: 82px;
     margin-right: 40px;
+    margin-bottom: 30px;
 }
 
 .demo-user:hover {
@@ -46,7 +51,6 @@ input {
 .enabled-button {
     background-color: #FF5A5F;
     box-shadow: 0px 2px 4px #000000;
-    margin-top: 10px;
     width: 300px;
     height: 40px;
 }
@@ -56,7 +60,6 @@ input {
     color: #CCCCCC;
     border: 1px solid #CCCCCC;
     box-shadow: 0px 2px 4px #CCCCCC;
-    margin-top: 10px;
     width: 300px;
     height: 40px;
 
