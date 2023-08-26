@@ -6,8 +6,11 @@ import './index.css';
 import App from './App';
 import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
+import * as sessionActions from './store/session';
+import * as spotActions from './store/spots';
 
 import { OpenModalMenuProvider } from './context/OpenModalContext';
+import { CurrSpotIdProvider } from './context/CurrSpotId';
 
 
 
@@ -18,6 +21,8 @@ if (process.env.NODE_ENV !== 'production') {
 
   window.csrfFetch = csrfFetch;
   window.store = store;
+  window.sessionActions = sessionActions;
+  window.spotActions = spotActions;
 };
 
 
@@ -25,9 +30,11 @@ function Root() {
   return (
     <ReduxProvider store={store}>
       <OpenModalMenuProvider>
+        <CurrSpotIdProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>
+        </CurrSpotIdProvider>
       </OpenModalMenuProvider>
     </ReduxProvider>
   );
