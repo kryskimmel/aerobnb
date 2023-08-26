@@ -17,12 +17,12 @@ const loadSpots = (data) => {
     }
 };
 
-const loadCurrSpot = (currSpot) => {
-    return {
-        type: CURR_SPOT,
-        payload: currSpot
-    }
-}
+// const loadCurrSpot = (currSpot) => {
+//     return {
+//         type: CURR_SPOT,
+//         payload: currSpot
+//     }
+// }
 
 
 //Thunk Action Creators:
@@ -37,16 +37,16 @@ export const fetchAllSpots = () => async (dispatch) => {
         else throw Error("Could not fetch all spots");
 };
 
-export const fetchSpotById = (spotId) => async (dispatch) => {
-    const response = await csrfFetch(`/api/spots/${spotId}`, {
-        method: 'GET'
-    });
-    if (response.ok) {
-        const spot = await response.json();
-        dispatch(loadCurrSpot(spot));
-    }
-    else throw Error("Could not fetch the selected spot");
-}
+// export const fetchSpotById = (spotId) => async (dispatch) => {
+//     const response = await csrfFetch(`/api/spots/${spotId}`, {
+//         method: 'GET'
+//     });
+//     if (response.ok) {
+//         const spot = await response.json();
+//         dispatch(loadCurrSpot(spot));
+//     }
+//     else throw Error("Could not fetch the selected spot");
+// }
 
 
 
