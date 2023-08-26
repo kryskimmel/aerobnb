@@ -9,22 +9,41 @@ const SpotDetailPage = () => {
     const {id} = useParams()
 
     const dispatch = useDispatch();
-    const selectedSpot = useSelector(state => Object.values(state.spots));
+    const spots = useSelector(state => Object.values(state.spots));
 
-    for (let spot of selectedSpot) {
-        if (spot.id === parseInt(id)) console.log('match:', spot.id)
-    }
 
+    const selectedSpot = spots.find(spot => spot.id === parseInt(id))
+    console.log(selectedSpot)
+
+    const {
+        address,
+        avgRating,
+        city,
+        country,
+        description,
+        lat,
+        lng,
+        name,
+        previewImage,
+        price,
+        state
+    } = selectedSpot
 
 
     useEffect(() => {
-        dispatch(sessionActions.fetchSpotById())
+        dispatch(sessionActions.fetchAllSpots())
     }, [dispatch]);
 
 
     return (
-    //    {oneSpot}
-    <></>
+        <div>
+            <h1>{name}</h1>
+            <h4>{city}, {state}, {country}</h4>
+            <img src={previewImage}></img>
+            <h2>Hosted by</h2>
+            <h3><span>${price} night</span></h3>
+            <h3>{avgRating}</h3>
+        </div>
     )
 };
 

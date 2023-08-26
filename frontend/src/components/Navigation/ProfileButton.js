@@ -67,15 +67,15 @@ function ProfileButton({ user }) {
             {/* <li onClick={() => {setShowMenu(false)}} className="login"><NavLink to="/login">Log In</NavLink></li>
             <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li> */}
             <OpenModalMenuItem
-              itemText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-              />
-            <OpenModalMenuItem
-                itemText="Sign Up"
+                itemText="Sign up"
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
             />
+               <OpenModalMenuItem
+              itemText="Log in"
+              onItemClick={closeMenu}
+              modalComponent={<LoginFormModal />}
+              />
           </>
         )}
       </ul>

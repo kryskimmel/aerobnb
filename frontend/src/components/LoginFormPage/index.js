@@ -67,7 +67,7 @@ const LoginFormPage = () => {
                     setCredential("Demo-lition");
                     setPassword("password");
                 }}>
-                    Demo User
+                    Log in as Demo User
                 </li>
             </ul>
         </div>

@@ -1,9 +1,8 @@
 import React, {useEffect} from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/spots";
 import { useDispatch, useSelector } from "react-redux";
 import "./SpotsLandingPage.css";
-
 
 
 const SpotsLandingPage = () => {
@@ -11,20 +10,18 @@ const SpotsLandingPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const allSpots = useSelector(state => Object.values(state.spots));
-    const {id} = useParams();
-
 
     useEffect(() => {
         dispatch(sessionActions.fetchAllSpots())
     }, [dispatch]);
 
-    const handleSpotClick = (id) => {
-        history.push(`/spots/${id}`)
+    const HandleSpotClick = (spotId) => {
+        history.push(`/spots/${spotId}`)
     };
 
 
     const spot = allSpots.map(spot => (
-        <div key={spot.id} className="spots" onClick={() => handleSpotClick(spot.id)} >
+        <div key={spot.id} className="spots" onClick={() => HandleSpotClick(spot.id)} >
             <img src={spot.previewImage} alt={spot.name}></img>
             <div className="spot-info-div">
                 <div>
