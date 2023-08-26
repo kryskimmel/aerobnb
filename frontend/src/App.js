@@ -14,23 +14,21 @@ import ModalContainer from "./components/Modals/ModalContainer";
 
 
 
-
-
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
-
-
   useEffect(() => {
     dispatch(sessionActions.restoreUser())
       .then(() => dispatch(spotActions.fetchAllSpots()))
-      .then(() => setIsLoaded(true));
+      .then(() => dispatch(spotActions.fetchSpotById(1)))
+      .then(() => {setIsLoaded(true)})
+
+      return () => {
+
+      }
+
   }, [dispatch]);
-
-
-
-
 
 
 
