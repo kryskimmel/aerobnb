@@ -17,36 +17,49 @@ const loadSpots = (data) => {
     }
 };
 
-// const loadCurrSpot = (currSpot) => {
-//     return {
-//         type: CURR_SPOT,
-//         payload: currSpot
-//     }
-// }
+const loadCurrSpot = (currSpot) => {
+    return {
+        type: CURR_SPOT,
+        payload: currSpot
+    }
+}
 
 
 //Thunk Action Creators:
 export const fetchAllSpots = () => async (dispatch) => {
-        const response = await csrfFetch('/api/spots', {
+
+    try {
+        const response = await fetch('/api/spots', {
             method: 'GET'
         });
         if (response.ok) {
             const allSpots = await response.json();
             dispatch(loadSpots(allSpots));
         }
-        else throw Error("Could not fetch all spots");
+        else throw new Error("Failed to fetch all spots");
+    }
+    catch (error) {
+        throw new error(`The following error has occurred while fetching all spots: ${error.message}`)
+    }
+
 };
 
-// export const fetchSpotById = (spotId) => async (dispatch) => {
-//     const response = await csrfFetch(`/api/spots/${spotId}`, {
-//         method: 'GET'
-//     });
-//     if (response.ok) {
-//         const spot = await response.json();
-//         dispatch(loadCurrSpot(spot));
-//     }
-//     else throw Error("Could not fetch the selected spot");
-// }
+export const fetchSpotById = (spotId) => async (dispatch) => {
+    try {
+        const response = await fetch(`/api/spots/${spotId}`, {
+            method: 'GET'
+        });
+        if (response.ok) {
+            const spot = await response.json();
+            dispatch(loadCurrSpot(spot));
+        }
+        else throw new Error(`Failed to fetch spot with an id of ${spotId}`);
+    }
+    catch (error) {
+        throw new Error(`The following error has occurred while fetching the spot: ${error.message}`)
+    }
+
+}
 
 
 
@@ -61,7 +74,8 @@ const spotReducer = (state = initialState, action) => {
             action.payload.Spots.forEach((spot) => { newState[spot.id] = spot });
             return newState;
         case CURR_SPOT:
-            newState['currSpot'] = action.payload;
+            newState.currSpot = action.payload;
+            return newState;
         default:
             return state;
     }
