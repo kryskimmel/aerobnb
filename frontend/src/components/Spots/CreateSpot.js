@@ -24,6 +24,7 @@ const CreateSpot = () => {
     const [image3, setImage3] = useState('');
     const [image4, setImage4] = useState('');
     const [image5, setImage5] = useState('');
+    const [images, setImages] = useState([]);
     const [validationErrors, setValidationErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -49,9 +50,14 @@ const CreateSpot = () => {
         if (!image3.includes('.png' || '.jpg' || '.jpeg')) errors.image3 = 'Image URL must end in .png, .jpg, or .jpeg';
         if (!image4.includes('.png' || '.jpg' || '.jpeg')) errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg';
         if (!image5.includes('.png' || '.jpg' || '.jpeg')) errors.image5 = 'Image URL must end in .png, .jpg, or .jpeg';
+        setValidationErrors(errors);
 
-        setValidationErrors(errors)
-      }, [country, address, city, state, lat, lng, description, name, price, previewImg, image2, image3, image4, image5])
+        const additionalImages = [];
+        if (image2 || image3 || image4 || image5) {
+            additionalImages.push(image2 || image3 || image4 || image5);
+            setImages(additionalImages);
+        }
+      }, [country, address, city, state, lat, lng, description, name, price, previewImg, image2, image3, image4, image5]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -67,10 +73,20 @@ const CreateSpot = () => {
             name,
             description,
             price
-        }
+        };
+
+        const previewImgData = {
+            previewImg
+        };
+
+        const additionalImgsData = {
+            images
+        };
 
         //testing:
-        console.log(formData)
+        console.log(formData, ':formData');
+        console.log(previewImg, ':previewImg');
+        console.log(additionalImgsData, ':additionalImgsData');
 
         // Reset the form state.
         setCountry('');
