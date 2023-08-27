@@ -1,0 +1,27 @@
+.form-container-div {
+    display: flex;
+    justify-content: center;
+}
+
+.form-contents {
+    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    width: 550px
+}
+
+.location-info-section,
+.description-div,
+.title-div,
+.price-div,
+.photos-div {
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+}
+
+.submit-button-div {
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 24px;
+}
