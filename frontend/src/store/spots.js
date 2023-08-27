@@ -1,8 +1,9 @@
 import { csrfFetch } from "./csrf";
 
 
-const LOAD_SPOTS = "spots/GET_SPOTS";
-const CURR_SPOT = "spots/CURR_SPOTS";
+const LOAD = "spots/LOAD";
+
+const CURR_ID = "spots/CURR_ID";
 
 const CREATE_SPOT = "spots/CREATE_SPOTS";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
@@ -10,48 +11,56 @@ const DELETE_SPOT = "spots/DELETE_SPOT";
 
 
 //Actions:
-const loadSpots = (data) => {
+const loadSpots = (spots) => {
     return {
-        type: LOAD_SPOTS,
-        payload: data
+        type: LOAD,
+        payload: spots
     }
 };
 
-const loadCurrSpot = (currSpot) => {
-    return {
-        type: CURR_SPOT,
-        payload: currSpot
-    }
-}
+// export const setCurrId = (spotId) => {
+//     return {
+//         type: CURR_ID,
+//         payload: spotId
+//     }
+// }
+
+// export const loadCurrSpot = (currSpot) => {
+//     return {
+//         type: CURR_SPOT,
+//         payload: currSpot
+//     }
+// }
 
 
 //Thunk Action Creators:
-export const fetchAllSpots = () => async (dispatch) => {
-
+export const fetchSpots = () => async (dispatch) => {
     try {
-        const response = await fetch('/api/spots', {
+        const response = await csrfFetch('/api/spots', {
             method: 'GET'
         });
         if (response.ok) {
-            const allSpots = await response.json();
-            dispatch(loadSpots(allSpots));
+            const spots = await response.json();
+            dispatch(loadSpots(spots));
+            return response;
         }
         else throw new Error("Failed to fetch all spots");
     }
     catch (error) {
         throw new error(`The following error has occurred while fetching all spots: ${error.message}`)
     }
-
 };
 
-export const fetchSpotById = (spotId) => async (dispatch) => {
+export const fetchSingleSpot = (spotId) => async (dispatch) => {
     try {
         const response = await fetch(`/api/spots/${spotId}`, {
             method: 'GET'
         });
         if (response.ok) {
             const spot = await response.json();
-            dispatch(loadCurrSpot(spot));
+            console.log("Fetched spot data:", spot)
+            dispatch(loadSpots(spot));
+            return response;
         }
         else throw new Error(`Failed to fetch spot with an id of ${spotId}`);
     }
@@ -67,19 +76,21 @@ export const fetchSpotById = (spotId) => async (dispatch) => {
 const initialState = {spots: null};
 
 const spotReducer = (state = initialState, action) => {
-    const newState = {};
+    let newState = {};
 
     switch (action.type) {
-        case LOAD_SPOTS:
-            action.payload.Spots.forEach((spot) => { newState[spot.id] = spot });
-            return newState;
-        case CURR_SPOT:
-            newState.currSpot = action.payload;
-            return newState;
+        case LOAD:
+            if (action.payload.Spots) {
+                action.payload.Spots.forEach((spot) => newState[spot.id] = spot)
+                return newState;
+            }
+            else {
+                newState = action.payload;
+                return newState;
+            }
         default:
             return state;
     }
-
 };
 
 export default spotReducer;
