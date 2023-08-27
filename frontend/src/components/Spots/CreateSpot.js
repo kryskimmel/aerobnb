@@ -17,7 +17,7 @@ const CreateSpot = () => {
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
     const [description, setDescription] = useState('');
-    const [title, setTitle] = useState('');
+    const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [previewImg, setPreviewImg] = useState('');
     const [image2, setImage2] = useState('');
@@ -41,7 +41,7 @@ const CreateSpot = () => {
         if (!lng.length) errors.lng = 'Longitude is required';
         if (!description.length) errors.description = 'Description is required';
         if (description.length < 30) errors.description = "Description needs a minimum of 30 characters";
-        if (!title.length) errors.title = "Name is required";
+        if (!name.length) errors.name = "Name is required";
         if (!price) errors.price = "Price is required";
         if (!previewImg.length) errors.previewImg = "Preview Image is required";
         if (!previewImg.includes('.png' || '.jpg' || '.jpeg')) errors.previewImg = 'Image URL must end in .png, .jpg, or .jpeg';
@@ -51,12 +51,45 @@ const CreateSpot = () => {
         if (!image5.includes('.png' || '.jpg' || '.jpeg')) errors.image5 = 'Image URL must end in .png, .jpg, or .jpeg';
 
         setValidationErrors(errors)
-      }, [country, address, city, state, lat, lng, description, title, price, previewImg, image2, image3, image4, image5])
+      }, [country, address, city, state, lat, lng, description, name, price, previewImg, image2, image3, image4, image5])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setHasSubmitted(true);
-        return dispatch(spotActions.addSpot({ country, address, city, state, lat, lng, description, title, price, previewImg, image2, image3, image4, image5 })).catch(
+
+        const formData = {
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price
+        }
+
+        //testing:
+        console.log(formData)
+
+        // Reset the form state.
+        setCountry('');
+        setAddress('');
+        setCity('');
+        setState('');
+        setLat('');
+        setLng('');
+        setDescription('');
+        setName('');
+        setPrice('');
+        setPreviewImg('');
+        setImage2('');
+        setImage3('');
+        setImage4('');
+        setImage5('');
+        setHasSubmitted(false);
+
+        return dispatch(spotActions.addSpot(formData)).catch(
           async (res) => {
             const data = await res.json();
             if (data && data.errors) setValidationErrors(data.errors);
@@ -64,24 +97,9 @@ const CreateSpot = () => {
         );
       };
 
-      const buttonClassName = "enabled-button" + (country, address, city, state, lat, lng, description, title, price, previewImg ? "" : " disabled-button");
+      const buttonClassName = "enabled-button" + (country, address, city, state, lat, lng, description, name, price, previewImg ? "" : " disabled-button");
 
-    // Reset the form state.
-    setCountry('');
-    setAddress('');
-    setCity('');
-    setState('');
-    setLat('');
-    setLng('');
-    setDescription('');
-    setTitle('');
-    setPrice('');
-    setPreviewImg('');
-    setImage2('');
-    setImage3('');
-    setImage4('');
-    setImage5('');
-    setHasSubmitted(false)
+
 
 
     return (
@@ -194,20 +212,20 @@ const CreateSpot = () => {
                     </div>
 
                     <hr></hr>
-                    <div className='title-div'>
+                    <div className='name-div'>
                         <h2>Create a title for your spot</h2>
                         <h4>Catch guests' attention with a spot title that highlights what makes your place special.</h4>
                         <input
                             type='text'
-                            name='title'
+                            name='name'
                             placeholder='Name of your spot'
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                         />
                     </div>
                     <div className="errors-div">
-                            {hasSubmitted && validationErrors.title && `* ${validationErrors.title}`}
+                            {hasSubmitted && validationErrors.name && `* ${validationErrors.name}`}
                     </div>
 
                     <hr></hr>
