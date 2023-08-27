@@ -2,12 +2,7 @@ import { csrfFetch } from "./csrf";
 
 
 const LOAD = "spots/LOAD";
-
-const CURR_ID = "spots/CURR_ID";
-
-const CREATE_SPOT = "spots/CREATE_SPOTS";
-const UPDATE_SPOT = "spots/UPDATE_SPOT";
-const DELETE_SPOT = "spots/DELETE_SPOT";
+const CREATE = "spots/CREATE";
 
 
 //Actions:
@@ -18,19 +13,12 @@ const loadSpots = (spots) => {
     }
 };
 
-// export const setCurrId = (spotId) => {
-//     return {
-//         type: CURR_ID,
-//         payload: spotId
-//     }
-// }
-
-// export const loadCurrSpot = (currSpot) => {
-//     return {
-//         type: CURR_SPOT,
-//         payload: currSpot
-//     }
-// }
+const createSpot = (spot) => {
+    return {
+        type: CREATE,
+        payload: spot
+    }
+}
 
 
 //Thunk Action Creators:
@@ -51,6 +39,7 @@ export const fetchSpots = () => async (dispatch) => {
     }
 };
 
+
 export const fetchSingleSpot = (spotId) => async (dispatch) => {
     try {
         const response = await fetch(`/api/spots/${spotId}`, {
@@ -67,8 +56,30 @@ export const fetchSingleSpot = (spotId) => async (dispatch) => {
     catch (error) {
         throw new Error(`The following error has occurred while fetching the spot: ${error.message}`)
     }
+};
 
-}
+
+export const addSpot = (spot) => async (dispatch) => {
+    try {
+        const response = await csrfFetch('/api/spots', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(spot)
+        });
+        if (response.ok) {
+            const newSpot = await response.json();
+            dispatch(createSpot(newSpot));
+            return response;
+        }
+        else throw new Error('Failed to create new spot')
+    }
+    catch (error) {
+        throw new Error('There was an issue in creating your new spot')
+    }
+};
+
 
 
 
@@ -88,6 +99,9 @@ const spotReducer = (state = initialState, action) => {
                 newState = action.payload;
                 return newState;
             }
+        case CREATE:
+            newState[action.payload.id] = action.payload;
+            return newState;
         default:
             return state;
     }
