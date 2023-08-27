@@ -9,6 +9,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import ModalContainer from "./components/Modals/ModalContainer";
 import LandingPage from "./components/Spots/LandingPage";
 import ShowDetail from "./components/Spots/SpotDetail";
+import CreateSpot from "./components/Spots/CreateSpot";
 
 
 
@@ -33,6 +34,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <LandingPage/>
+          </Route>
+          <Route path="/spots/new">
+            <CreateSpot/>
           </Route>
           <Route path="/spots/:id">
             <ShowDetail/>
