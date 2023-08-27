@@ -81,6 +81,32 @@ export const addSpot = (spot) => async (dispatch) => {
 };
 
 
+export const addPreviewImage = (spot, url, preview = true) => async (dispatch) => {
+    try {
+        const response = await csrfFetch(`/api/spots/${spot.id}/images`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({url, preview})
+        });
+        if (response.ok) {
+            const previewImg = await response.json();
+            spot.SpotImages.push(previewImg);
+            dispatch(createSpot(spot));
+            return response;
+        }
+        else {
+            throw new Error(`Failed to add preview image to the spot with an id of ${spot.id}`)
+        }
+    }
+    catch (error) {
+        throw new Error('There was an issue in adding your preview image')
+    }
+
+}
+
+
 
 
 //Reducer:
