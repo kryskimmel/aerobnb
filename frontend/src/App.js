@@ -10,6 +10,7 @@ import ModalContainer from "./components/Modals/ModalContainer";
 import LandingPage from "./components/Spots/LandingPage";
 import ShowDetail from "./components/Spots/SpotDetail";
 import CreateSpot from "./components/Spots/CreateSpot";
+import SpotManagement from "./components/Spots/SpotManagement";
 
 
 
@@ -34,6 +35,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <LandingPage/>
+          </Route>
+          <Route path="/spots/current">
+            <SpotManagement/>
           </Route>
           <Route path="/spots/new">
             <CreateSpot/>
