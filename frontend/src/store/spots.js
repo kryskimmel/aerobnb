@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD = "spots/LOAD";
 const CREATE = "spots/CREATE";
+const DELETE = "spots/DELETE";
 
 
 //Actions:
@@ -18,7 +19,14 @@ const createSpot = (spot) => {
         type: CREATE,
         payload: spot
     }
-}
+};
+
+const deleteSpot = (spotId) => {
+    return {
+        type: DELETE,
+        payload: spotId
+    }
+};
 
 
 //Thunk Action Creators:
@@ -141,6 +149,22 @@ export const addImages = (spot, url, preview = false) => async (dispatch) => {
     }
 };
 
+export const deleteSingleSpot = (spotId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch(`/api/spots/${spotId}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            dispatch(deleteSpot(spotId));
+            return response;
+        }
+        else throw new Error(`Failed to delete the spot with an id of ${spotId}`)
+    }
+    catch (error) {
+        throw new Error('There was an issue in deleting your spot')
+    }
+};
+
 
 
 
@@ -162,6 +186,9 @@ const spotReducer = (state = initialState, action) => {
             }
         case CREATE:
             newState = action.payload;
+            return newState;
+        case DELETE:
+            delete newState[action.payload];
             return newState;
         default:
             return state;
