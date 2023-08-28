@@ -5,6 +5,7 @@ import OpenModalMenuItem from "../Modals/OpenModalMenuItem";
 import useModal from "../../context/OpenModalContext";
 import LoginFormModal from "../Modals/LoginFormModal";
 import SignupFormModal from "../Modals/SignupFormModal";
+import { NavLink } from "react-router-dom/";
 
 
 
@@ -55,9 +56,12 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            {/* <li>{user.username}</li> */}
+            <li>Hello, {user.firstName}</li>
             <li>{user.email}</li>
+            <hr></hr>
+            <li onClick={closeMenu}><NavLink to='/spots/current'>Manage Spots</NavLink></li>
+            <hr></hr>
             <li>
               <button onClick={logout} className="logout-button">Log Out</button>
             </li>
