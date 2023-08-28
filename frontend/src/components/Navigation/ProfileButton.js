@@ -5,7 +5,7 @@ import OpenModalMenuItem from "../Modals/OpenModalMenuItem";
 import useModal from "../../context/OpenModalContext";
 import LoginFormModal from "../Modals/LoginFormModal";
 import SignupFormModal from "../Modals/SignupFormModal";
-import { NavLink } from "react-router-dom/";
+import { NavLink, useHistory } from "react-router-dom/";
 
 
 
@@ -14,6 +14,7 @@ function ProfileButton({ user }) {
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const { setOnModalContent } = useModal();
+  const history = useHistory();
 
 
   const openMenu = () => {
@@ -42,6 +43,7 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
     closeMenu();
     setOnModalContent(null)
+    history.push('/')
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
