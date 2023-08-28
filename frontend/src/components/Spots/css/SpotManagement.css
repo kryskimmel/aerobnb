@@ -1,0 +1,15 @@
+h1 {
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.header-div {
+    margin-bottom: 30px;
+}
+
+.create-spot-button {
+    border: 1px solid #000000;
+    box-shadow: 2px 2px 4px #000000;
+    background-color: #999999;
+    color: #FFFFFF;
+}
