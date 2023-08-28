@@ -16,6 +16,8 @@ const LandingPage = () => {
     }, [dispatch]);
 
 
+    const mgmtDivClassName = window.location.href.includes('current') ? "show-mgmt" : "hidden-mgmt";
+
     const allSpots = spots.map((spot) => {
         const {
             id,
@@ -34,6 +36,10 @@ const LandingPage = () => {
                     <p className='location-info'>{city}, {state}</p>
                     <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {avgRating}</span></p>
                     <p className='price-info'><span>${price}</span> night</p>
+                </div>
+                <div className={mgmtDivClassName}>
+                    <button>Update</button>
+                    <button>Delete</button>
                 </div>
             </div>
         )
