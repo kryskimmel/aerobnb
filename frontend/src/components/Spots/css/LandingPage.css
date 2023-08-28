@@ -34,7 +34,7 @@ span {
 
 /***************************/
 
-.spot-card:hover {
+.spot-card img:hover {
     cursor: pointer;
 }
 
