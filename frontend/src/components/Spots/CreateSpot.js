@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useHistory, Redirect} from 'react-router-dom';
 import * as sessionActions from "../../store/session";
 import * as spotActions from "../../store/spots";
 import './css/CreateSpot.css';
@@ -28,9 +28,6 @@ const CreateSpot = () => {
     const [validationErrors, setValidationErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
-    // if (sessionUser) {
-    //     useHistory.push()
-    // }
 
     useEffect(() => {
         const errors = {};
@@ -45,12 +42,13 @@ const CreateSpot = () => {
         if (!name.length) errors.name = "Name is required";
         if (!price) errors.price = "Price is required";
         if (!previewImg.length) errors.previewImg = "Preview Image is required";
-        if (!previewImg.includes('.png' || '.jpg' || '.jpeg')) errors.previewImg = 'Image URL must end in .png, .jpg, or .jpeg';
-        if (!image2.includes('.png' || '.jpg' || '.jpeg')) errors.image2 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if (!image3.includes('.png' || '.jpg' || '.jpeg')) errors.image3 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if (!image4.includes('.png' || '.jpg' || '.jpeg')) errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if (!image5.includes('.png' || '.jpg' || '.jpeg')) errors.image5 = 'Image URL must end in .png, .jpg, or .jpeg';
+        if (!previewImg.includes('.png') && !previewImg.includes('.jpg') && !previewImg.includes('.jpeg')) errors.previewImg = 'Image URL must end in .png, .jpg, or .jpeg';
+        if (image2 && !image2.includes('.png') && !image2.includes('.jpg') && !image2.includes('.jpeg')) errors.image2 = 'Image URL must end in .png, .jpg, or .jpeg';
+        if (image3 && !image3.includes('.png') && !image3.includes('.jpg') && !image3.includes('.jpeg')) errors.image3 = 'Image URL must end in .png, .jpg, or .jpeg';
+        if (image4 && !image4.includes('.png') && !image4.includes('.jpg') && !image4.includes('.jpeg')) errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg';
+        if (image5 && !image5.includes('.png') && !image5.includes('.jpg') && !image5.includes('.jpeg')) errors.image5 = 'Image URL must end in .png, .jpg, or .jpeg';
         setValidationErrors(errors);
+
 
         const additionalImages = [];
         if (image2 || image3 || image4 || image5) {
@@ -59,9 +57,14 @@ const CreateSpot = () => {
         }
       }, [country, address, city, state, lat, lng, description, name, price, previewImg, image2, image3, image4, image5]);
 
+
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setHasSubmitted(true);
+
 
         const formData = {
             address,
@@ -88,6 +91,7 @@ const CreateSpot = () => {
         console.log(previewImg, ':previewImg');
         console.log(additionalImgsData, ':additionalImgsData');
 
+
         // Reset the form state.
         setCountry('');
         setAddress('');
@@ -105,7 +109,21 @@ const CreateSpot = () => {
         setImage5('');
         setHasSubmitted(false);
 
-        return dispatch(spotActions.addSpot(formData)).catch(
+        // const dispatchFormData = (formData, previewImgData, additionalImgsData) => {
+        //     if (formData && previewImgData && additionalImgsData) {
+        //         return dispatch(spotActions.addSpot(formData)).then(() => {dispatch(spotActions.addPreviewImage(previewImgData))}).then(() => {dispatch(spotActions.addImages(additionalImgsData))});
+        //     }
+        //     else {
+        //         return dispatch(spotActions.addSpot(formData)).then(() => {dispatch(spotActions.addPreviewImage(previewImgData))});
+        //     }
+        // };
+
+
+
+
+
+        return dispatch(spotActions.addSpot({ address, city, state, country, lat, lng, name, description, price}))
+        .catch(
           async (res) => {
             const data = await res.json();
             if (data && data.errors) setValidationErrors(data.errors);
@@ -113,7 +131,8 @@ const CreateSpot = () => {
         );
       };
 
-      const buttonClassName = "enabled-button" + (country, address, city, state, lat, lng, description, name, price, previewImg ? "" : " disabled-button");
+      const buttonClassName = "enabled-button" + ((country && address && city && state && lat &&  lng && description && name && price && previewImg) ? "" : " disabled-button");
+
 
 
 
@@ -138,7 +157,7 @@ const CreateSpot = () => {
                             placeholder='Country'
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
-                            required
+                            // required
                             />
 
                         <div className="errors-div">
@@ -152,7 +171,7 @@ const CreateSpot = () => {
                             placeholder='Address'
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            required
+                            // required
                             />
 
                         <div className="errors-div">
@@ -166,7 +185,7 @@ const CreateSpot = () => {
                             placeholder='City'
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
-                            required
+                            // required
                             />
 
                         <div className="errors-div">
@@ -180,7 +199,7 @@ const CreateSpot = () => {
                             placeholder='STATE'
                             value={state}
                             onChange={(e) => setState(e.target.value)}
-                            required
+                            // required
                             />
 
                         <div className="errors-div">
@@ -194,7 +213,7 @@ const CreateSpot = () => {
                             placeholder='Latitude'
                             value={lat}
                             onChange={(e) => setLat(e.target.value)}
-                            required
+                            // required
                             />
 
                         <div className="errors-div">
@@ -208,7 +227,7 @@ const CreateSpot = () => {
                             placeholder='Longitude'
                             value={lng}
                             onChange={(e) => setLng(e.target.value)}
-                            required
+                            // required
                             />
                     </div>
                     <hr></hr>
@@ -220,7 +239,7 @@ const CreateSpot = () => {
                             placeholder='Please write at least 30 characters.'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            required
+                            // required
                             ></textarea>
                         <div className="errors-div">
                             {hasSubmitted && validationErrors.description && `* ${validationErrors.description}`}
@@ -237,7 +256,7 @@ const CreateSpot = () => {
                             placeholder='Name of your spot'
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            required
+                            // required
                         />
                     </div>
                     <div className="errors-div">
@@ -254,7 +273,7 @@ const CreateSpot = () => {
                             placeholder='Price per night (USD)'
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            required
+                            // required
                         />
                     </div>
                     <div className="errors-div">
@@ -271,7 +290,7 @@ const CreateSpot = () => {
                             placeholder='Preview Image URL'
                             value={previewImg}
                             onChange={(e) => setPreviewImg(e.target.value)}
-                            required
+                            // required
                         />
                         <div className="errors-div">
                             {hasSubmitted && validationErrors.previewImg && `* ${validationErrors.previewImg}`}
@@ -334,7 +353,3 @@ const CreateSpot = () => {
 
 
 export default CreateSpot;
-
-  {/* <div className="errors-div">
-            {errors.credential && <p>The provided credentials were invalid.</p>}
-        </div> */}
