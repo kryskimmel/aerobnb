@@ -53,19 +53,6 @@ const LandingPage = () => {
                     <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {avgRating}</span></p>
                     <p className='price-info'><span>${price}</span> night</p>
                 </div>
-                <div className={mgmtDivClassName} id={`mgmt-${spot.id}`} onClick={(prev) => prev = setSpotId(spot.id)}>
-
-                    <OpenModalButton
-                        buttonText="Update"
-                        onButtonClick
-                        modalComponent
-                    />
-                    <OpenModalButton
-                        buttonText="Delete"
-                        onButtonClick={handleModalOpen}
-                        modalComponent={<DeleteSpotModal/>}
-                    />
-                </div>
             </div>
         )
     })
