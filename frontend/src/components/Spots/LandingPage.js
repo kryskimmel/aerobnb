@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import * as spotActions from "../../store/spots";
 import OpenModalButton from '../Modals/OpenModalButton';
 import DeleteSpotModal from '../Modals/DeleteSpotModal';
+import useModal from '../../context/OpenModalContext';
 import './css/LandingPage.css';
 
 
@@ -19,6 +20,12 @@ const LandingPage = () => {
 
 
     const mgmtDivClassName = window.location.href.includes('current') ? "show-mgmt" : "hidden-mgmt";
+
+    const {setOnModalContent, setOnModalClose} = useModal();
+
+    const handleModalOpen = () => {
+        setOnModalContent(<DeleteSpotModal/>)
+    }
 
 
 
@@ -53,7 +60,7 @@ const LandingPage = () => {
                     />
                     <OpenModalButton
                         buttonText="Delete"
-                        onButtonClick
+                        onButtonClick={handleModalOpen}
                         modalComponent={<DeleteSpotModal/>}
                     />
                 </div>
