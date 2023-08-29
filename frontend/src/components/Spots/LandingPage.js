@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import * as spotActions from "../../store/spots";
-import OpenModalButton from '../Modals/OpenModalButton';
 import DeleteSpotModal from '../Modals/DeleteSpotModal';
 import useModal from '../../context/OpenModalContext';
 import './css/LandingPage.css';
@@ -19,19 +18,6 @@ const LandingPage = () => {
         dispatch(spotActions.fetchSpots());
         console.log('tjhe curr spot id', spotId)
     }, [dispatch, spotId]);
-
-
-
-
-
-
-    const mgmtDivClassName = window.location.href.includes('current') ? "show-mgmt" : "hidden-mgmt";
-
-    const {setOnModalContent, setOnModalClose} = useModal();
-
-    const handleModalOpen = () => {
-        setOnModalContent(<DeleteSpotModal spotId={spotId} setSpotId={setSpotId}/>)
-    };
 
 
     const allSpots = spots.map((spot) => {
