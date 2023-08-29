@@ -1,10 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import useModal from "../../context/OpenModalContext";
+
 
 const DeleteSpotModal = () => {
     const history = useHistory();
+    const {closeModal} = useModal();
 
-    const closeModal = history.push('/spots/current');
+    const close = history.push('/spots/current');
 
     return (
         <div>
