@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useHistory, Redirect} from 'react-router-dom';
-import * as sessionActions from "../../store/session";
+import {useDispatch} from 'react-redux';
+// import {useHistory} from 'react-router-dom';
 import * as spotActions from "../../store/spots";
 import './css/CreateSpot.css';
 
 const CreateSpot = () => {
     const dispatch = useDispatch();
-    const sessionUser = useSelector((state) => state.session.user);
-    const history = useHistory();
+    // const sessionUser = useSelector((state) => state.session.user);
+    // const history = useHistory();
 
     const [country, setCountry] = useState('');
     const [address, setAddress] = useState('');
@@ -26,6 +25,7 @@ const CreateSpot = () => {
     const [image5, setImage5] = useState('');
     const [images, setImages] = useState([]);
     const [validationErrors, setValidationErrors] = useState({});
+    const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
 
@@ -56,9 +56,6 @@ const CreateSpot = () => {
             setImages(additionalImages);
         }
       }, [country, address, city, state, lat, lng, description, name, price, previewImg, image2, image3, image4, image5]);
-
-
-
 
 
     const handleSubmit = (e) => {
@@ -118,24 +115,18 @@ const CreateSpot = () => {
         //     }
         // };
 
-
-
-
-
-        return dispatch(spotActions.addSpot({ address, city, state, country, lat, lng, name, description, price}))
-        .catch(
-          async (res) => {
-            const data = await res.json();
-            if (data && data.errors) setValidationErrors(data.errors);
-          }
-        );
-      };
+        setErrors({});
+        return dispatch(
+          spotActions.addSpot(formData, previewImgData, additionalImgsData))
+        // ).catch(async (res) => {
+        //   const data = await res.json();
+        //   if (data && data.errors) {
+        //     setErrors(data.errors);
+        //   }
+        // });
+    };
 
       const buttonClassName = "enabled-button" + ((country && address && city && state && lat &&  lng && description && name && price && previewImg) ? "" : " disabled-button");
-
-
-
-
 
     return (
         <div className="form-container-div">
