@@ -1,0 +1,20 @@
+.delete-modal {
+
+    border: 1px solid #000000;
+    border-radius: 30px;
+    background-color: #FFFFFF;
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 105px;
+    padding: 30px 30px
+
+  }
+
+
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    inset: 0;
+  }
