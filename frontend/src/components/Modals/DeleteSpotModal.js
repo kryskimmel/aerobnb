@@ -9,13 +9,6 @@ const DeleteSpotModal = ({spotId, setSpotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
 
-
-    // useEffect(() => {
-    //     console.log(spotId, 'curr spotId now');
-    //   }, [spotId]);
-
-
-
     const handleYes = () => {
         closeModal();
         return  dispatch(spotActions.deleteSingleSpot(spotId))
