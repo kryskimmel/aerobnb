@@ -1,9 +1,11 @@
 .delete-modal {
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid #000000;
     border-radius: 30px;
     background-color: #FFFFFF;
-    width: 500px;
+    width: 350px;
     margin: 0 auto;
     margin-top: 105px;
     padding: 30px 30px
@@ -17,4 +19,25 @@
     height: 100vh;
     position: fixed;
     inset: 0;
+  }
+
+  .yes-button {
+    background-color: #FF5A5F;
+    color: #FFFFFF;
+    border: 1px solid #000000;
+    box-shadow: 4px 2px 1px #000000;
+    width: 300px;
+    height: 40px;
+    margin-bottom: 5px;
+
+  }
+
+  .no-button {
+    background-color: #999999;
+    color: #FFFFFF;
+    border: 1px solid #000000;
+    box-shadow: 4px 2px 1px #000000;
+    width: 300px;
+    height: 40px;
+    margin-top: 5px;
   }

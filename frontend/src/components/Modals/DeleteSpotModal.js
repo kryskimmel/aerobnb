@@ -1,22 +1,33 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, {useEffect} from "react";
+import { useDispatch } from "react-redux";
+import * as spotActions from "../../store/spots";
 import useModal from "../../context/OpenModalContext";
 import './DeleteSpotModal.css'
 
 
-const DeleteSpotModal = () => {
-    const history = useHistory();
+const DeleteSpotModal = ({spotId, setSpotId}) => {
+    const dispatch = useDispatch();
     const {closeModal} = useModal();
 
-    const close = history.push('/spots/current');
+
+    // useEffect(() => {
+    //     console.log(spotId, 'curr spotId now');
+    //   }, [spotId]);
+
+
+
+    const handleYes = () => {
+        closeModal();
+        return  dispatch(spotActions.deleteSingleSpot(spotId))
+    };
 
     return (
         <div className="overlay">
             <div className="delete-modal">
                 <h1>Confirm Delete</h1>
                 <h4>Are you sure you want to remove this spot from the listings?</h4>
-                <button>Yes (Delete Spot)</button>
-                <button onClick={closeModal}>No (Keep Spot)</button>
+                <button className="yes-button" onClick={handleYes}>Yes (Delete Spot)</button>
+                <button className="no-button" onClick={closeModal}>No (Keep Spot)</button>
             </div>
         </div>
 

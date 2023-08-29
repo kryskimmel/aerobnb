@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import { nanoid } from 'nanoid';
@@ -13,10 +13,16 @@ const LandingPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const spots = useSelector(state => Object.values(state.spots));
+    const [spotId, setSpotId] = useState();
 
     useEffect(() => {
-        dispatch(spotActions.fetchSpots())
-    }, [dispatch]);
+        dispatch(spotActions.fetchSpots());
+        console.log('tjhe curr spot id', spotId)
+    }, [dispatch, spotId]);
+
+
+
+
 
 
     const mgmtDivClassName = window.location.href.includes('current') ? "show-mgmt" : "hidden-mgmt";
@@ -24,11 +30,8 @@ const LandingPage = () => {
     const {setOnModalContent, setOnModalClose} = useModal();
 
     const handleModalOpen = () => {
-        setOnModalContent(<DeleteSpotModal/>)
-    }
-
-
-
+        setOnModalContent(<DeleteSpotModal spotId={spotId} setSpotId={setSpotId}/>)
+    };
 
 
     const allSpots = spots.map((spot) => {
@@ -50,9 +53,8 @@ const LandingPage = () => {
                     <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {avgRating}</span></p>
                     <p className='price-info'><span>${price}</span> night</p>
                 </div>
-                <div className={mgmtDivClassName}>
-                    {/* <button>Update</button>
-                    <button>Delete</button> */}
+                <div className={mgmtDivClassName} id={`mgmt-${spot.id}`} onClick={(prev) => prev = setSpotId(spot.id)}>
+
                     <OpenModalButton
                         buttonText="Update"
                         onButtonClick
