@@ -7,8 +7,16 @@ export const OpenModalMenuProvider = props => {
     const [onModalContent, setOnModalContent] = useState();
     const [onModalClose, setOnModalClose] = useState()
 
+    const closeModal = () => {
+        setOnModalContent(null);
+        if (onModalClose) {
+          onModalClose();
+          setOnModalClose(null);
+        }
+      };
+
     return (
-        <OpenModalMenuContext.Provider value={{onModalContent, setOnModalContent, onModalClose, setOnModalClose}}>
+        <OpenModalMenuContext.Provider value={{onModalContent, setOnModalContent, closeModal, setOnModalClose}}>
             {props.children}
         </OpenModalMenuContext.Provider>
     )
