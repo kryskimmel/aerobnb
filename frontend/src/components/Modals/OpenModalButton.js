@@ -15,7 +15,7 @@ function OpenModalButton({
     if (onButtonClick) onButtonClick();
   };
 
-  console.log(onModalContent, ':modal content')
+  // console.log(onModalContent, ':modal content')
 
   return (
     <button onClick={onClick}>{buttonText}</button>
