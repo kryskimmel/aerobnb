@@ -14,6 +14,10 @@ const LoginFormPage = () => {
 
     if (sessionUser) return <Redirect to="/" />;
 
+    const handleDemoUser = () => {
+        return dispatch(sessionActions.login({ credential:"Demo-lition", password:"password" }))
+    };
+
 
 
     const handleSubmit = (e) => {
@@ -63,10 +67,7 @@ const LoginFormPage = () => {
         <div>
             <ul className="demo-user">
                 <li
-                    onClick={() => {
-                    setCredential("Demo-lition");
-                    setPassword("password");
-                }}>
+                    onClick={handleDemoUser}>
                     Log in as Demo User
                 </li>
             </ul>
