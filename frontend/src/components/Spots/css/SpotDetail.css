@@ -68,11 +68,7 @@
     margin-bottom: 30px;
 }
 
-.hide-delete {
-    display: none;
-}
-
-.hide-update {
+.hide-buttons {
     display: none;
 }
 
@@ -84,7 +80,7 @@
     margin-left: 5px;
 }
 
-.show-update {
+.show-buttons > * {
     border: 2px solid #000000;
     box-shadow: 2px 2px 0px #000000;
     background-color: #999999;
