@@ -12,8 +12,6 @@ const DeleteSpotModal = ({spotId}) => {
 
 
 
-
-
     const handleYes = () => {
         closeModal();
         dispatch(spotActions.deleteSingleSpot(spotId));
@@ -23,7 +21,7 @@ const DeleteSpotModal = ({spotId}) => {
         <div className="overlay">
             <div className="delete-modal">
                 <h1>Confirm Delete</h1>
-                <h4>Are you sure you want to remove this spot from the listings?</h4>
+                <h4>Are you sure you want to remove this spot?</h4>
                 <button className="yes-button" onClick={handleYes}>Yes (Delete Spot)</button>
                 <button className="no-button" onClick={closeModal}>No (Keep Spot)</button>
             </div>
