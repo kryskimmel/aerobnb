@@ -34,6 +34,7 @@ const deleteReview = (review) => {
 
 //Thunk Action Creators:
 
+//LOAD REVIEWS
 export const fetchSpotReviews = (spotId) => async (dispatch) => {
     try {
         const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
@@ -52,6 +53,21 @@ export const fetchSpotReviews = (spotId) => async (dispatch) => {
         throw new Error(`The following error has occurred while fetching the reviews for the selected spot: ${error.message}`)
     }
 };
+
+//CREATE REVIEW
+// export const addAReview = (spotId) => async (dispatch) => {
+//     try {
+//         const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+//             method: 'POST',
+//             headers: {'Content-Type': 'application/json'},
+//             body:
+//         })
+
+//     }
+//     catch (error) {
+//         throw new Error(`The following error has occurred while creating a review for the selected spot: ${error.message}`)
+//     }
+// }
 
 
 //Reducer:
