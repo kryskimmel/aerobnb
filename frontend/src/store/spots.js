@@ -94,9 +94,7 @@ export const addSpot = (spot, previewImage, additionalImages) => async (dispatch
     try {
         const spotResponse = await csrfFetch('/api/spots', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 address,
                 city,
