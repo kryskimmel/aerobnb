@@ -16,7 +16,7 @@ const ShowDetail = () => {
     const reviews = useSelector(state => state.reviews);
     const sessionUser = useSelector(state => state.session.user);
     const {setOnModalContent, setOnModalClose} = useModal();
-    const [reviewId, setReviewId] = useState();
+    // const [reviewId, setReviewId] = useState();
 
      useEffect (() => {
         dispatch(spotActions.fetchSingleSpot(id))
@@ -36,10 +36,8 @@ const ShowDetail = () => {
 
     let previewImg;
     let additionalImgs;
+    let reviewText;
 
-    const handleModalOpen = () => {
-        setOnModalContent(<DeleteReviewModal spotId={id}/>);
-    };
 
     const reviewsText = (numReviews) => {
         if (numReviews === 0) return 'New';
@@ -47,7 +45,7 @@ const ShowDetail = () => {
         if (numReviews > 1) return 'Reviews';
     }
 
-     if (spot && spot.SpotImages) {
+    if (spot && spot.SpotImages) {
         const spotArray = Object.values(spot.SpotImages);
 
         previewImg = spotArray.find(image => image.preview);
@@ -58,16 +56,17 @@ const ShowDetail = () => {
             return (
                 <img src={image.url} alt={name} className='additional-imgs'></img>
             )
-       })
-     };
-
-
-
-    let reviewText;
+       });
+    };
 
     if (reviews) {
         const reviewsArray = Object.values(reviews);
         reviewText = reviewsArray.map((eachReview) => {
+
+            const handleModalOpen = () => {
+                setOnModalContent(<DeleteReviewModal reviewId={eachReview.id}/>);
+            };
+
             if (eachReview && eachReview.User && sessionUser) {
                 const year = eachReview.createdAt.slice(0, 4);
                 const month = eachReview.createdAt.slice(5,7);
@@ -79,7 +78,7 @@ const ShowDetail = () => {
                         <h3>{eachReview.User.firstName}</h3>
                         <h4 style={{color:"#999999", fontWeight:"500"}}>{monthEquivalent(month)} {year}</h4>
                         <p>{eachReview.review}</p>
-                        <div className={buttonDivClassName} id={`review-${eachReview.id}`} onClick={() => {setReviewId(eachReview.id)}}>
+                        <div className={buttonDivClassName} id={`review-${eachReview.id}`} onClick={() => {console.log(eachReview.id, 'this is the id im on')}}>
                             <OpenModalButton
                                 buttonText="Update"
                                 onButtonClick
@@ -93,9 +92,9 @@ const ShowDetail = () => {
                         </div>
                     </div>
                 )
-            }
+            };
 
-        })
+        });
     };
 
 
@@ -130,5 +129,6 @@ const ShowDetail = () => {
         </div>
     )
 };
+
 
 export default ShowDetail;
