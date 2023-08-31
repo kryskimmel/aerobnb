@@ -17,24 +17,20 @@ const SpotManagement = () => {
     const spots = useSelector(state => Object.values(state.spots));
     const [spotId, setSpotId] = useState();
 
-    console.log('CURR USER:', currUser)
-    console.log('ALL SPOTS:', spots)
+
+
+
 
     useEffect(() => {
-        dispatch(spotActions.fetchSpots());
-        console.log('the current spot id', spotId)
+        dispatch(spotActions.fetchCurrUserSpots())
     }, [dispatch, spotId]);
 
     const {setOnModalContent, setOnModalClose} = useModal();
 
-    const handleModalOpen = () => {
-        setOnModalContent(<DeleteSpotModal spotId={spotId} setSpotId={setSpotId}/>)
-    };
 
     const allSpots = spots.map((spot) => {
         const {
             id,
-            ownerId,
             name,
             city,
             state,
@@ -43,16 +39,20 @@ const SpotManagement = () => {
             avgRating
         } = spot
 
-        if (currUser.id ===ownerId) {
+
+    const handleModalOpen = () => {
+        setOnModalContent(<DeleteSpotModal spotId={id}/>);
+    };
+
             return (
-                <div key={spot.id} className='spot-card'>
+                <div key={spot.id} className="spot-card">
                     <img src={previewImage} alt={name} onClick={() => {history.push(`/spots/${id}`)}}></img>
                     <div key={spot.id} className='spot-info'>
                         <p className='location-info'>{city}, {state}</p>
                         <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {avgRating}</span></p>
                         <p className='price-info'><span>${price}</span> night</p>
                     </div>
-                    <div className="show-mgmt" id={`mgmt-${spot.id}`} onClick={(prev) => prev = setSpotId(spot.id)}>
+                    <div className="show-mgmt" id={`mgmt-${spot.id}`} onClick={() => {setSpotId(id)}}>
 
                         <OpenModalButton
                             buttonText="Update"
@@ -62,14 +62,15 @@ const SpotManagement = () => {
                         <OpenModalButton
                             buttonText="Delete"
                             onButtonClick={handleModalOpen}
-                            modalComponent={<DeleteSpotModal/>}
+                            modalComponent={<DeleteSpotModal />}
+
                         />
                     </div>
                 </div>
             )
-        }
-    })
+        })
 
+        console.log(spotId)
 
     return (
         <div className='spots-container'>
