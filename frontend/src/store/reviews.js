@@ -69,6 +69,25 @@ export const fetchSpotReviews = (spotId) => async (dispatch) => {
 //     }
 // }
 
+//DELETE REVIEW
+export const deleteSingleReview = (reviewId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            console.log('THE REVIEW TO DELETE HAS ID:', reviewId)
+            dispatch(deleteReview(reviewId));
+            return response;
+        }
+        else throw new Error(`Failed to delete the review with an id of ${reviewId}`)
+
+    }
+    catch (error) {
+        throw new Error(`The following error has occurred while deleting your review for the selected spot: ${error.message}`)
+    }
+};
+
 
 //Reducer:
 const initialState = {reviews: null};
@@ -81,7 +100,10 @@ const reviewReducer = (state = initialState, action) => {
             if (action.payload.Reviews) {
                 action.payload.Reviews.forEach((review) => newState[review.id] = review);
                 return newState;
-            }
+            };
+        case DELETE:
+            newState = action.payload;
+            return newState;
         default:
             return state;
     }
