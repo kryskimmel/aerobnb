@@ -5,13 +5,18 @@ import useModal from "../../context/OpenModalContext";
 import './DeleteSpotModal.css'
 
 
-const DeleteSpotModal = ({spotId, setSpotId}) => {
+const DeleteSpotModal = ({spotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
 
+
+
+
+
+
     const handleYes = () => {
         closeModal();
-        return  dispatch(spotActions.deleteSingleSpot(spotId))
+        dispatch(spotActions.deleteSingleSpot(spotId));
     };
 
     return (
