@@ -1,24 +1,25 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 // import {useHistory} from 'react-router-dom';
 import * as spotActions from "../../store/spots";
+
 import './css/CreateSpot.css';
 
 const CreateSpot = () => {
     const dispatch = useDispatch();
-    // const sessionUser = useSelector((state) => state.session.user);
+    const sessionUser = useSelector((state) => state.session.user);
     // const history = useHistory();
 
     const [country, setCountry] = useState('');
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
+    let [lat, setLat] = useState('');
+    let [lng, setLng] = useState('');
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
-    const [previewImg, setPreviewImg] = useState('');
+    let [price, setPrice] = useState('');
+    let [previewImg, setPreviewImg] = useState('');
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
     const [image4, setImage4] = useState('');
@@ -26,7 +27,12 @@ const CreateSpot = () => {
     const [images, setImages] = useState([]);
     const [validationErrors, setValidationErrors] = useState({});
     const [errors, setErrors] = useState({});
-    const [hasSubmitted, setHasSubmitted] = useState(false)
+    const [canSubmit, setCanSubmit] = useState(false)
+
+    // const toggleSubmitButton = () => {
+    //     if (canSubmit) return true;
+    //     else return false;
+    // }
 
 
     useEffect(() => {
@@ -51,16 +57,40 @@ const CreateSpot = () => {
 
 
         const additionalImages = [];
-        if (image2 || image3 || image4 || image5) {
-            additionalImages.push(image2 || image3 || image4 || image5);
-            setImages(additionalImages);
+        if (image2) {
+            additionalImages.push({url: image2, preview: false})
         }
+        if (image3) {
+            additionalImages.push({url: image3, preview: false})
+        }
+        if (image4) {
+            additionalImages.push({url: image4, preview: false})
+        }
+        if (image5) {
+            additionalImages.push({url: image5, preview: false})
+        }
+
+        setImages(additionalImages);
+
       }, [country, address, city, state, lat, lng, description, name, price, previewImg, image2, image3, image4, image5]);
+
+
+
+      useEffect(() => {
+        if (address && city && state && country && lat && lng && name && description && price && previewImg) {
+            setCanSubmit(true)
+        }
+      }, [address, city, state, country, lat, lng, name, description, price, previewImg]);
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setHasSubmitted(true);
+        setCanSubmit(false);
+
+        lat = parseFloat(lat);
+        lng = parseFloat(lng);
+        price = parseInt(price)
+        previewImg = previewImg.toString();
 
 
         const formData = {
@@ -76,18 +106,22 @@ const CreateSpot = () => {
         };
 
         const previewImgData = {
-            previewImg
-        };
+            url: previewImg,
+            preview: true
+        }
 
         const additionalImgsData = {
-            images
-        };
+            ...images
+        }
+
+       console.log('ADDITIONAL IMAGES', images)
+
+
 
         //testing:
         console.log(formData, ':formData');
-        console.log(previewImg, ':previewImg');
+        console.log(previewImgData, ':previewImg Data');
         console.log(additionalImgsData, ':additionalImgsData');
-
 
         // Reset the form state.
         setCountry('');
@@ -104,27 +138,22 @@ const CreateSpot = () => {
         setImage3('');
         setImage4('');
         setImage5('');
-        setHasSubmitted(false);
 
-        // const dispatchFormData = (formData, previewImgData, additionalImgsData) => {
-        //     if (formData && previewImgData && additionalImgsData) {
-        //         return dispatch(spotActions.addSpot(formData)).then(() => {dispatch(spotActions.addPreviewImage(previewImgData))}).then(() => {dispatch(spotActions.addImages(additionalImgsData))});
-        //     }
-        //     else {
-        //         return dispatch(spotActions.addSpot(formData)).then(() => {dispatch(spotActions.addPreviewImage(previewImgData))});
-        //     }
-        // };
+
 
         setErrors({});
         return dispatch(
-          spotActions.addSpot(formData, previewImgData, additionalImgsData))
-        // ).catch(async (res) => {
-        //   const data = await res.json();
-        //   if (data && data.errors) {
-        //     setErrors(data.errors);
-        //   }
-        // });
+          spotActions.addSpot(formData, previewImgData, additionalImgsData)
+        ).catch(async (res) => {
+          const data = await res.json();
+          if (data && data.errors) {
+            setErrors(data.errors);
+          }
+        });
     };
+
+
+
 
       const buttonClassName = "enabled-button" + ((country && address && city && state && lat &&  lng && description && name && price && previewImg) ? "" : " disabled-button");
 
@@ -138,7 +167,7 @@ const CreateSpot = () => {
                         <h4>Guests will only get your exact address once they booked a reservation.</h4>
 
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.country && `* ${validationErrors.country}`}
+                            {canSubmit && validationErrors.country && `* ${validationErrors.country}`}
                         </div>
                         <label htmlFor='country'>Country</label>
                         <input
@@ -152,7 +181,7 @@ const CreateSpot = () => {
                             />
 
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.address && `* ${validationErrors.address}`}
+                            {canSubmit && validationErrors.address && `* ${validationErrors.address}`}
                         </div>
                         <label htmlFor='address'>Street Address</label>
                         <input
@@ -166,7 +195,7 @@ const CreateSpot = () => {
                             />
 
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.city && `* ${validationErrors.city}`}
+                            {canSubmit && validationErrors.city && `* ${validationErrors.city}`}
                         </div>
                         <label htmlFor="city">City</label>
                         <input
@@ -180,7 +209,7 @@ const CreateSpot = () => {
                             />
 
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.state && `* ${validationErrors.state}`}
+                            {canSubmit && validationErrors.state && `* ${validationErrors.state}`}
                         </div>
                         <label htmlFor="state">State</label>
                         <input
@@ -194,7 +223,7 @@ const CreateSpot = () => {
                             />
 
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.lat && `* ${validationErrors.lat}`}
+                            {canSubmit && validationErrors.lat && `* ${validationErrors.lat}`}
                         </div>
                         <label htmlFor="latitude">Latitude</label>
                         <input
@@ -208,7 +237,7 @@ const CreateSpot = () => {
                             />
 
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.lng && `* ${validationErrors.lng}`}
+                            {canSubmit && validationErrors.lng && `* ${validationErrors.lng}`}
                         </div>
                         <label htmlFor="longitude">Longitude</label>
                         <input
@@ -233,7 +262,7 @@ const CreateSpot = () => {
                             // required
                             ></textarea>
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.description && `* ${validationErrors.description}`}
+                            {canSubmit && validationErrors.description && `* ${validationErrors.description}`}
                         </div>
                     </div>
 
@@ -251,7 +280,7 @@ const CreateSpot = () => {
                         />
                     </div>
                     <div className="errors-div">
-                            {hasSubmitted && validationErrors.name && `* ${validationErrors.name}`}
+                            {canSubmit && validationErrors.name && `* ${validationErrors.name}`}
                     </div>
 
                     <hr></hr>
@@ -268,7 +297,7 @@ const CreateSpot = () => {
                         />
                     </div>
                     <div className="errors-div">
-                            {hasSubmitted && validationErrors.price && `* ${validationErrors.price}`}
+                            {canSubmit && validationErrors.price && `* ${validationErrors.price}`}
                     </div>
 
                     <hr></hr>
@@ -284,7 +313,7 @@ const CreateSpot = () => {
                             // required
                         />
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.previewImg && `* ${validationErrors.previewImg}`}
+                            {canSubmit && validationErrors.previewImg && `* ${validationErrors.previewImg}`}
                         </div>
 
                         <input
@@ -295,7 +324,7 @@ const CreateSpot = () => {
                             onChange={(e) => setImage2(e.target.value)}
                         />
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.image2 && `* ${validationErrors.image2}`}
+                            {canSubmit && validationErrors.image2 && `* ${validationErrors.image2}`}
                         </div>
 
                         <input
@@ -306,7 +335,7 @@ const CreateSpot = () => {
                             onChange={(e) => setImage3(e.target.value)}
                         />
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.image3 && `* ${validationErrors.image3}`}
+                            {canSubmit && validationErrors.image3 && `* ${validationErrors.image3}`}
                         </div>
 
                         <input
@@ -317,7 +346,7 @@ const CreateSpot = () => {
                             onChange={(e) => setImage4(e.target.value)}
                         />
                         <div className="errors-div">
-                            {hasSubmitted && validationErrors.image4 && `* ${validationErrors.image4}`}
+                            {canSubmit && validationErrors.image4 && `* ${validationErrors.image4}`}
                         </div>
 
                         <input
@@ -329,7 +358,7 @@ const CreateSpot = () => {
                         />
                     </div>
                     <div className="errors-div">
-                            {hasSubmitted && validationErrors.image5 && `* ${validationErrors.image5}`}
+                            {canSubmit && validationErrors.image5 && `* ${validationErrors.image5}`}
                     </div>
 
                     <hr></hr>
