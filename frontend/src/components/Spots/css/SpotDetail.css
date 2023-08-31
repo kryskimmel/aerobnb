@@ -1,0 +1,93 @@
+.single-spot-container {
+    margin: 0 50px
+}
+
+
+.single-spot-info-header h2 {
+    font-weight: 400;
+    font-size:  1rem;
+}
+
+
+.preview-image {
+    height: 400px;
+    width: 500px;
+    padding-right: 3px;
+}
+
+.additional-imgs {
+    height: 200px;
+    width: 300px;
+}
+
+.single-spot-imgs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.single-spot-info-section {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    height: 300px;
+}
+
+.single-spot-description h2 {
+    font-weight: 400;
+}
+
+.single-spot-info-box {
+    border: 3px solid black;
+    border-radius: 10px;
+    height: 125px;
+    width: 350px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    /* padding: 20px 20px */
+    margin-top: 25px;
+}
+
+.reserve-button {
+    grid-column: 1/ span 2;
+    height: 40px;
+    margin: 0 25px;
+    border: 2px solid #000000;
+    background-color: #FF5A5F;
+    box-shadow: 2px 2px 0px #000000;
+    color: #FFFFFF
+}
+
+
+.single-spot-reviews {
+    margin-bottom: 300px;
+}
+
+.each-review-div {
+    line-height: 70%;
+    margin-bottom: 30px;
+}
+
+.hide-delete {
+    display: none;
+}
+
+.hide-update {
+    display: none;
+}
+
+.show-delete {
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 0px #000000;
+    background-color: #999999;
+    color: #FFFFFF;
+    margin-left: 5px;
+}
+
+.show-update {
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 0px #000000;
+    background-color: #999999;
+    color: #FFFFFF;
+    margin-right: 5px;
+}
