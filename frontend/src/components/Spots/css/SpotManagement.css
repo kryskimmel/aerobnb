@@ -24,3 +24,7 @@ h1 {
     /* width: 300px;
     height: 40px; */
 }
+
+.hide {
+    display: none
+}
