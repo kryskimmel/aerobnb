@@ -1,9 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import * as spotActions from "../../store/spots";
 import * as reviewActions from "../../store/reviews";
 import { monthEquivalent } from '../../utilities/monthEquivalencies';
+import OpenModalButton from '../Modals/OpenModalButton';
+import DeleteReviewModal from '../Modals/DeleteReviewModal';
+import useModal from '../../context/OpenModalContext';
 import './css/SpotDetail.css';
 
 const ShowDetail = () => {
@@ -12,6 +15,8 @@ const ShowDetail = () => {
     const spot = useSelector(state => state.spots);
     const reviews = useSelector(state => state.reviews);
     const sessionUser = useSelector(state => state.session.user);
+    const {setOnModalContent, setOnModalClose} = useModal();
+    const [reviewId, setReviewId] = useState();
 
      useEffect (() => {
         dispatch(spotActions.fetchSingleSpot(id))
@@ -31,6 +36,10 @@ const ShowDetail = () => {
 
     let previewImg;
     let additionalImgs;
+
+    const handleModalOpen = () => {
+        setOnModalContent(<DeleteReviewModal spotId={id}/>);
+    };
 
     const reviewsText = (numReviews) => {
         if (numReviews === 0) return 'New';
@@ -63,16 +72,25 @@ const ShowDetail = () => {
                 const year = eachReview.createdAt.slice(0, 4);
                 const month = eachReview.createdAt.slice(5,7);
 
-                const deleteButtonClassName = sessionUser.id === eachReview.userId ? "show-delete" : "hide-delete";
-                const updateButtonClassName = sessionUser.id === eachReview.userId ? "show-update" : "hide-update";
+                const buttonDivClassName = sessionUser.id === eachReview.userId ? "show-buttons" : "hide-buttons";
 
                 return (
                     <div className='each-review-div'>
                         <h3>{eachReview.User.firstName}</h3>
                         <h4 style={{color:"#999999", fontWeight:"500"}}>{monthEquivalent(month)} {year}</h4>
                         <p>{eachReview.review}</p>
-                        <button className={updateButtonClassName}>Update</button>
-                        <button className={deleteButtonClassName}>Delete</button>
+                        <div className={buttonDivClassName} id={`review-${eachReview.id}`} onClick={() => {setReviewId(eachReview.id)}}>
+                            <OpenModalButton
+                                buttonText="Update"
+                                onButtonClick
+                                modalComponent
+                            />
+                            <OpenModalButton
+                                buttonText="Delete"
+                                onButtonClick={handleModalOpen}
+                                modalComponent={<DeleteReviewModal />}
+                            />
+                        </div>
                     </div>
                 )
             }
