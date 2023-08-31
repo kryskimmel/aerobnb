@@ -47,7 +47,7 @@ export const fetchSpots = () => async (dispatch) => {
         else throw new Error("Failed to fetch all spots");
     }
     catch (error) {
-        throw new error(`The following error has occurred while fetching all spots: ${error.message}`)
+        throw new Error(`The following error has occurred while fetching all spots: ${error.message}`)
     }
 };
 
