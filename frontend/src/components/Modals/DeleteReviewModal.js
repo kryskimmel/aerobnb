@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import { useDispatch } from "react-redux";
 import * as reviewActions from "../../store/reviews";
 import useModal from "../../context/OpenModalContext";
-import './DeleteReviewModal.css'
+import './css/DeleteReviewModal.css';
 
 
 const DeleteReviewModal = ({reviewId}) => {

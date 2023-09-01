@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import { useDispatch } from "react-redux";
 import * as spotActions from "../../store/spots";
 import useModal from "../../context/OpenModalContext";
-import './DeleteSpotModal.css'
+import './css/DeleteSpotModal.css'
 
 
 const DeleteSpotModal = ({spotId}) => {

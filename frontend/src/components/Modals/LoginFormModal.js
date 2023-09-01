@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import { useSelector } from "react-redux";
 
 import { OpenModalMenuContext } from "../../context/OpenModalContext";
-import "./LoginFormModal.css";
+import "./css/LoginFormModal.css";
 import LoginFormPage from "../LoginFormPage";
 
 const LoginFormModal = () => {

@@ -87,3 +87,16 @@
     color: #FFFFFF;
     margin-right: 5px;
 }
+
+.hide-post-button {
+    display: none;
+}
+
+
+.show-post-button  > * {
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 0px #000000;
+    background-color: #999999;
+    color: #FFFFFF;
+    margin-right: 5px;
+}

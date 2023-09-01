@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import { useSelector } from "react-redux";
 import { OpenModalMenuContext } from "../../context/OpenModalContext";
-import "./SignupFormModal.css";
+import "./css/SignupFormModal.css";
 import SignupFormPage from "../SignupFormPage";
 
 const SignupFormModal = () => {
