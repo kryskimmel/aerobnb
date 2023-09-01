@@ -38,6 +38,10 @@ function ProfileButton({ user }) {
 
   const closeMenu = () => setShowMenu(false)
 
+  const handleModalOpen = () => {
+    setOnModalContent(<LoginFormModal/>);
+};
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
@@ -70,8 +74,6 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            {/* <li onClick={() => {setShowMenu(false)}} className="login"><NavLink to="/login">Log In</NavLink></li>
-            <li onClick={() => setShowMenu(false)}><NavLink to="/signup">Sign Up</NavLink></li> */}
             <OpenModalMenuItem
                 itemText="Sign up"
                 onItemClick={closeMenu}
@@ -79,7 +81,7 @@ function ProfileButton({ user }) {
             />
                <OpenModalMenuItem
               itemText="Log in"
-              onItemClick={closeMenu}
+              onItemClick={() => {closeMenu(); handleModalOpen()}}
               modalComponent={<LoginFormModal />}
               />
           </>
