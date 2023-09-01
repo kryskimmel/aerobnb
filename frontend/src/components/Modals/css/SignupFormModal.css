@@ -1,25 +1,21 @@
-.hidden {
-    display: none;
-  }
 
-  .show {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+}
 
-  #overlay {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    inset: 0;
-  }
-
-  #signup-modal {
-    border: 1px solid #000000;
-    border-radius: 10px;
-    background-color: #FFFFFF;
-    width: 350px;
-    /* height: 450px; */
-    margin: 0 auto;
-    margin-top: 105px;
-
-  }
+.signup-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  background-color: #FFFFFF;
+  width: 350px;
+  margin: 0 auto;
+  margin-top: 105px;
+  padding: 30px 30px
+}
