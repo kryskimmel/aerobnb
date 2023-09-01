@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import useModal from "../../context/OpenModalContext";
 import "./LoginForm.css";
 
 
@@ -11,18 +12,26 @@ const LoginFormPage = () => {
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const [disable, setDisable] = useState(true);
+    const {closeModal} = useModal();
 
-    if (sessionUser) return <Redirect to="/" />;
+
+    useEffect(() => {
+       credential.length < 4 && password.length < 6 ? setDisable(true) : setDisable(false)
+    }, [credential, password, disable])
+
 
     const handleDemoUser = () => {
-        return dispatch(sessionActions.login({ credential:"Demo-lition", password:"password" }))
+        dispatch(sessionActions.login({ credential:"Demo-lition", password:"password"}));
+        closeModal();
     };
 
-
+    if (sessionUser) return <Redirect to="/" />;
 
     const handleSubmit = (e) => {
       e.preventDefault();
       setErrors({});
+
       return dispatch(sessionActions.login({ credential, password })).catch(
         async (res) => {
           const data = await res.json();
@@ -31,7 +40,7 @@ const LoginFormPage = () => {
       );
     };
 
-    const buttonClassName = "enabled-button" + (credential && password ? "" : " disabled-button");
+    const buttonClassName = "enabled-button" + (credential.length >= 4 && password.length >= 6 ? "" : " disabled-button");
 
 
     return (
@@ -62,15 +71,10 @@ const LoginFormPage = () => {
             />
         </div>
         <div className={"login-button-div"}>
-            <button type="submit" className={buttonClassName}>Log In</button>
+            <button type="submit" disabled={disable} className={buttonClassName}>Log In</button>
         </div>
         <div>
-            <ul className="demo-user">
-                <li
-                    onClick={handleDemoUser}>
-                    Log in as Demo User
-                </li>
-            </ul>
+            <li className="demo-user" onClick={handleDemoUser}>Log in as Demo User</li>
         </div>
         </form>
         </div>
