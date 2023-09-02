@@ -45,19 +45,28 @@ export const restoreUser = () => async (dispatch) => {
 
 export const signup = (user) => async (dispatch) => {
     const {username, firstName, lastName, email, password} = user;
-    const response = csrfFetch('/api/users', {
-        method: "POST",
-        body: JSON.stringify({
-            username,
-            firstName,
-            lastName,
-            email,
-            password
-        })
-    })
-    const data = await response.json();
-    dispatch(setUser(data.user));
-    return response;
+    try {
+        const response = csrfFetch('/api/users', {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                username,
+                firstName,
+                lastName,
+                email,
+                password
+            })
+        });
+        if (!response.ok) {
+            throw new Error('Failed to create user');
+        }
+        const data = await response.json();
+        dispatch(setUser(data.user));
+        return response;
+    }
+    catch (error) {
+        throw new Error(`There was an issue in adding you as a user: ${error.message}`)
+    }
 };
 
 
