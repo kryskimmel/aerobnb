@@ -15,9 +15,17 @@ const SignupFormModal = () => {
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [disable, setDisable] = useState(true);
     const [errors, setErrors] = useState({});
 
+
+    useEffect(() => {
+        username.length < 4 || password.length < 6 ? setDisable(true) : setDisable(false);
+     }, [username, password, disable])
+
     if (sessionUser) return <Redirect to="/" />;
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,7 +49,7 @@ const SignupFormModal = () => {
     });
   };
 
-    const buttonClassName = "enabled-button" + (email && username && firstName && lastName && password && confirmPassword ? "" : " disabled-button");
+    const buttonClassName = "enabled-button" + (email && username.length >= 4 && firstName && lastName && password.length >= 6 && confirmPassword ? "" : " disabled-button");
 
 
     return (
@@ -106,7 +114,7 @@ const SignupFormModal = () => {
                                 required
                                 />
                         </div>
-                        <button type="submit" className={buttonClassName}>Sign Up</button>
+                        <button type="submit" disabled={disable} className={buttonClassName}>Sign Up</button>
                     </form>
                 </div>
             </div>
