@@ -37,12 +37,13 @@ const SignupFormModal = () => {
                 firstName,
                 lastName,
                 password,
-            })).catch(async (res) => {
-                const data = await res.json();
-                if (data && data.errors) {
-                    setErrors(data.errors);
-                }
-            });
+            }))
+            // .catch(async (res) => {
+            //     const data = await res.json();
+            //     if (data && data.errors) {
+            //         setErrors(data.errors);
+            //     }
+            // });
         }
     return setErrors({
       confirmPassword: "Confirm Password field must be the same as the Password field"
