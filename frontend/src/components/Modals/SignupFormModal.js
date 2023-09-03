@@ -32,11 +32,11 @@ const SignupFormModal = () => {
         if (password === confirmPassword) {
             setErrors({});
             return dispatch(sessionActions.signup({
-                email,
-                username,
                 firstName,
                 lastName,
-                password,
+                email,
+                username,
+                password
             }))
             // .catch(async (res) => {
             //     const data = await res.json();
