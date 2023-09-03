@@ -20,35 +20,26 @@ const LandingPage = () => {
     }, [dispatch, spotId]);
 
 
-    const allSpots = spots.map((spot) => {
-        const {
-            id,
-            name,
-            city,
-            state,
-            price,
-            previewImage,
-            avgRating
-        } = spot
-
+    const landingPage = spots.map(spot => {
         return (
-            <div key={spot.id} className='spot-card'>
-                <img src={previewImage} alt={name} onClick={() => {history.push(`/spots/${id}`)}}></img>
-                <div key={spot.id} className='spot-info'>
-                    <p className='location-info'>{city}, {state}</p>
-                    <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {avgRating}</span></p>
-                    <p className='price-info'><span>${price}</span> night</p>
+            <div key={spot && (spot.id)} className='spot-card'>
+                <img src={spot && (spot.previewImage)} alt={spot && (spot.name)} onClick={() => {history.push(`/spots/${spot && (spot.id)}`)}}></img>
+                <div key={spot && (spot.id)} className='spot-info'>
+                    <p className='location-info'>{spot && (spot.city)}, {spot && (spot.state)}</p>
+                    <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {spot && (spot.avgRating)}</span></p>
+                    <p className='price-info'><span>${spot && (spot.price)}</span> night</p>
                 </div>
             </div>
         )
-    })
-
+    });
 
     return (
-        <div className='spots-container'>
-            {allSpots}
-        </div>
+            <div className='spots-container'>
+               {landingPage}
+            </div>
+
     )
+
 }
 
 export default LandingPage;
