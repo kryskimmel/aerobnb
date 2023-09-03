@@ -33,11 +33,14 @@ const ShowDetail = () => {
         numReviews,
         price,
         state,
+        ownerId
      } = spot;
 
     let previewImg;
     let additionalImgs;
     let reviewText;
+
+
 
 
     const reviewsText = (numReviews) => {
@@ -161,7 +164,7 @@ const ShowDetail = () => {
             <hr></hr>
             <div className='single-spot-reviews'>
                 <h2><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{`${avgStarRating ? avgStarRating : ""} ${numReviews ? `• ${numReviews} ` : ""} ${reviewsText(numReviews)}`}</h2>
-                <div className={numReviews === 0 && sessionUser ? "show-post-button" : "hide-post-button"}>
+                <div className={numReviews === 0 && sessionUser && sessionUser.id !== ownerId ? "show-post-button" : "hide-post-button"}>
                     <OpenModalButton
                         buttonText="Post Your Review"
                         onButtonClick={handlePostModalOpen}
