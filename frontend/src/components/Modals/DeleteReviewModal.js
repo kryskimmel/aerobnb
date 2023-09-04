@@ -5,13 +5,16 @@ import useModal from "../../context/OpenModalContext";
 import './css/DeleteReviewModal.css';
 
 
-const DeleteReviewModal = ({reviewId}) => {
+const DeleteReviewModal = ({reviewId, spotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
 
-    const handleYes = () => {
+    const handleYes = async (e) => {
+        e.preventDefault();
+        await dispatch(reviewActions.deleteSingleReview(reviewId));
         closeModal();
-        dispatch(reviewActions.deleteSingleReview(reviewId));
+        await dispatch(reviewActions.fetchSpotReviews(spotId))
+
     };
 
     return (
