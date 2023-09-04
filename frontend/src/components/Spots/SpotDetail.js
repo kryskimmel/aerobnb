@@ -25,7 +25,7 @@ const ShowDetail = () => {
         setSpotId(id)
      }, [dispatch, id, spotId])
 
-     const{
+     let {
         avgStarRating,
         city,
         country,
@@ -40,6 +40,10 @@ const ShowDetail = () => {
     let previewImg;
     let additionalImgs;
     let reviewText;
+
+    let randomId = (Math.random() * 100000).toFixed(0);
+
+
 
 
 
@@ -59,7 +63,7 @@ const ShowDetail = () => {
         const filterAdditionalImgs = spotArray.filter((image) => !image.preview);
         additionalImgs = filterAdditionalImgs.map((image) => {
             return (
-                <img src={image.url} alt={name} className='additional-imgs'></img>
+                <img key={image.id} src={image.url} alt={name} className='additional-imgs'></img>
             )
        });
     };
@@ -78,7 +82,7 @@ const ShowDetail = () => {
 
                     return (
                         <>
-                            <div className='each-review-div'>
+                            <div className='each-review-div' key={eachReview.id}>
                                 <h3>{eachReview.User.firstName}</h3>
                                 <h4 style={{color:"#999999", fontWeight:"500"}}>{monthEquivalent(month)} {year}</h4>
                                 <p>{eachReview.review}</p>
@@ -158,13 +162,13 @@ const ShowDetail = () => {
                 </div>
                 <div className='single-spot-info-box'>
                     <p style={{textAlign:"left", padding:"0 25px"}}><span style={{fontSize:"20px"}}>${price}</span> night</p>
-                    <p style={{textAlign:"right", padding:"0 25px"}}><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span>{avgStarRating}</span> {numReviews ? `• ${numReviews} `: ""} {reviewsText(numReviews)}</p>
+                    <p style={{textAlign:"right", padding:"0 25px"}}><i className="fa-solid fa-star" style={{color: "#000000"}}></i> <span>{avgStarRating ? avgStarRating.toFixed(1) : ""}</span> {numReviews ? `• ${numReviews} `: ""} {reviewsText(numReviews)}</p>
                     <button className='reserve-button' onClick={() => {alert('Feature Coming Soon...')}}>Reserve</button>
                 </div>
             </div>
             <hr></hr>
             <div className='single-spot-reviews'>
-                <h2><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{`${avgStarRating ? avgStarRating : ""} ${numReviews ? `• ${numReviews} ` : ""} ${reviewsText(numReviews)}`}</h2>
+                <h2><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{`${avgStarRating ? avgStarRating.toFixed(1) : ""} ${numReviews ? `• ${numReviews} ` : ""} ${reviewsText(numReviews)}`}</h2>
                 <div className={numReviews === 0 && sessionUser && sessionUser.id !== ownerId ? "show-post-button" : "hide-post-button"}>
                     <OpenModalButton
                         buttonText="Post Your Review"
