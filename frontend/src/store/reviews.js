@@ -55,19 +55,30 @@ export const fetchSpotReviews = (spotId) => async (dispatch) => {
 };
 
 //CREATE REVIEW
-// export const addAReview = (spotId) => async (dispatch) => {
-//     try {
-//         const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
-//             method: 'POST',
-//             headers: {'Content-Type': 'application/json'},
-//             body:
-//         })
+export const addAReview = (reviewReq, spotId) => async (dispatch) => {
+    const {review, stars} = reviewReq;
+    try {
+        const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                review,
+                stars
+            })
+        });
 
-//     }
-//     catch (error) {
-//         throw new Error(`The following error has occurred while creating a review for the selected spot: ${error.message}`)
-//     }
-// }
+        if (!response.ok) {
+            throw new Error(`Failed to create a review for the spot with an id of ${spotId}`)
+        };
+
+        const newResponse = await response.json();
+        dispatch(createReview(newResponse));
+        return response;
+    }
+    catch (error) {
+        throw new Error(`The following error has occurred while creating a review for the selected spot: ${error.message}`)
+    }
+}
 
 //DELETE REVIEW
 export const deleteSingleReview = (reviewId) => async (dispatch) => {
@@ -101,6 +112,9 @@ const reviewReducer = (state = initialState, action) => {
                 action.payload.Reviews.forEach((review) => newState[review.id] = review);
                 return newState;
             };
+        case CREATE:
+            newState[action.payload.id] = action.payload;
+            return newState;
         case DELETE:
             newState = action.payload;
             return newState;
