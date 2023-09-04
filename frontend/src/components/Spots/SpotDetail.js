@@ -17,12 +17,13 @@ const ShowDetail = () => {
     const reviews = useSelector(state => state.reviews);
     const sessionUser = useSelector(state => state.session.user);
     const {setOnModalContent, setOnModalClose} = useModal();
-    // const [reviewId, setReviewId] = useState();
+    const [spotId, setSpotId] = useState();
 
      useEffect (() => {
         dispatch(spotActions.fetchSingleSpot(id))
         dispatch(reviewActions.fetchSpotReviews(id))
-     }, [dispatch, id])
+        setSpotId(id)
+     }, [dispatch, id, spotId])
 
      const{
         avgStarRating,
@@ -68,7 +69,7 @@ const ShowDetail = () => {
         reviewText = reviewsArray.map((eachReview) => {
 
             const handleDeleteModalOpen = () => {
-                setOnModalContent(<DeleteReviewModal reviewId={eachReview.id}/>);
+                setOnModalContent(<DeleteReviewModal reviewId={eachReview.id} spotId={spotId}/>);
             };
 
             if (eachReview && eachReview.User) {
@@ -135,7 +136,7 @@ const ShowDetail = () => {
 
 
     const handlePostModalOpen = () => {
-        setOnModalContent(<PostReviewModal/>);
+        setOnModalContent(<PostReviewModal spotId={spotId}/>);
     };
 
     return (
