@@ -12,9 +12,11 @@ const DeleteSpotModal = ({spotId}) => {
 
 
 
-    const handleYes = () => {
+    const handleYes = async (e) => {
+        e.preventDefault();
+        await dispatch(spotActions.deleteSingleSpot(spotId));
         closeModal();
-        dispatch(spotActions.deleteSingleSpot(spotId));
+        await dispatch(spotActions.fetchCurrUserSpots());
     };
 
     return (
