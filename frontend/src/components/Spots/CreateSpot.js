@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-// import {useHistory} from 'react-router-dom';
 import * as spotActions from "../../store/spots";
 
 import './css/CreateSpot.css';
@@ -8,7 +7,9 @@ import './css/CreateSpot.css';
 const CreateSpot = () => {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
-    // const history = useHistory();
+
+
+
 
     const [country, setCountry] = useState('');
     const [address, setAddress] = useState('');
@@ -29,10 +30,6 @@ const CreateSpot = () => {
     const [errors, setErrors] = useState({});
     const [canSubmit, setCanSubmit] = useState(false)
 
-    // const toggleSubmitButton = () => {
-    //     if (canSubmit) return true;
-    //     else return false;
-    // }
 
 
     useEffect(() => {
@@ -142,9 +139,7 @@ const CreateSpot = () => {
 
 
         setErrors({});
-        return dispatch(
-          spotActions.addSpot(formData, previewImgData, additionalImgsData)
-        ).catch(async (res) => {
+        return dispatch(spotActions.addSpot(formData, previewImgData, additionalImgsData)).catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) {
             setErrors(data.errors);
