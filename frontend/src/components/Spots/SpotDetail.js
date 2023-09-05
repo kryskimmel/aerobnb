@@ -101,38 +101,6 @@ const ShowDetail = () => {
                             </div>
                         </>
                     )
-
-
-                // return (
-                //     <>
-                //     <h2><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{`${avgStarRating ? avgStarRating : ""} ${numReviews ? `• ${numReviews} ` : ""} ${reviewsText(numReviews)}`}</h2>
-                //         <div className={postButtonClassName}>
-                //             <OpenModalButton
-                //                 buttonText="Post Your Review"
-                //                 onButtonClick={handlePostModalOpen}
-                //                 modalComponent={<PostReviewModal />}
-                //             />
-                //         </div>
-
-                //         <div className='each-review-div'>
-                //         <h3>{eachReview.User.firstName}</h3>
-                //         <h4 style={{color:"#999999", fontWeight:"500"}}>{monthEquivalent(month)} {year}</h4>
-                //         <p>{eachReview.review}</p>
-                //         <div className={buttonDivClassName} id={`review-${eachReview.id}`} onClick={() => {console.log(eachReview.id, 'this is the id im on')}}>
-                //             <OpenModalButton
-                //                 buttonText="Update"
-                //                 onButtonClick
-                //                 modalComponent
-                //             />
-                //             <OpenModalButton
-                //                 buttonText="Delete"
-                //                 onButtonClick={handleDeleteModalOpen}
-                //                 modalComponent={<DeleteReviewModal />}
-                //             />
-                //         </div>
-                //     </div>
-                //     </>
-                // )
             };
 
         });
