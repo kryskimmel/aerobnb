@@ -166,96 +166,114 @@ const CreateSpot = () => {
                         <h2>Where's your place located?</h2>
                         <h4>Guests will only get your exact address once they booked a reservation.</h4>
 
-                        <div className="errors-div">
-                            {canSubmit && validationErrors.country && `* ${validationErrors.country}`}
-                        </div>
-                        <label htmlFor='country'>Country</label>
-                        <input
-                            type="text"
-                            name="country"
-                            id="country"
-                            placeholder='Country'
-                            value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                            // required
-                            />
 
-                        <div className="errors-div">
-                            {canSubmit && validationErrors.address && `* ${validationErrors.address}`}
-                        </div>
-                        <label htmlFor='address'>Street Address</label>
-                        <input
-                            type="text"
-                            name="address"
-                            id="address"
-                            placeholder='Address'
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            // required
-                            />
+                        <div className='location-content'>
+                                <div className="errors-div">
+                                    {canSubmit && validationErrors.country && `* ${validationErrors.country}`}
+                                </div>
+                                <label htmlFor='country'>Country</label>
+                            <input
+                                type="text"
+                                name="country"
+                                id="country"
+                                placeholder='Country'
+                                value={country}
+                                onChange={(e) => setCountry(e.target.value)}
+                                // required
+                                />
 
-                        <div className="errors-div">
-                            {canSubmit && validationErrors.city && `* ${validationErrors.city}`}
-                        </div>
-                        <label htmlFor="city">City</label>
-                        <input
-                            type="text"
-                            name="city"
-                            id="city"
-                            placeholder='City'
-                            value={city}
-                            onChange={(e) => setCity(e.target.value)}
-                            // required
-                            />
+                            <div className="errors-div">
+                                {canSubmit && validationErrors.address && `* ${validationErrors.address}`}
+                            </div>
+                            <label htmlFor='address'>Street Address</label>
+                            <input
+                                type="text"
+                                name="address"
+                                id="address"
+                                placeholder='Address'
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                // required
+                                />
 
-                        <div className="errors-div">
-                            {canSubmit && validationErrors.state && `* ${validationErrors.state}`}
-                        </div>
-                        <label htmlFor="state">State</label>
-                        <input
-                            type="text"
-                            name="state"
-                            id="state"
-                            placeholder='STATE'
-                            value={state}
-                            onChange={(e) => setState(e.target.value)}
-                            // required
-                            />
+                            <div className="errors-div">
+                                {canSubmit && validationErrors.city && `* ${validationErrors.city}`}
+                                {canSubmit && validationErrors.state && `* ${validationErrors.state}`}
+                            </div>
+                            <span className='city-state-span'>
+                            <div className='city-div'>
+                                <label htmlFor="city">City</label>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    id="city"
+                                    placeholder='City'
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                    // required
+                                    />
+                            </div>
+                            <div className='separator'>,</div>
+                            <div className='state-div'>
+                                <label htmlFor="state">State</label>
+                                <input
+                                type="text"
+                                name="state"
+                                id="state"
+                                placeholder='STATE'
+                                value={state}
+                                onChange={(e) => setState(e.target.value)}
+                                // required
+                                />
+                            </div>
+                            </span>
 
-                        <div className="errors-div">
-                            {canSubmit && validationErrors.lat && `* ${validationErrors.lat}`}
-                        </div>
-                        <label htmlFor="latitude">Latitude</label>
-                        <input
-                            type="text"
-                            name="latitude"
-                            id="latitude"
-                            placeholder='Latitude'
-                            value={lat}
-                            onChange={(e) => setLat(e.target.value)}
-                            // required
-                            />
 
-                        <div className="errors-div">
-                            {canSubmit && validationErrors.lng && `* ${validationErrors.lng}`}
+                            <div className="errors-div">
+                                {canSubmit && validationErrors.lat && `* ${validationErrors.lat}`}
+                                {canSubmit && validationErrors.lng && `* ${validationErrors.lng}`}
+                            </div>
+                            <span className='lat-lng-span'>
+                                <div className='lat-div'>
+                                    <label htmlFor="latitude">Latitude</label>
+                                    <input
+                                        type="text"
+                                        name="latitude"
+                                        id="latitude"
+                                        placeholder='Latitude'
+                                        value={lat}
+                                        onChange={(e) => setLat(e.target.value)}
+                                        // required
+                                        />
+                                </div>
+                                <div className='separator'>,</div>
+                                <div className='lng-div'>
+                                    <label htmlFor="longitude">Longitude</label>
+                                    <input
+                                        type="text"
+                                        name="longitude"
+                                        id="longitude"
+                                        placeholder='Longitude'
+                                        value={lng}
+                                        onChange={(e) => setLng(e.target.value)}
+                                        // required
+                                        />
+                                </div>
+                            </span>
+
+
+
+
                         </div>
-                        <label htmlFor="longitude">Longitude</label>
-                        <input
-                            type="text"
-                            name="longitude"
-                            id="longitude"
-                            placeholder='Longitude'
-                            value={lng}
-                            onChange={(e) => setLng(e.target.value)}
-                            // required
-                            />
-                    </div>
+                        </div>
+
                     <hr></hr>
                     <div className='description-div'>
                         <h2>Describe your place to guests</h2>
                         <h4>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h4>
                         <textarea
                             name='description'
+                            id='description'
                             placeholder='Please write at least 30 characters.'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -273,6 +291,7 @@ const CreateSpot = () => {
                         <input
                             type='text'
                             name='name'
+                            id='name'
                             placeholder='Name of your spot'
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -287,14 +306,18 @@ const CreateSpot = () => {
                     <div className='price-div'>
                         <h2>Set a base price for your spot</h2>
                         <h4>Competitive pricing can help your listing stand out and rank higher in search results.</h4>
-                        <input
+                        <span> $
+                            <input
                             type='number'
                             name='price'
+                            id='price'
                             placeholder='Price per night (USD)'
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             // required
                         />
+                        </span>
+
                     </div>
                     <div className="errors-div">
                             {canSubmit && validationErrors.price && `* ${validationErrors.price}`}
