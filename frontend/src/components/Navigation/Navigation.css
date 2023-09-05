@@ -8,7 +8,6 @@
 
 .nav-links-div {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     max-width: 100%;
     height: 70px;
@@ -18,6 +17,16 @@
     font-size: 1.17rem;
 }
 
+.user-options {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+
+
 
 .nav-links-div a {
     text-decoration: none;
@@ -25,7 +34,6 @@
     font-size: 1.17rem;
     color: black
 }
-
 
 
 .profile-dropdown {

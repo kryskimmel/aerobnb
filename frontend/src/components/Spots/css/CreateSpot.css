@@ -4,7 +4,6 @@
 }
 
 .form-contents {
-    border: 1px solid green;
     display: flex;
     flex-direction: column;
     width: 550px
@@ -15,9 +14,49 @@
 .name-div,
 .price-div,
 .photos-div {
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
+}
+
+.location-content {
+    display: flex;
+    flex-direction: column;
+}
+
+#country, #address, #name, #description, .photos-div input {
+    width: 541px;
+}
+
+#price {
+    width: 530px;
+    margin-left: 3px;
+}
+
+#country, #address, #city, #state, #latitude, #longtiude {
+    margin-bottom: 10px;
+}
+
+.separator {
+
+    margin-top: 25px;
+    margin-left: 2px;
+    margin-right: 5px;
+}
+.city-state-span, .lat-lng-span {
+    display: flex;
+}
+
+.city-div, .state-div {
+    display: flex;
+    flex-direction: column;
+}
+
+#state, #longitude {
+    width: 220px;
+}
+
+.photos-div input {
+    margin-bottom: 15px;
 }
 
 .submit-button-div {
