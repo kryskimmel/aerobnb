@@ -20,16 +20,19 @@ function Navigation({ isLoaded }){
       <li className='home' onClick={handleHomeCLick}>
         <NavLink exact to="/">Home</NavLink>
       </li>
-      {sessionUser && (
-        <li>
-          <NavLink to="/spots/new">Create a New Spot</NavLink>
-        </li>
-      )}
-      {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-      )}
+      <div className='user-options'>
+        {sessionUser && (
+          <li>
+            <NavLink to="/spots/new">Create a New Spot</NavLink>
+          </li>
+        )}
+        {isLoaded && (
+          <li>
+            <ProfileButton user={sessionUser} />
+          </li>
+        )}
+      </div>
+
     </ul>
   );
 }
