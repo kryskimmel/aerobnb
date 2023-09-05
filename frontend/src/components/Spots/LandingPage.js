@@ -12,12 +12,10 @@ const LandingPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const spots = useSelector(state => Object.values(state.spots));
-    const [spotId, setSpotId] = useState();
 
     useEffect(() => {
         dispatch(spotActions.fetchSpots());
-        console.log('tjhe curr spot id', spotId)
-    }, [dispatch, spotId]);
+    }, [dispatch]);
 
 
     const landingPage = spots.map(spot => {
@@ -35,8 +33,8 @@ const LandingPage = () => {
         let randomId = (Math.random() * 100000).toFixed(0);
 
         return (
-            <div key={spot && (randomId)} className='spot-card'>
-                <img src={spot && (previewImage)} alt={spot && (name)} onClick={() => {history.push(`/spots/${spot && (id)}`)}}></img>
+            <div key={spot && (randomId)} className='spot-card' onClick={() => {history.push(`/spots/${spot && (id)}`)}}>
+                <img src={spot && (previewImage)} alt={spot && (name)} className='images' title={name}></img>
                 <div key={spot && (id)} className='spot-info'>
                     <p className='location-info'>{spot && (city)}, {spot && (state)}</p>
                     <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span>{avgRating ? avgRating.toFixed(1) : "New"}</span></p>
