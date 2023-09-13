@@ -107,7 +107,7 @@ export const addSpot = (spot, previewImg) => async (dispatch) => {
             const addPreviewImg =  await previewImgResponse.json();
             const createdSpot = {...buildSpot, previewImage: addPreviewImg}
             dispatch(createSpot(createdSpot));
-            dispatch(fetchSpots());
+            await dispatch(fetchSpots());
             }
         };
     } catch (error) {
@@ -127,7 +127,7 @@ export const deleteSingleSpot = (spotId) => async (dispatch) => {
         if (response.ok) {
             console.log('THE SPOT TO DELETE HAS ID :', spotId)
             dispatch(deleteSpot(spotId));
-            dispatch(fetchCurrUserSpots());
+            await dispatch(fetchCurrUserSpots());
             return response;
         }
     }
