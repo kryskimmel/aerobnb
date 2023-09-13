@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import * as spotActions from "../../store/spots";
 
 function UpdateSpot() {
     const dispatch = useDispatch();
     const history = useHistory();
+    const {id} = useParams();
     const currSpotSelector = useSelector(state => state.spots);
     let currSpot;
 
@@ -89,8 +90,8 @@ function UpdateSpot() {
                 url: previewImg,
                 preview: true
             };
-            dispatch(spotActions.addSpot(newSpot, newSpotPrevImg));
-            history.push('/')
+            dispatch(spotActions.updateSingleSpot(id, newSpot, newSpotPrevImg));
+            history.push(`/spots/${id}`)
         }
     };
 
