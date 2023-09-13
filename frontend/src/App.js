@@ -38,6 +38,9 @@ function App() {
       <ModalContainer/>
       {isLoaded && (
         <Switch>
+          <Route path="/spots/:id/edit">
+            <UpdateSpot/>
+          </Route>
           <Route path="/spots/current">
             <SpotManagement/>
           </Route>
@@ -46,9 +49,6 @@ function App() {
           </Route>
           <Route path="/spots/:id">
             <SpotDetail/>
-          </Route>
-          <Route>
-            <UpdateSpot/>
           </Route>
           <Route exact path="/">
             <LandingPage/>
