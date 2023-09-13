@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const LOAD = "spots/LOAD";
 const CREATE = "spots/CREATE";
 const DELETE = "spots/DELETE";
+const UPDATE = "spots/UPDATE";
 
 
 //Actions:
@@ -27,6 +28,14 @@ const deleteSpot = (spotId) => {
     return {
         type: DELETE,
         payload: spotId
+    }
+};
+
+
+const updateSpot = (spot) => {
+    return {
+        type: UPDATE,
+        payload: spot
     }
 };
 
