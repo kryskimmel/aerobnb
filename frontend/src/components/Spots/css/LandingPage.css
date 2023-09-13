@@ -22,12 +22,13 @@
 .spot-info {
     display: grid;
     grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 25% 25%;
     font-size: 14px;
 }
 
 .rating-info {
     text-align: end;
+    grid-area: 1/ 2/ 2/ 3
 }
 
 span {

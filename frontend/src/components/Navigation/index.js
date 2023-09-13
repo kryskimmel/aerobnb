@@ -10,14 +10,10 @@ import './Navigation.css';
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
   const history = useHistory();
-  const handleHomeCLick = () => {
-    history.push('/')
-  };
-
 
   return (
     <ul className='nav-links-div'>
-      <li className='home' onClick={handleHomeCLick}>
+      <li className='home' onClick={() => {history.push('/')}}>
         <NavLink exact to="/">Home</NavLink>
       </li>
       <div className='user-options'>

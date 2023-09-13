@@ -1,56 +1,35 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
-import { nanoid } from 'nanoid';
+import {useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as spotActions from "../../store/spots";
-import useModal from '../../context/OpenModalContext';
-import OpenModalButton from '../Modals/OpenModalButton';
-import DeleteSpotModal from '../Modals/DeleteSpotModal';
-import './css/SpotManagement.css';
+import OpenModalButton from "../Modals/OpenModalButton";
+import useModal from "../../context/OpenModalContext";
+import DeleteSpotModal from "../Modals/DeleteSpotModal";
 
 
-const SpotManagement = () => {
+
+function SpotManagement() {
     const dispatch = useDispatch();
-    const history = useHistory();
-    const currUser = useSelector((state) => state.session.user);
     const spots = useSelector(state => Object.values(state.spots));
     const [spotId, setSpotId] = useState();
+    const history = useHistory();
 
+    const {setOnModalContent} = useModal();
 
     useEffect(() => {
-        dispatch(spotActions.fetchCurrUserSpots())
-    }, [dispatch, spotId]);
+        dispatch(spotActions.fetchCurrUserSpots());
+    }, [dispatch]);
 
-
-    const {setOnModalContent, setOnModalClose} = useModal();
-
-
-    const allSpots = spots.map((spot) => {
-        const {
-            id,
-            name,
-            city,
-            state,
-            price,
-            previewImage,
-            avgRating
-        } = spot
-
-
-        const handleModalOpen = () => {
-            setOnModalContent(<DeleteSpotModal spotId={id}/>);
-        };
-
+    const loadSpots = spots && spots.map((spot) => {
         return (
-            <div key={spot.id} className="spot-card">
-                <img src={previewImage} alt={name} onClick={() => {history.push(`/spots/${id}`)}}></img>
-                <div key={spot.id} className='spot-info'>
-                    <p className='location-info'>{city}, {state}</p>
-                    <p className='rating-info'><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span> {avgRating}</span></p>
-                    <p className='price-info'><span>${price}</span> night</p>
+            <div key={spot && spot.id} className="spot-card" onClick={()=>{history.push(`/spots/${spot.id}`)}}>
+                <img src={spot && spot.previewImage} alt={spot && spot.name} title={spot && spot.name}></img>
+                <div className="spot-info">
+                    <p>{spot && spot.city}, {spot && spot.state}</p>
+                    <p><span>${spot && spot.price}</span> night</p>
+                    <p className="rating-info"><span>{spot && spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
                 </div>
-                <div className="show-mgmt" id={`mgmt-${spot.id}`} onClick={() => {setSpotId(id)}}>
-
+                <div>
                     <OpenModalButton
                         buttonText="Update"
                         onButtonClick
@@ -58,23 +37,20 @@ const SpotManagement = () => {
                     />
                     <OpenModalButton
                         buttonText="Delete"
-                        onButtonClick={handleModalOpen}
+                        onButtonClick={() => {setOnModalContent(<DeleteSpotModal spotId={spot.id}/>)}}
                         modalComponent={<DeleteSpotModal />}
-
                     />
                 </div>
             </div>
-        )
+        );
     });
 
-
-
     return (
-        <div className='spots-container'>
-            {allSpots}
+        <div className="spots-container">
+            {loadSpots}
         </div>
     )
-};
+}
 
 
 export default SpotManagement;

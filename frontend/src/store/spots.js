@@ -59,7 +59,6 @@ export const fetchSingleSpot = (spotId) => async (dispatch) => {
         });
         if (response.ok) {
             const spot = await response.json();
-            console.log("Fetched spot data:", spot)
             dispatch(loadSpots(spot));
             return response;
         }
@@ -89,99 +88,28 @@ export const fetchCurrUserSpots = () => async (dispatch) => {
 }
 
 //CREATE A SPOT
-export const addSpot = (spot, previewImage, additionalImages) => async (dispatch) => {
-    let { address, city, state, country, lat, lng, name, description, price } = spot;
+export const addSpot = (spot, previewImg) => async (dispatch) => {
     try {
+        console.log('new spot info', spot)
         const spotResponse = await csrfFetch('/api/spots', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                address,
-                city,
-                state,
-                country,
-                lat,
-                lng,
-                name,
-                description,
-                price
-            })
+            body: JSON.stringify(spot)
         });
-
-        if (!spotResponse.ok) {
-            throw new Error('Failed to create new spot');
-        }
-
-        const newSpot = await spotResponse.json();
-
-        console.log(newSpot, 'THE NEW SPOT')
-
-        const {url, preview} = previewImage;
-
-        const previewImgResponse = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                url,
-                preview
-            })
-        });
-
-        console.log('URL:', url, 'PREVIEW', preview)
-
-        if (!previewImgResponse.ok) {
-            throw new Error('Failed to add preview image to spot');
-        }
-        const addPreviewImg =  await previewImgResponse.json();
-
-        const updatedSpot = {...newSpot, previewImage: addPreviewImg}
-
-        dispatch(createSpot(updatedSpot))
-        console.log('ADDITIONAL IMAGESSSS', additionalImages)
-
-
-
-        if (additionalImages) {
-
-            console.log(additionalImages);
-            for (const key in additionalImages) {
-                if (additionalImages.hasOwnProperty(key)) {
-                    const {url, preview} = additionalImages[key]
-                    console.log('URLLL', url, 'AND THE PREVIEW', preview)
-                }
-
-
-                const additionalImgResponse = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        url,
-                        preview
-                    })
-                });
-
-                if (!additionalImgResponse.ok) {
-                    throw new Error('Failed to add additional images to spot');
-                }
-
-                const addAdditionalImgs = await additionalImgResponse.json();
-                const updatedSpotV2 = {...newSpot, SpotImages: addAdditionalImgs }
-                console.log(updatedSpotV2, 'V2')
-
-                dispatch(createSpot(updatedSpotV2))
-                return additionalImgResponse;
+        if (spotResponse.ok) {
+            const buildSpot = await spotResponse.json();
+            const previewImgResponse = await csrfFetch(`/api/spots/${buildSpot.id}/images`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(previewImg)
+            });
+            if (previewImgResponse.ok) {
+            const addPreviewImg =  await previewImgResponse.json();
+            const createdSpot = {...buildSpot, previewImage: addPreviewImg}
+            dispatch(createSpot(createdSpot));
+            dispatch(fetchSpots());
             }
-
-
-
-            }
-
-
-
+        };
     } catch (error) {
         console.error('Error creating new spot:', error);
     }
@@ -197,13 +125,11 @@ export const deleteSingleSpot = (spotId) => async (dispatch) => {
             method: 'DELETE'
         });
         if (response.ok) {
-
             console.log('THE SPOT TO DELETE HAS ID :', spotId)
             dispatch(deleteSpot(spotId));
             dispatch(fetchCurrUserSpots());
             return response;
         }
-        else throw new Error(`Failed to delete the spot with an id of ${spotId}`)
     }
     catch (error) {
         throw new Error('There was an issue in deleting your spot')
@@ -230,7 +156,7 @@ const spotReducer = (state = initialState, action) => {
                 return newState;
             }
         case CREATE:
-            newState = action.payload
+            newState = {...state, [action.payload.id] : action.payload}
             return newState;
         case DELETE:
             delete newState[action.payload];
