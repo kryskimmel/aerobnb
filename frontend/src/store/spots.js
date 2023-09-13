@@ -146,6 +146,28 @@ export const deleteSingleSpot = (spotId) => async (dispatch) => {
 };
 
 
+//UPDATE SPOT
+export const updateSingleSpot = (spotId, spot, previewImg) => async (dispatch) => {
+
+    try {
+        const updatedSpotResponse = await csrfFetch(`/api/spots/${spotId}`, {
+            method: 'PUT',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(spot)
+        });
+        if (updatedSpotResponse.ok) {
+            const updatedSpotInfo = await updatedSpotResponse.json();
+            dispatch(updateSpot(updatedSpotInfo));
+            await dispatch(fetchCurrUserSpots());
+        }
+    }
+    catch (error) {
+        throw new Error('There was an issue in updating your spot')
+    }
+
+}
+
+
 
 
 //Reducer:
@@ -165,6 +187,9 @@ const spotReducer = (state = initialState, action) => {
                 return newState;
             }
         case CREATE:
+            newState = {...state, [action.payload.id] : action.payload}
+            return newState;
+        case UPDATE:
             newState = {...state, [action.payload.id] : action.payload}
             return newState;
         case DELETE:
