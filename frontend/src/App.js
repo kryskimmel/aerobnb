@@ -6,6 +6,7 @@ import * as spotActions from "./store/spots";
 import Navigation from "./components/Navigation";
 import ModalContainer from "./components/Modals/ModalContainer";
 import CreateSpot from "./components/Spots/CreateSpot";
+import UpdateSpot from "./components/Spots/UpdateSpot";
 import LandingPage from "./components/Spots/LandingPage";
 import SpotDetail from "./components/Spots/SpotDetail";
 import SpotManagement from "./components/Spots/SpotManagement";
@@ -13,7 +14,7 @@ import SpotManagement from "./components/Spots/SpotManagement";
 // import SignupFormPage from "./components/SignupFormPage";
 
 
-// import UpdateSpot from "./components/Spots/UpdateSpots";
+
 
 
 
@@ -46,21 +47,12 @@ function App() {
           <Route path="/spots/:id">
             <SpotDetail/>
           </Route>
+          <Route>
+            <UpdateSpot/>
+          </Route>
           <Route exact path="/">
             <LandingPage/>
           </Route>
-          {/* <Route path="/spots/:id/edit">
-            <UpdateSpot/>
-          </Route>
-          <Route path="/spots/:id">
-            <ShowDetail/>
-          </Route>
-          <Route path="/login">
-            <LoginFormPage/>
-          </Route>
-          <Route path="/signup">
-            <SignupFormPage/>
-          </Route> */}
         </Switch>
       )}
     </>
