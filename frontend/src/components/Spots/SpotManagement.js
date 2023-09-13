@@ -23,6 +23,7 @@ function SpotManagement() {
 
     const loadSpots = spots && spots.map((spot) => {
         return (
+            <>
             <div key={spot && spot.id} className="mng-spot-card" onClick={()=>{history.push(`/spots/${spot.id}`)}}>
                 <img src={spot && spot.previewImage} alt={spot && spot.name} title={spot && spot.name}></img>
                 <div className="mng-spot-info">
@@ -30,19 +31,17 @@ function SpotManagement() {
                     <p><span>${spot && spot.price}</span> night</p>
                     <p className="mng-rating-info"><span>{spot && spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
                 </div>
-                <div>
-                    <OpenModalButton
-                        buttonText="Update"
-                        onButtonClick
-                        modalComponent
-                    />
-                    <OpenModalButton
-                        buttonText="Delete"
-                        onButtonClick={() => {setOnModalContent(<DeleteSpotModal spotId={spot.id}/>)}}
-                        modalComponent={<DeleteSpotModal />}
-                    />
-                </div>
             </div>
+            <div>
+                <button onClick={() => {history.push(`/spots/${spot.id}/edit`)}}>Update</button>
+
+                <OpenModalButton
+                    buttonText="Delete"
+                    onButtonClick={() => {setOnModalContent(<DeleteSpotModal spotId={spot.id}/>)}}
+                    modalComponent={<DeleteSpotModal />}
+                />
+            </div>
+            </>
         );
     });
 
