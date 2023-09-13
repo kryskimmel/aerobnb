@@ -5,16 +5,17 @@ import * as spotActions from "../../store/spots";
 import OpenModalButton from "../Modals/OpenModalButton";
 import useModal from "../../context/OpenModalContext";
 import DeleteSpotModal from "../Modals/DeleteSpotModal";
+import "./css/SpotManagement.css";
 
 
 
 function SpotManagement() {
     const dispatch = useDispatch();
     const spots = useSelector(state => Object.values(state.spots));
-    const [spotId, setSpotId] = useState();
     const history = useHistory();
-
     const {setOnModalContent} = useModal();
+
+    const createButtonCN = !spots.length ? "show-create" : "hide-create";
 
     useEffect(() => {
         dispatch(spotActions.fetchCurrUserSpots());
@@ -22,12 +23,12 @@ function SpotManagement() {
 
     const loadSpots = spots && spots.map((spot) => {
         return (
-            <div key={spot && spot.id} className="spot-card" onClick={()=>{history.push(`/spots/${spot.id}`)}}>
+            <div key={spot && spot.id} className="mng-spot-card" onClick={()=>{history.push(`/spots/${spot.id}`)}}>
                 <img src={spot && spot.previewImage} alt={spot && spot.name} title={spot && spot.name}></img>
-                <div className="spot-info">
+                <div className="mng-spot-info">
                     <p>{spot && spot.city}, {spot && spot.state}</p>
                     <p><span>${spot && spot.price}</span> night</p>
-                    <p className="rating-info"><span>{spot && spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
+                    <p className="mng-rating-info"><span>{spot && spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
                 </div>
                 <div>
                     <OpenModalButton
@@ -46,7 +47,9 @@ function SpotManagement() {
     });
 
     return (
-        <div className="spots-container">
+        <div className="mng-spots-container">
+            <h1>Manage Your Spots</h1>
+            <button className={createButtonCN} onClick={() => {history.push("/spots/new")}}>Create a New Spot</button>
             {loadSpots}
         </div>
     )

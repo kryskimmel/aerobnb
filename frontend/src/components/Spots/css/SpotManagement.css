@@ -7,13 +7,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-.create-spot-button {
-    border: 1px solid #000000;
-    box-shadow: 2px 2px 4px #000000;
-    background-color: #999999;
-    color: #FFFFFF;
-}
-
 .show-mgmt button{
 
     border: 1px solid #000000;
@@ -25,6 +18,20 @@ h1 {
     height: 40px; */
 }
 
-.hide {
+
+
+.hide-create {
     display: none
+}
+
+
+.show-create {
+    border: 1px solid #000000;
+    box-shadow: 2px 2px 4px #000000;
+    background-color: #999999;
+    color: #FFFFFF;
+}
+
+.show-create:hover {
+    cursor: pointer;
 }
