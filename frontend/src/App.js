@@ -4,13 +4,17 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import * as spotActions from "./store/spots";
 import Navigation from "./components/Navigation";
-import LoginFormPage from "./components/LoginFormPage";
-import SignupFormPage from "./components/SignupFormPage";
 import ModalContainer from "./components/Modals/ModalContainer";
-import LandingPage from "./components/Spots/LandingPage";
-import ShowDetail from "./components/Spots/SpotDetail";
 import CreateSpot from "./components/Spots/CreateSpot";
+import LandingPage from "./components/Spots/LandingPage";
+import SpotDetail from "./components/Spots/SpotDetail";
 import SpotManagement from "./components/Spots/SpotManagement";
+// import LoginFormPage from "./components/LoginFormPage";
+// import SignupFormPage from "./components/SignupFormPage";
+
+
+// import UpdateSpot from "./components/Spots/UpdateSpots";
+
 
 
 
@@ -33,14 +37,20 @@ function App() {
       <ModalContainer/>
       {isLoaded && (
         <Switch>
-          <Route exact path="/">
-            <LandingPage/>
-          </Route>
           <Route path="/spots/current">
             <SpotManagement/>
           </Route>
           <Route path="/spots/new">
             <CreateSpot/>
+          </Route>
+          <Route path="/spots/:id">
+            <SpotDetail/>
+          </Route>
+          <Route exact path="/">
+            <LandingPage/>
+          </Route>
+          {/* <Route path="/spots/:id/edit">
+            <UpdateSpot/>
           </Route>
           <Route path="/spots/:id">
             <ShowDetail/>
@@ -50,7 +60,7 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignupFormPage/>
-          </Route>
+          </Route> */}
         </Switch>
       )}
     </>
