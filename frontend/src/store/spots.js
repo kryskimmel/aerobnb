@@ -120,7 +120,7 @@ export const addSpot = (spot, previewImg) => async (dispatch) => {
             }
         };
     } catch (error) {
-        console.error('Error creating new spot:', error);
+        console.error(`There was an issue in creating your spot: ${error.message}`);
     }
 };
 
@@ -141,7 +141,7 @@ export const deleteSingleSpot = (spotId) => async (dispatch) => {
         }
     }
     catch (error) {
-        throw new Error('There was an issue in deleting your spot')
+        throw new Error(`There was an issue in deleting your spot: ${error.message}`)
     }
 };
 
