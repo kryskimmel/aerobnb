@@ -21,7 +21,7 @@ function SpotDetail() {
         )
     })
 
-    const loadSpotDetails = currSpot && (
+    const loadSpotDetails = currSpot && currSpot.Owner && (
         <>
         <div className="single-spot-info-header">
             <h1>{currSpot.name}</h1>
@@ -30,6 +30,17 @@ function SpotDetail() {
         <div className="single-spot-images">
             <img src={previewImg && previewImg.url} alt={currSpot.name} className="preview-image"></img>
             {additionalImgs}
+        </div>
+        <div className="single-spot-description">
+            <h2>{`Hosted by ${currSpot.Owner.firstName} ${currSpot.Owner.lastName}`}</h2>
+            <p>{currSpot.description}</p>
+        </div>
+        <div className="single-spot-info">
+            <p>${currSpot.price} night</p>
+            <p>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"}</p>
+            <p>{currSpot.numReviews}</p>
+            <button onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
+
         </div>
         </>
     )
