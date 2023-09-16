@@ -100,3 +100,8 @@
     color: #FFFFFF;
     margin-right: 5px;
 }
+
+
+.single-spot-info {
+    border: 1px solid red;
+}

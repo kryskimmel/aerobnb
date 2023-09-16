@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import * as spotActions from "../../store/spots";
+import "./css/SpotDetail.css"
 
 
 function SpotDetail() {
@@ -37,10 +38,12 @@ function SpotDetail() {
         </div>
         <div className="single-spot-info">
             <p>${currSpot.price} night</p>
-            <p>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"}</p>
-            <p>{currSpot.numReviews}</p>
+            <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
             <button onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
-
+        </div>
+        <hr></hr>
+        <div className="review-info">
+            <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
         </div>
         </>
     )
