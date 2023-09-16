@@ -18,12 +18,13 @@ const PostReviewModal = ({spotId}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        stars = parseInt(stars);
-        const reviewReq = {review, stars};
+        const reviewReq = {
+            review,
+            stars : parseInt(stars)
+        };
         console.log(reviewReq, ':reviewReq')
-        await dispatch(reviewActions.addAReview(reviewReq, spotId));
+        dispatch(reviewActions.addAReview(reviewReq, spotId));
         closeModal();
-        return await dispatch(reviewActions.fetchSpotReviews(spotId));
     };
 
 
