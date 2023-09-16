@@ -2,17 +2,27 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import * as spotActions from "../../store/spots";
+import * as reviewActions from "../../store/reviews";
+import { monthEquivalent } from "../../utilities/monthEquivalencies";
+import OpenModalButton from "../Modals/OpenModalButton";
+import useModal from "../../context/OpenModalContext";
+import DeleteReviewModal from "../Modals/DeleteReviewModal";
 import "./css/SpotDetail.css"
 
 
 function SpotDetail() {
     const dispatch = useDispatch();
     const currSpot = useSelector(state => state.spots);
+    const currSpotReviews = useSelector(state => Object.values(state.reviews));
+    const sessionUser = useSelector(state => state.session.user);
     const {id} = useParams();
+    const {setOnModalContent} = useModal();
 
     useEffect(() => {
-        dispatch(spotActions.fetchSingleSpot(id))
+        dispatch(spotActions.fetchSingleSpot(id));
+        dispatch(reviewActions.fetchSpotReviews(id));
     }, [id])
+
 
     const previewImg = currSpot && currSpot.SpotImages && currSpot.SpotImages.find(image => image.preview === true)
     const filteredAdditionalImgs = currSpot && currSpot.SpotImages && currSpot.SpotImages.filter((image => image.preview === false))
@@ -42,9 +52,30 @@ function SpotDetail() {
             <button onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
         </div>
         <hr></hr>
-        <div className="review-info">
-            <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
+        <div className="reviews-container">
+            <div className="review-info">
+                <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
+            </div>
+            <div className="reviews-div">
+                {currSpotReviews && currSpotReviews.map((review) => {
+                    return (
+                        <div className="review">
+                            <p>{review.User.firstName}</p>
+                            <p>{monthEquivalent(review.createdAt.slice(5,7))} {review.createdAt.slice(0,4)}</p>
+                            <p>{review.review}</p>
+                            <div className={review.userId === sessionUser.id ? "show-delete-review" : "hide-buttons"}>
+                            <OpenModalButton
+                                buttonText="Delete"
+                                onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
+                                modalComponent={<DeleteReviewModal />}
+                            />
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
+
         </>
     )
 
