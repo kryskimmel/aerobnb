@@ -11,10 +11,8 @@ const DeleteReviewModal = ({reviewId, spotId}) => {
 
     const handleYes = async (e) => {
         e.preventDefault();
-        await dispatch(reviewActions.deleteSingleReview(reviewId));
+        dispatch(reviewActions.deleteSingleReview(reviewId, spotId));
         closeModal();
-        await dispatch(reviewActions.fetchSpotReviews(spotId))
-
     };
 
     return (
