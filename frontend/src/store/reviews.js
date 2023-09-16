@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import * as spotActions from "./spots";
 
 
 const LOAD = "reviews/LOAD";
@@ -67,13 +68,11 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
             })
         });
 
-        if (!response.ok) {
-            throw new Error(`Failed to create a review for the spot with an id of ${spotId}`)
+        if (response.ok) {
+            const newResponse = await response.json();
+            dispatch(createReview(newResponse));
+            return response;
         };
-
-        const newResponse = await response.json();
-        dispatch(createReview(newResponse));
-        return response;
     }
     catch (error) {
         throw new Error(`The following error has occurred while creating a review for the selected spot: ${error.message}`)
@@ -81,14 +80,16 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
 }
 
 //DELETE REVIEW
-export const deleteSingleReview = (reviewId) => async (dispatch) => {
+export const deleteSingleReview = (reviewId, spotId) => async (dispatch) => {
     try {
         const response = await csrfFetch(`/api/reviews/${reviewId}`, {
             method: 'DELETE'
         });
         if (response.ok) {
             console.log('THE REVIEW TO DELETE HAS ID:', reviewId)
+            console.log('The spot that the review being deleted belongs to:', spotId)
             dispatch(deleteReview(reviewId));
+            await dispatch(spotActions.fetchCurrUserSpots(spotId));
             return response;
         }
         else throw new Error(`Failed to delete the review with an id of ${reviewId}`)
@@ -116,7 +117,7 @@ const reviewReducer = (state = initialState, action) => {
             newState[action.payload.id] = action.payload;
             return newState;
         case DELETE:
-            newState = action.payload;
+            delete newState[action.payload];
             return newState;
         default:
             return state;
