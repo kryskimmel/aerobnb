@@ -7,6 +7,7 @@ import { monthEquivalent } from "../../utilities/monthEquivalencies";
 import OpenModalButton from "../Modals/OpenModalButton";
 import useModal from "../../context/OpenModalContext";
 import DeleteReviewModal from "../Modals/DeleteReviewModal";
+import PostReviewModal from "../Modals/PostReviewModal";
 import "./css/SpotDetail.css"
 
 
@@ -24,6 +25,11 @@ function SpotDetail() {
     }, [id])
 
 
+    console.log('currSpot', currSpot)
+    console.log('currSpotReviews', currSpotReviews)
+    console.log('sessionUser', sessionUser)
+
+
     const previewImg = currSpot && currSpot.SpotImages && currSpot.SpotImages.find(image => image.preview === true)
     const filteredAdditionalImgs = currSpot && currSpot.SpotImages && currSpot.SpotImages.filter((image => image.preview === false))
     const additionalImgs = filteredAdditionalImgs && filteredAdditionalImgs.map((additionalImg) => {
@@ -32,7 +38,7 @@ function SpotDetail() {
         )
     })
 
-    const loadSpotDetails = currSpot && currSpot.Owner && (
+    const loadSpotDetails = currSpot && currSpot.Owner && currSpotReviews && sessionUser && (
         <>
         <div className="single-spot-info-header">
             <h1>{currSpot.name}</h1>
@@ -57,18 +63,26 @@ function SpotDetail() {
                 <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
             </div>
             <div className="reviews-div">
+                <div className={currSpot.Owner.id !== sessionUser.id && !currSpotReviews.length || currSpotReviews.find((rev => rev.userId !== sessionUser.id)) ? "show-button" : "hide-buttons"}>
+                    {console.log(currSpot.Owner.id,currSpotReviews )}
+                    <OpenModalButton
+                        buttonText="Post Your Review"
+                        onButtonClick={() => {setOnModalContent(<PostReviewModal spotId={id}/>)}}
+                        modalComponent={<PostReviewModal />}
+                    />
+                </div>
                 {currSpotReviews && currSpotReviews.map((review) => {
                     return (
                         <div className="review">
-                            <p>{review.User.firstName}</p>
+                            <p>{ review.User && review.User.firstName}</p>
                             <p>{monthEquivalent(review.createdAt.slice(5,7))} {review.createdAt.slice(0,4)}</p>
                             <p>{review.review}</p>
-                            <div className={review.userId === sessionUser.id ? "show-delete-review" : "hide-buttons"}>
-                            <OpenModalButton
-                                buttonText="Delete"
-                                onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
-                                modalComponent={<DeleteReviewModal />}
-                            />
+                            <div className={review.userId === sessionUser.id ? "show-button" : "hide-buttons"}>
+                                <OpenModalButton
+                                    buttonText="Delete"
+                                    onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
+                                    modalComponent={<DeleteReviewModal />}
+                                />
                             </div>
                         </div>
                     )
