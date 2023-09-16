@@ -93,23 +93,25 @@
 }
 
 
-.show-post-button  > * {
-    border: 2px solid #000000;
-    box-shadow: 2px 2px 0px #000000;
-    background-color: #999999;
-    color: #FFFFFF;
-    margin-right: 5px;
-}
+
 
 
 .single-spot-info {
     border: 1px solid red;
 }
 
-.show-delete-review button {
+.show-button button {
     border: 2px solid #000000;
     box-shadow: 2px 2px 0px #000000;
     background-color: #999999;
     color: #FFFFFF;
     margin-left: 5px;
 }
+
+/* .show-post-review button {
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 0px #000000;
+    background-color: #999999;
+    color: #FFFFFF;
+    margin-right: 5px;
+} */
