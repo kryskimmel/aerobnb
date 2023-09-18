@@ -11,44 +11,204 @@ module.exports = {
     options.tableName = 'SpotImages'
     return queryInterface.bulkInsert(options, [{
       "spotId": 1,
-      "url": "https://p.rdcpix.com/v01/l5fef5144-m0od-w1024_h768_x2.jpg",
+      "url": "https://images.pexels.com/photos/1693946/pexels-photo-1693946.jpeg",
       "preview": true
     },
     {
       "spotId": 1,
-      "url": "https://ssl.cdn-redfin.com/photo/68/mbphoto/990/genMid.11826990_12_0.jpg",
+      "url": "https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 1,
+      "url": "https://images.pexels.com/photos/439227/pexels-photo-439227.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 1,
+      "url": "https://images.pexels.com/photos/4050318/pexels-photo-4050318.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 1,
+      "url": "https://images.pexels.com/photos/342800/pexels-photo-342800.jpeg",
       "preview": false
     },
     {
       "spotId": 2,
-      "url": "https://photos.zillowstatic.com/fp/d724e4ebc7bbd4ec3eaacfc449b05634-cc_ft_960.jpg",
+      "url": "https://images.pexels.com/photos/14997207/pexels-photo-14997207/free-photo-of-city-building-office-architecture.jpeg",
       "preview": true
     },
     {
       "spotId": 2,
-      "url": "https://www.cbhometour.com/535-N-Michigan-Avenue-1009-Chicago-IL-60611/photos/gallery/8.jpg?ts=1614973088948",
+      "url": "https://images.pexels.com/photos/533157/pexels-photo-533157.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 2,
+      "url": "https://images.pexels.com/photos/1743227/pexels-photo-1743227.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 2,
+      "url": "https://images.pexels.com/photos/6782567/pexels-photo-6782567.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 2,
+      "url": "https://images.pexels.com/photos/18258464/pexels-photo-18258464/free-photo-of-photo-of-a-contemporary-bathroom.jpeg",
       "preview": false
     },
     {
       "spotId": 3,
-      "url": "https://ssl.cdn-redfin.com/photo/rent/54b171cd-1654-4360-ad7f-931043c896e8/bigphoto/0_2.jpg",
+      "url": "https://images.pexels.com/photos/13945429/pexels-photo-13945429.jpeg",
       "preview": true
     },
     {
       "spotId": 3,
-      "url": "https://rentpath-res.cloudinary.com/$img_current/t_3x2_webp_xl/aaba318ff7b756a1af7869d34154ec5e",
+      "url": "https://images.pexels.com/photos/2659629/pexels-photo-2659629.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 3,
+      "url": "https://images.pexels.com/photos/13945431/pexels-photo-13945431.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 3,
+      "url": "https://images.pexels.com/photos/12513476/pexels-photo-12513476.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 3,
+      "url": "https://images.pexels.com/photos/5940869/pexels-photo-5940869.jpeg",
       "preview": false
     },
     {
       "spotId": 4,
-      "url": "https://photos.zillowstatic.com/fp/28aa3002fc8ccb426cf9272b56ac510c-p_c.jpg",
+      "url": "https://images.pexels.com/photos/16631327/pexels-photo-16631327/free-photo-of-vintage-house-in-perkasie-in-pennsylvania.jpeg",
       "preview": true
     },
     {
       "spotId": 4,
-      "url": "https://ssl.cdn-redfin.com/photo/122/mbphoto/23R/genMid.2313423R_35_2.jpg",
+      "url": "https://images.pexels.com/photos/5461565/pexels-photo-5461565.jpeg",
       "preview": false
     },
+    {
+      "spotId": 4,
+      "url": "https://images.pexels.com/photos/276514/pexels-photo-276514.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 4,
+      "url": " https://images.pexels.com/photos/16088315/pexels-photo-16088315/free-photo-of-dark-photo-of-a-vintage-bathroom-with-a-small-bathtub.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 4,
+      "url": "https://images.pexels.com/photos/5824523/pexels-photo-5824523.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 5,
+      "url": "https://images.pexels.com/photos/6010285/pexels-photo-6010285.jpeg",
+      "preview": true
+    },
+    {
+      "spotId": 5,
+      "url": "https://images.pexels.com/photos/15824791/pexels-photo-15824791/free-photo-of-landscape-nature-beach-red.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 5,
+      "url": "https://images.pexels.com/photos/3049121/pexels-photo-3049121.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 5,
+      "url": "https://images.pexels.com/photos/11671085/pexels-photo-11671085.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 5,
+      "url": "https://images.pexels.com/photos/2343467/pexels-photo-2343467.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 6,
+      "url": "https://images.pexels.com/photos/13677412/pexels-photo-13677412.jpeg",
+      "preview": true
+    },
+    {
+      "spotId": 6,
+      "url": "https://images.pexels.com/photos/7635919/pexels-photo-7635919.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 6,
+      "url": "https://images.pexels.com/photos/3634740/pexels-photo-3634740.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 6,
+      "url": "https://images.pexels.com/photos/4210376/pexels-photo-4210376.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 6,
+      "url": "https://images.pexels.com/photos/4202938/pexels-photo-4202938.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 7,
+      "url": "https://images.pexels.com/photos/65225/boat-house-cottage-waters-lake-65225.jpeg",
+      "preview": true
+    },
+    {
+      "spotId": 7,
+      "url": "https://images.pexels.com/photos/13421909/pexels-photo-13421909.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 7,
+      "url": "https://images.pexels.com/photos/4946961/pexels-photo-4946961.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 7,
+      "url": "https://images.pexels.com/photos/7598359/pexels-photo-7598359.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 7,
+      "url": "https://images.pexels.com/photos/15699340/pexels-photo-15699340/free-photo-of-bedroom-interior-design-in-rustic-home.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 8,
+      "url": "https://images.pexels.com/photos/14760340/pexels-photo-14760340.jpeg",
+      "preview": true
+    },
+    {
+      "spotId": 8,
+      "url": "https://images.pexels.com/photos/5712150/pexels-photo-5712150.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 8,
+      "url": "https://images.pexels.com/photos/4761988/pexels-photo-4761988.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 8,
+      "url": "https://images.pexels.com/photos/16142769/pexels-photo-16142769/free-photo-of-blue-chairs-in-an-elegant-modern-interior.jpeg",
+      "preview": false
+    },
+    {
+      "spotId": 8,
+      "url": "https://images.pexels.com/photos/5096199/pexels-photo-5096199.jpeg",
+      "preview": false
+    }
   ], {});
   },
 
