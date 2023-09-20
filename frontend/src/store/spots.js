@@ -15,12 +15,13 @@ const loadSpots = (spots) => {
     }
 };
 
-const loadCurrSpot = (currSpot) => {
+const loadSpotById = (currSpot) => {
     return {
         type: LOAD,
         payload: currSpot
     }
 }
+
 
 const createSpot = (spot) => {
     return {
@@ -28,7 +29,6 @@ const createSpot = (spot) => {
         payload: spot
     }
 };
-
 
 
 const deleteSpot = (spotId) => {
@@ -76,7 +76,7 @@ export const fetchSingleSpot = (spotId) => async (dispatch) => {
         });
         if (response.ok) {
             const spot = await response.json();
-            dispatch(loadSpots(spot));
+            dispatch(loadSpotById(spot));
             return response;
         }
         else throw new Error(`Failed to fetch spot with an id of ${spotId}`);
