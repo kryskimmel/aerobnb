@@ -15,6 +15,13 @@ const loadSpots = (spots) => {
     }
 };
 
+const loadCurrSpot = (currSpot) => {
+    return {
+        type: LOAD,
+        payload: currSpot
+    }
+}
+
 const createSpot = (spot) => {
     return {
         type: CREATE,
@@ -63,6 +70,7 @@ export const fetchSpots = () => async (dispatch) => {
 //GET SPOT BY SPOT ID
 export const fetchSingleSpot = (spotId) => async (dispatch) => {
     try {
+        console.log(`/api/spots/${spotId}`, 'route')
         const response = await fetch(`/api/spots/${spotId}`, {
             method: 'GET'
         });
@@ -81,6 +89,7 @@ export const fetchSingleSpot = (spotId) => async (dispatch) => {
 //GET CURR USER SPOTS
 export const fetchCurrUserSpots = () => async (dispatch) => {
     try {
+        console.log(`/api/spots/current`, 'current')
         const response = await fetch(`/api/spots/current`, {
             method: 'GET'
         });
@@ -148,7 +157,6 @@ export const deleteSingleSpot = (spotId) => async (dispatch) => {
 
 //UPDATE SPOT
 export const updateSingleSpot = (spotId, spot, previewImg) => async (dispatch) => {
-
     try {
         const updatedSpotResponse = await csrfFetch(`/api/spots/${spotId}`, {
             method: 'PUT',
@@ -164,7 +172,6 @@ export const updateSingleSpot = (spotId, spot, previewImg) => async (dispatch) =
     catch (error) {
         throw new Error('There was an issue in updating your spot')
     }
-
 }
 
 
