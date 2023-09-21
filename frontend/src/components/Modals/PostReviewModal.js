@@ -3,17 +3,17 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as reviewActions from "../../store/reviews";
 import useModal from "../../context/OpenModalContext";
-import StarRating from "../../utilities/StarRating";
 import './css/PostReviewModal.css'
-
-
+import {FaStar} from "react-icons/fa";
+import '../../utilities/StarRating.css';
 
 
 
 const PostReviewModal = ({spotId}) => {
     const dispatch = useDispatch();
     const [review, setReview] = useState();
-    let [stars, setStars] = useState(1);
+    let [stars, setStars] = useState(null);
+    const [hover, setHover] = useState(null);
     const {closeModal} = useModal();
     const history = useHistory();
 
@@ -40,14 +40,29 @@ const PostReviewModal = ({spotId}) => {
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
                     ></textarea>
-                    <StarRating/>
-                    {/* <input
-                        type="range"
-                        max="5"
-                        step="1"
-                        value={stars}
-                        onChange={(e) => setStars(e.target.value)}
-                    ></input> */}
+                    <div>
+                    {[...Array(5)].map((star, i) => {
+                const ratingValue = i + 1;
+                console.log(stars, ':the current rating')
+                return (
+                    <label>
+                        <input
+                            type='radio'
+                            name='rating'
+                            value={ratingValue}
+                            onClick={() => setStars(ratingValue)}
+                            />
+                        <FaStar
+                            className='star'
+                            color={ratingValue <= (hover || stars) ? "#ffc107" : "#e4e5e9"}
+                            size={100}
+                            onMouseEnter={() => setHover(ratingValue)}
+                            onMouseLeave={() => setHover(null)}
+                            />
+                    </label>
+                )
+            })}
+                    </div>
                     <button type="submit"  className="cannot-submit-button">Submit Your Review</button>
                 </form>
             </div>
