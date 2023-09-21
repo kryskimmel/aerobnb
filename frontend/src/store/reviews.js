@@ -111,8 +111,9 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD:
             if (action.payload.Reviews) {
                 action.payload.Reviews.forEach((review) => newState[review.id] = review);
+                console.log(newState, 'just loaded the current state')
                 return newState;
-            };
+            }
         case CREATE:
             newState = {...state, [action.payload.id] : action.payload}
             console.log(newState, 'this is the new state')
