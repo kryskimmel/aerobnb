@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import * as spotActions from "../../store/spots";
@@ -18,11 +18,10 @@ function SpotDetail() {
     const sessionUser = useSelector(state => state.session.user);
     const {id} = useParams();
     const {setOnModalContent} = useModal();
-    const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
         dispatch(spotActions.fetchSingleSpot(id));
-        dispatch(reviewActions.fetchSpotReviews(id));
+        dispatch(reviewActions.fetchSpotReviews(id))
     }, [id])
 
 

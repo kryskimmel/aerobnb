@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as reviewActions from "../../store/reviews";
 import useModal from "../../context/OpenModalContext";
+import StarRating from "../../utilities/StarRating";
 import './css/PostReviewModal.css'
 
 
@@ -39,13 +40,14 @@ const PostReviewModal = ({spotId}) => {
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
                     ></textarea>
-                    <input
+                    <StarRating/>
+                    {/* <input
                         type="range"
                         max="5"
                         step="1"
                         value={stars}
                         onChange={(e) => setStars(e.target.value)}
-                    ></input>
+                    ></input> */}
                     <button type="submit"  className="cannot-submit-button">Submit Your Review</button>
                 </form>
             </div>
