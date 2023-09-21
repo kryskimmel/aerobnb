@@ -23,7 +23,8 @@
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 25% 25%;
-    font-size: 14px;
+    font-size: 12px;
+    border: 1px solid green
 }
 
 .rating-info {

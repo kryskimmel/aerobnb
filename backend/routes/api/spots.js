@@ -15,7 +15,6 @@ const router = express.Router();
 /****************************************************** */
 //Get all spots
 router.get( '/', validateQueryParameter, async (req, res) => {
-
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
     const pagination = {};
@@ -141,6 +140,7 @@ router.get( '/current', requireAuth, async (req, res) => {
 /****************************************************** */
 //Get details of a spot from an id
 router.get( '/:spotId', existSpot, async (req, res, next) => {
+    console.log('hello world')
     const findSpotById = await Spot.findOne({
         where: {id: req.params.spotId},
         include: [{

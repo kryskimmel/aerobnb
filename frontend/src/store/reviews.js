@@ -89,7 +89,7 @@ export const deleteSingleReview = (reviewId, spotId) => async (dispatch) => {
             console.log('THE REVIEW TO DELETE HAS ID:', reviewId)
             console.log('The spot that the review being deleted belongs to:', spotId)
             dispatch(deleteReview(reviewId));
-            await dispatch(spotActions.fetchCurrUserSpots(spotId));
+            // await dispatch(spotActions.fetchCurrUserSpots(spotId));
             return response;
         }
         else throw new Error(`Failed to delete the review with an id of ${reviewId}`)
@@ -114,7 +114,8 @@ const reviewReducer = (state = initialState, action) => {
                 return newState;
             };
         case CREATE:
-            newState[action.payload.id] = action.payload;
+            newState = {...state, [action.payload.id] : action.payload}
+            console.log(newState, 'this is the new state')
             return newState;
         case DELETE:
             delete newState[action.payload];

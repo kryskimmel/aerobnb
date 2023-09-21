@@ -11,20 +11,43 @@
 
 .preview-image {
     height: 400px;
-    width: 500px;
+    /* width: 630px; */
     padding-right: 3px;
+
 }
 
 .additional-imgs {
+    display: flex;
+    flex-wrap: wrap;
     height: 200px;
-    width: 300px;
+    width: 280px;
 }
 
-.single-spot-imgs {
+.preview-img-div {
+    border: 2px solid orange;
+    width: 500px;
+    object-fit: fill;
+}
+
+.imgs-div {
+    border: 1px solid red;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    justify-content: center;
+    height: 400px;
 }
+
+
+
+.additional-imgs-div {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-auto-rows: auto;
+    gap: 2px
+}
+
+
+
 
 .single-spot-info-section {
     display: grid;

@@ -18,6 +18,7 @@ function SpotDetail() {
     const sessionUser = useSelector(state => state.session.user);
     const {id} = useParams();
     const {setOnModalContent} = useModal();
+    const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
         dispatch(spotActions.fetchSingleSpot(id));
@@ -25,16 +26,11 @@ function SpotDetail() {
     }, [id])
 
 
-    console.log('currSpot', currSpot)
-    console.log('currSpotReviews', currSpotReviews)
-    console.log('sessionUser', sessionUser)
-
-
     const previewImg = currSpot && currSpot.SpotImages && currSpot.SpotImages.find(image => image.preview === true)
     const filteredAdditionalImgs = currSpot && currSpot.SpotImages && currSpot.SpotImages.filter((image => image.preview === false))
     const additionalImgs = filteredAdditionalImgs && filteredAdditionalImgs.map((additionalImg) => {
         return (
-            <img src={additionalImg && additionalImg.url} alt={currSpot && currSpot.name} key={additionalImg && additionalImg.id}></img>
+            <img src={additionalImg && additionalImg.url} alt={currSpot && currSpot.name} key={additionalImg && additionalImg.id} className="additional-imgs"></img>
         )
     })
 
@@ -42,11 +38,15 @@ function SpotDetail() {
         <>
         <div className="single-spot-info-header">
             <h1>{currSpot.name}</h1>
-            <h2>{currSpot.city}, {currSpot.state}, {currSpot.city}</h2>
+            <h2>{currSpot.city}, {currSpot.state}</h2>
         </div>
-        <div className="single-spot-images">
+        <div className="imgs-div">
+            <div className="preview-img-div">
             <img src={previewImg && previewImg.url} alt={currSpot.name} className="preview-image"></img>
-            {additionalImgs}
+            </div>
+            <div className="additional-imgs-div">
+                {additionalImgs}
+            </div>
         </div>
         <div className="single-spot-description">
             <h2>{`Hosted by ${currSpot.Owner.firstName} ${currSpot.Owner.lastName}`}</h2>

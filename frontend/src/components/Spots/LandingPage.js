@@ -1,17 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as spotActions from "../../store/spots";
 import './css/LandingPage.css';
+import LoadingSpinner from "../../utilities/LoadingSpinner";
 
 
 function LandingPage() {
     const dispatch = useDispatch();
     const spots = useSelector(state => Object.values(state.spots));
     const history = useHistory();
+    const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
-        dispatch(spotActions.fetchSpots());
+        dispatch(spotActions.fetchSpots())
+        .then(() => setIsLoaded(true))
     }, [dispatch]);
 
     const loadSpots = spots && spots.map((spot) => {
@@ -27,10 +30,15 @@ function LandingPage() {
         );
     });
 
-    return (
-        <div className="spots-container">
-            {loadSpots}
-        </div>
-    )
+    if (!isLoaded)
+    return <LoadingSpinner/>
+    else {
+        return (
+            <div className="spots-container">
+                {loadSpots}
+            </div>
+        )
+    }
+
 }
 export default LandingPage;
