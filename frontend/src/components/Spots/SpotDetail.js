@@ -47,15 +47,18 @@ function SpotDetail() {
                 {additionalImgs}
             </div>
         </div>
-        <div className="single-spot-description">
-            <h2>{`Hosted by ${currSpot.Owner.firstName} ${currSpot.Owner.lastName}`}</h2>
-            <p>{currSpot.description}</p>
+        <div className="single-spot-info-container">
+            <div className="single-spot-description">
+                <h2>{`Hosted by ${currSpot.Owner.firstName} ${currSpot.Owner.lastName}`}</h2>
+                <p>{currSpot.description}</p>
+            </div>
+            <div className="single-spot-info">
+                <p>${currSpot.price} night</p>
+                <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
+                <button onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
+            </div>
         </div>
-        <div className="single-spot-info">
-            <p>${currSpot.price} night</p>
-            <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
-            <button onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
-        </div>
+
         <hr></hr>
         <div className="reviews-container">
             <div className="review-info">
