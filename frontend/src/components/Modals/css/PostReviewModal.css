@@ -14,18 +14,24 @@
     border: 3px solid #000000;
     border-radius: 30px;
     background-color: #FFFFFF;
-    width: 350px;
+    width: 300px;
     height: 250px;
     margin: 0 auto;
     margin-top: 105px;
     padding: 30px 30px
   }
 
+  .form-div {
+    border: 1px solid red;
+    text-align: center;
+  }
+
   .text-area {
-    width: 350px;
+    width: 300px;
     height: 100px;
     border: 2px solid #000000;
   }
+
 
   .can-submit-button {
     background-color: #FF5A5F;

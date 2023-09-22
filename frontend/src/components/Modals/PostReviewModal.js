@@ -32,39 +32,41 @@ const PostReviewModal = ({spotId}) => {
     return (
         <div className="overlay">
             <div className="post-review-modal">
-                <form onSubmit={handleSubmit}>
-                    <h1>How was your stay?</h1>
-                    <textarea
-                        className="text-area"
-                        placeholder="Leave your review here..."
-                        value={review}
-                        onChange={(e) => setReview(e.target.value)}
-                    ></textarea>
-                    <div>
-                    {[...Array(5)].map((star, i) => {
-                const ratingValue = i + 1;
-                console.log(stars, ':the current rating')
-                return (
-                    <label>
-                        <input
-                            type='radio'
-                            name='rating'
-                            value={ratingValue}
-                            onClick={() => setStars(ratingValue)}
-                            />
-                        <FaStar
-                            className='star'
-                            color={ratingValue <= (hover || stars) ? "#ffc107" : "#e4e5e9"}
-                            size={100}
-                            onMouseEnter={() => setHover(ratingValue)}
-                            onMouseLeave={() => setHover(null)}
-                            />
-                    </label>
-                )
-            })}
-                    </div>
-                    <button type="submit"  className="cannot-submit-button">Submit Your Review</button>
-                </form>
+                <div className="form-div">
+                    <form onSubmit={handleSubmit}>
+                        <h1>How was your stay?</h1>
+                        <textarea
+                            className="text-area"
+                            placeholder="Leave your review here..."
+                            value={review}
+                            onChange={(e) => setReview(e.target.value)}
+                        ></textarea>
+                        <div>
+                        {[...Array(5)].map((star, i) => {
+                        const ratingValue = i + 1;
+                        console.log(stars, ':the current rating')
+                        return (
+                            <label>
+                                <input
+                                    type='radio'
+                                    name='rating'
+                                    value={ratingValue}
+                                    onClick={() => setStars(ratingValue)}
+                                    />
+                                <FaStar
+                                    className='star'
+                                    color={ratingValue <= (hover || stars) ? "#ffc107" : "#e4e5e9"}
+                                    size={20}
+                                    onMouseEnter={() => setHover(ratingValue)}
+                                    onMouseLeave={() => setHover(null)}
+                                    />
+                            </label>
+                        )
+                })}
+                        </div>
+                        <button type="submit"  className="cannot-submit-button">Submit Your Review</button>
+                    </form>
+                </div>
             </div>
         </div>
     )
