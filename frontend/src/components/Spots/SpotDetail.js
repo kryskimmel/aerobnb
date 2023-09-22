@@ -97,7 +97,6 @@ function SpotDetail() {
                         </div>
                     )
                 }
-
             })}
         </div>
     )
