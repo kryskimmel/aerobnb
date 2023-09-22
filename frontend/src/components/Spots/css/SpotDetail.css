@@ -18,16 +18,15 @@
 
 
 .preview-img-div {
-    width: 500px;
-    object-fit: fill;
+    width: 100vw;
 }
 
 
 .preview-img {
-    height: 400px;
-    /* width: 630px; */
-    padding-right: 3px;
-
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    padding-right: 10px;
 }
 
 
@@ -67,12 +66,9 @@
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 50% 50%;
+    margin-top: 20px;
 }
 
-
-.spot-info-box li {
-    list-style: none;
-}
 
 
 .reserve-button {

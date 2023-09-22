@@ -56,10 +56,8 @@ function SpotDetail() {
                     <p>{currSpot.description}</p>
                 </div>
                 <div className="spot-info-box">
-                    <ul>
-                        <li>${currSpot.price} night</li>
-                        <li><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</li>
-                    </ul>
+                    <p><span style={{fontWeight:"500", fontSize:"20px", marginLeft:"20px"}}>${currSpot.price} </span>night</p>
+                    <p><i className="fa-solid fa-star" style={{color:"#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
                     <button className="reserve-button" onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
                 </div>
             </div>
