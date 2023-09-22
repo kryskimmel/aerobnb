@@ -84,6 +84,10 @@
     margin-bottom: 300px;
 }
 
+.review li {
+    list-style: none;
+}
+
 .each-review-div {
     line-height: 70%;
     margin-bottom: 30px;
