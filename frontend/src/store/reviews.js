@@ -116,7 +116,7 @@ const reviewReducer = (state = initialState, action) => {
             }
         case CREATE:
             newState = {...state, [action.payload.id] : action.payload}
-            console.log(newState, 'this is the new state')
+            console.log('CREATE REVIEW REDUCER:', newState)
             return newState;
         case DELETE:
             newState = {...state};
