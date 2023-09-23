@@ -93,18 +93,6 @@ module.exports = {
       "review": 'Gorgeous lake that is in view of the house, but there were a few things that I didn\'t particularly like about my stay here.',
       "stars": 2,
     },
-    {
-      "spotId": 8,
-      "userId": 2,
-      "review": 'Four words: I would come back.',
-      "stars": 5,
-    },
-    {
-      "spotId": 8,
-      "userId": 3,
-      "review": 'Staying here was a dream.',
-      "stars": 5,
-    },
   ], {});
   },
 
