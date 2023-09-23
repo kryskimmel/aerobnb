@@ -71,7 +71,7 @@ function SpotDetail() {
             </div>
 
             {currSpot.Owner && sessionUser && currSpotReviews && (
-                <div className={(currSpot.Owner.id !== sessionUser.id) && (currSpotReviews.find(review => review.userId !== sessionUser.id) || !currSpotReviews.length) ? "show-button" : "hide-buttons"}>
+                <div className={currSpotReviews.length && (currSpot.Owner.id === sessionUser.id) || (currSpotReviews.find(review => review.userId === sessionUser.id)) ? "hide-buttons" : "show-button"}>
                     <OpenModalButton
                         buttonText="Post Your Review"
                         onButtonClick={() => {setOnModalContent(<PostReviewModal spotId={id} />)}}
