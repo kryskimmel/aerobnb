@@ -19,6 +19,8 @@ function SpotDetail() {
     const {id} = useParams();
     const {setOnModalContent} = useModal();
 
+    console.log('The current spot reviews:', currSpotReviews)
+
 
     useEffect(() => {
         dispatch(spotActions.fetchSingleSpot(id));
@@ -68,8 +70,8 @@ function SpotDetail() {
                 <p><i className="fa-solid fa-star" style={{color: "#000000"}}></i>{currSpot.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}</p>
             </div>
 
-            {currSpot.Owner && sessionUser && (
-                <div className={currSpot.Owner.id !== sessionUser.id ? "show-button" : "hide-buttons"}>
+            {currSpot.Owner && sessionUser && currSpotReviews && (
+                <div className={(currSpot.Owner.id !== sessionUser.id) && (currSpotReviews.find(review => review.userId !== sessionUser.id) || !currSpotReviews.length) ? "show-button" : "hide-buttons"}>
                     <OpenModalButton
                         buttonText="Post Your Review"
                         onButtonClick={() => {setOnModalContent(<PostReviewModal spotId={id} />)}}
