@@ -12,6 +12,7 @@ import SpotDetail from "./components/Spots/SpotDetail";
 import SpotManagement from "./components/Spots/SpotManagement";
 // import LoginFormPage from "./components/LoginFormPage";
 // import SignupFormPage from "./components/SignupFormPage";
+import Review from "./components/Reviews/Review";
 
 
 
@@ -38,6 +39,9 @@ function App() {
       <ModalContainer/>
       {isLoaded && (
         <Switch>
+          <Route path="/review">
+            <Review/>
+          </Route>
           <Route path="/spots/:id/edit">
             <UpdateSpot/>
           </Route>
