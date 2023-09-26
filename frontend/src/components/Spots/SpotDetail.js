@@ -64,10 +64,6 @@ function SpotDetail() {
                         {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpot?.numReviews ? currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews` : "0 reviews"}
                         {console.log('current reviews:', currSpot?.numReviews)}
                     </p>
-                    {/* <p>
-                        <i className="fa-solid fa-star" style={{color:"#000000"}}/>
-                        {currSpot?.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot?.numReviews && currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews`}
-                    </p> */}
                     <button className="reserve-button" onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
                 </div>
             </div>
