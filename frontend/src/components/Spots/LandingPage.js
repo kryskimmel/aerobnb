@@ -8,7 +8,7 @@ import LoadingSpinner from "../../utilities/LoadingSpinner";
 
 function LandingPage() {
     const dispatch = useDispatch();
-    const spots = useSelector(state => Object.values(state.spots));
+    const spots = Object.values(useSelector(state => state.spots));
     const history = useHistory();
     const [isLoaded, setIsLoaded] = useState(false)
 
@@ -17,28 +17,25 @@ function LandingPage() {
         .then(() => setIsLoaded(true))
     }, [dispatch]);
 
-    const loadSpots = spots && spots.map((spot) => {
-        return (
-            <div key={spot && spot.id} className="spot-card" onClick={()=>{history.push(`/spots/${spot.id}`)}}>
-                <img src={spot && spot.previewImage} alt={spot && spot.name} title={spot && spot.name}></img>
-                <div className="spot-info" key={spot && `spot-info-${spot.id}`}>
-                    <p>{spot && spot.city}, {spot && spot.state}</p>
-                    <p><span>${spot && spot.price}</span> night</p>
-                    <p className="rating-info"><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span>{spot && spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
-                </div>
-            </div>
-        );
-    });
-
-    if (!isLoaded)
-    return <LoadingSpinner/>
+    if (!isLoaded) return <LoadingSpinner/>
     else {
         return (
             <div className="spots-container">
-                {loadSpots}
+                {spots?.map((spot) => {
+                    return (
+                        <div key={spot && spot.id} className="spot-card" onClick={()=>{history.push(`/spots/${spot.id}`)}}>
+                            <img src={spot && spot.previewImage} alt={spot && spot.name} title={spot && spot.name}></img>
+                            <div className="spot-info" key={spot && `spot-info-${spot.id}`}>
+                                <p>{spot && spot.city}, {spot && spot.state}</p>
+                                <p><span>${spot && spot.price}</span> night</p>
+                                <p className="rating-info"><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span>{spot && spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         )
     }
+};
 
-}
 export default LandingPage;

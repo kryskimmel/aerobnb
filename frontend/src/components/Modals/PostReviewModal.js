@@ -23,10 +23,10 @@ const PostReviewModal = ({spotId}) => {
             review,
             stars : parseInt(stars)
         };
-        console.log(reviewReq, ':reviewReq')
         dispatch(reviewActions.addAReview(reviewReq, spotId));
         closeModal();
     };
+
 
 
     return (
@@ -61,8 +61,8 @@ const PostReviewModal = ({spotId}) => {
                                     onMouseLeave={() => setHover(null)}
                                     />
                             </label>
-                        )
-                })}
+                            )
+                        })}
                         </div>
                         <button type="submit"  className="cannot-submit-button">Submit Your Review</button>
                     </form>
