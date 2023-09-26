@@ -61,7 +61,7 @@ function SpotDetail() {
                     <p><span style={{fontWeight:"500", fontSize:"20px", marginLeft:"20px"}}>${currSpot?.price} </span>night</p>
                     <p>
                         <i className="fa-solid fa-star" style={{color:"#000000"}}/>
-                        {currSpot?.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot?.numReviews ? currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews` : "0 reviews"}
+                        {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpot?.numReviews ? currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews` : "0 reviews"}
                         {console.log('current reviews:', currSpot?.numReviews)}
                     </p>
                     {/* <p>
