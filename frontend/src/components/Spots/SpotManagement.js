@@ -29,8 +29,8 @@ function SpotManagement() {
                 <button className={createButtonCN} onClick={() => {history.push("/spots/new")}}>Create a New Spot</button>
                 {spots && spots.map((spot) => {
                     return (
-                        <div className="mgmt-spots">
-                            <div key={spot?.id} className="spot-card" onClick={()=>{history.push(`/spots/${spot?.id}`)}}>
+                        <div key={spot?.id} className="mgmt-spots">
+                            <div className="spot-card" onClick={()=>{history.push(`/spots/${spot?.id}`)}}>
                                 <img src={spot?.previewImage} alt={spot?.name} title={spot?.name}></img>
                                 <div className="spot-info">
                                     <p>{spot?.city}, {spot?.state}</p>
