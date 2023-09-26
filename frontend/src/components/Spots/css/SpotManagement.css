@@ -3,9 +3,15 @@ h1 {
     font-weight: 500;
 }
 
-.header-div {
+/* .header-div {
     margin-bottom: 30px;
+} */
+
+
+.mgmt-spots-container {
+    display: flex;
 }
+
 
 .show-mgmt button{
 
