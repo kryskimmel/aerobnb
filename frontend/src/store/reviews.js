@@ -102,7 +102,7 @@ export const deleteSingleReview = (reviewId, spotId) => async (dispatch) => {
 
 
 //Reducer:
-const initialState = {reviews: null};
+const initialState = {};
 
 const reviewReducer = (state = initialState, action) => {
     let newState = {};
@@ -111,12 +111,13 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD:
             if (action.payload.Reviews) {
                 action.payload.Reviews.forEach((review) => newState[review.id] = review);
-                console.log(newState, 'just loaded the current state')
                 return newState;
             }
+            return newState;
         case CREATE:
-            newState = {...state, [action.payload.id] : action.payload}
-            console.log('CREATE REVIEW REDUCER:', newState)
+            newState = JSON.parse(JSON.stringify(state));
+            // The line above is making a deep copy
+            newState[action.payload.id] = action.payload;
             return newState;
         case DELETE:
             newState = {...state};

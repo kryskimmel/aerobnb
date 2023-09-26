@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 
 const LOAD = "spots/LOAD";
+const LOADSINGLESPOT = "spot/LOADSINGLESPOT"
 const CREATE = "spots/CREATE";
 const DELETE = "spots/DELETE";
 const UPDATE = "spots/UPDATE";
@@ -15,10 +16,10 @@ const loadSpots = (spots) => {
     }
 };
 
-const loadSpotById = (currSpot) => {
+const loadSpotById = (spot) => {
     return {
-        type: LOAD,
-        payload: currSpot
+        type: LOADSINGLESPOT,
+        payload: spot
     }
 }
 
@@ -178,7 +179,7 @@ export const updateSingleSpot = (spotId, spot, previewImg) => async (dispatch) =
 
 
 //Reducer:
-const initialState = {spots: null};
+const initialState = {};
 
 const spotReducer = (state = initialState, action) => {
     let newState = {};
@@ -193,6 +194,9 @@ const spotReducer = (state = initialState, action) => {
                 newState = action.payload;
                 return newState;
             }
+        case LOADSINGLESPOT:
+            newState = {...state, [action.payload.id] : action.payload}
+            return newState;
         case CREATE:
             newState = {...state, [action.payload.id] : action.payload}
             return newState;
