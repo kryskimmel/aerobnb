@@ -71,10 +71,10 @@ function SpotDetail() {
             <hr></hr>
 
             <div className="reviews-header">
-                {/* <p>
+                <p>
                     <i className="fa-solid fa-star" style={{color: "#000000"}}></i>
-                    {currSpot?.avgStarRating ? currSpot.avgStarRating : "New"} • {currSpot?.numReviews && currSpot.numReviews === 1 ? `${currSpot?.numReviews} review` : `${currSpot.numReviews} reviews`}
-                </p> */}
+                    {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpot?.numReviews ? currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews` : "0 reviews"}
+                </p>
             </div>
 
             {currSpot?.Owner && sessionUser && currSpotReviews && (
