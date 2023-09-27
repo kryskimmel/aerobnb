@@ -7,6 +7,7 @@
   inset: 0;
 }
 
+
 .login-modal {
   display: flex;
   flex-direction: column;
@@ -15,10 +16,19 @@
   border-radius: 10px;
   background-color: #FFFFFF;
   width: 350px;
-  height: 240px;
   margin: 0 auto;
   margin-top: 105px;
-  padding: 30px 30px
+  padding: 0px 30px
+}
+
+
+.form-container-div h1 {
+  margin: 15px 0
+}
+
+
+label {
+  text-align: left;
 }
 
 
@@ -28,9 +38,6 @@
   margin-bottom: 30px;
 }
 
-label {
-  text-align: left;
-}
 
 .enabled-button {
   background-color: #FF5A5F;
@@ -41,6 +48,7 @@ label {
   height: 40px;
   margin-bottom: 5px;
 }
+
 
 .disabled-button {
   background-color: #FFFFFF;
