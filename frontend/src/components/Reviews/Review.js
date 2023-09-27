@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import * as reviewActions from "../../store/reviews";
@@ -7,7 +7,7 @@ import DeleteReviewModal from "../Modals/DeleteReviewModal";
 import PostReviewModal from "../Modals/PostReviewModal";
 import useModal from "../../context/OpenModalContext";
 import { monthEquivalent } from "../../utilities/monthEquivalencies";
-import { fetchCurrUserSpots } from "../../store/spots";
+
 
 
 function Review () {
@@ -47,7 +47,7 @@ function Review () {
                 </div>
             )}
 
-            {sessionUser && currSpotReviews && currSpotReviews.map(review => {
+            {currSpotReviews && currSpotReviews.map(review => {
                 if (review && review?.User) {
                     return (
                         <div className="reviews" key={review.id}>
@@ -56,7 +56,7 @@ function Review () {
                                 <li style={{color:"#989898"}}>{monthEquivalent(review.createdAt.slice(5,7))} {review.createdAt.slice(0,4)}</li>
                                 <li>{review.review}</li>
                             </ul>
-                            <div className={review?.userId === sessionUser.id ? "show-button" : "hide-buttons"}>
+                            <div className={review?.userId === sessionUser?.id ? "show-button" : "hide-buttons"}>
                             <OpenModalButton
                                     buttonText="Delete"
                                     onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
@@ -65,6 +65,8 @@ function Review () {
                             </div>
                         </div>
                     )
+                } else {
+                    return null
                 }
             })}
         </>
