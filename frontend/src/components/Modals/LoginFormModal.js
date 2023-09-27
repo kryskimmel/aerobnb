@@ -75,7 +75,7 @@ const LoginFormModal = () => {
                             <button type="submit" disabled={disable} className={buttonClassName}>Log In</button>
                         </div>
                         <div>
-                            <li className="demo-user" onClick={handleDemoUser}>Demo User</li>
+                            <label className="demo-user" onClick={handleDemoUser}>Log in as Demo User</label>
                         </div>
                     </form>
                 </div>
