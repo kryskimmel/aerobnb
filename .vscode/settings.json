@@ -12,5 +12,6 @@
     "hide-files.files": [
         ".vscode",
         ".gitignore"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }
