@@ -44,13 +44,14 @@
     position: fixed;
     top: 68px;
     right: 28px;
-
     padding: 10px 20px;
 }
 
 .profile-dropdown li {
     font-size: 14pt;
-    padding: 2px 0px
+    padding: 2px 0px;
+    display: flex;
+    justify-content: center;
 }
 
 
@@ -59,7 +60,6 @@
     border-radius: 50px;
     background-color: #999999;
     color: #FFFFFF;
-    margin-top:20px;
     margin-left: 50px;
     margin-right: 50px;
     padding: 10px
