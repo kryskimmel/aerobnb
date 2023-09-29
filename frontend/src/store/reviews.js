@@ -70,6 +70,7 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
 
         if (response.ok) {
             const newResponse = await response.json();
+            console.log('newwwewewe', newResponse)
             await dispatch(createReview(newResponse));
             return response;
         };
@@ -110,6 +111,7 @@ const reviewReducer = (state = initialState, action) => {
         case LOAD:
             if (action.payload.Reviews) {
                 action.payload.Reviews.map((review) => newState[review.id] = review);
+                console.log('the load state', newState)
                 return newState;
             }
             return newState;
@@ -117,6 +119,7 @@ const reviewReducer = (state = initialState, action) => {
             newState = JSON.parse(JSON.stringify(state));
             // The line above is making a deep copy
             newState[action.payload.id] = action.payload;
+            console.log('the new create state', newState)
             return newState;
         case DELETE:
             newState = {...state};
