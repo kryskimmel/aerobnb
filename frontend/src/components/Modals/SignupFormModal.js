@@ -23,14 +23,16 @@ const SignupFormModal = () => {
         username.length < 4 || password.length < 6 ? setDisable(true) : setDisable(false);
      }, [username, password, disable])
 
+
+
     if (sessionUser) return <Redirect to="/" />;
 
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
         if (password === confirmPassword) {
-            setErrors({});
             return dispatch(sessionActions.signup({
                 firstName,
                 lastName,
@@ -38,12 +40,6 @@ const SignupFormModal = () => {
                 username,
                 password
             }))
-            // .catch(async (res) => {
-            //     const data = await res.json();
-            //     if (data && data.errors) {
-            //         setErrors(data.errors);
-            //     }
-            // });
         }
     return setErrors({
       confirmPassword: "Confirm Password field must be the same as the Password field"

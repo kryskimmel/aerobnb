@@ -61,10 +61,7 @@ export const signup = (user) => async (dispatch) => {
             throw new Error('Failed to create user');
         }
         const data = await response.json();
-        console.log(data, ':data after await response.json')
         dispatch(setUser(data.user));
-        console.log(data.user, ':after dispatch')
-        console.log(response, 'the response')
         return response;
     }
     catch (error) {
