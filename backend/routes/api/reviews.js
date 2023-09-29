@@ -91,7 +91,6 @@ router.put( '/:reviewId', requireAuth, existReview, isAuthorizedReview, validate
 //Delete a review
 router.delete( '/:reviewId', requireAuth, existReview, isAuthorizedReview, async (req, res) => {
     const findReviewById = await Review.findByPk(req.params.reviewId);
-
     await findReviewById.destroy();
     return res.json({message: 'Successfully deleted'})
 });

@@ -17,13 +17,17 @@ const PostReviewModal = ({spotId}) => {
     const {closeModal} = useModal();
     const history = useHistory();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const reviewReq = {
             review,
             stars : parseInt(stars)
         };
-        dispatch(reviewActions.addAReview(reviewReq, spotId));
+        dispatch(reviewActions.addAReview(reviewReq, spotId))
+        .then(() => {
+          // After the review is added, fetch spot reviews to update the count
+          dispatch(reviewActions.fetchSpotReviews(spotId));
+        })
         closeModal();
     };
 
@@ -46,7 +50,7 @@ const PostReviewModal = ({spotId}) => {
                         const ratingValue = i + 1;
                         console.log(stars, ':the current rating')
                         return (
-                            <label>
+                            <label key={i}>
                                 <input
                                     type='radio'
                                     name='rating'

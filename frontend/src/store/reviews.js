@@ -70,7 +70,7 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
 
         if (response.ok) {
             const newResponse = await response.json();
-            dispatch(createReview(newResponse));
+            await dispatch(createReview(newResponse));
             return response;
         };
     }
@@ -80,16 +80,15 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
 }
 
 //DELETE REVIEW
-export const deleteSingleReview = (reviewId, spotId) => async (dispatch) => {
+export const deleteSingleReview = (reviewId) => async (dispatch) => {
+    console.log('thunk reviewid', reviewId)
     try {
         const response = await csrfFetch(`/api/reviews/${reviewId}`, {
             method: 'DELETE'
         });
+        console.log('RESPONSE', response)
         if (response.ok) {
-            console.log('THE REVIEW TO DELETE HAS ID:', reviewId)
-            console.log('The spot that the review being deleted belongs to:', spotId)
             dispatch(deleteReview(reviewId));
-            // await dispatch(spotActions.fetchCurrUserSpots(spotId));
             return response;
         }
         else throw new Error(`Failed to delete the review with an id of ${reviewId}`)
@@ -110,7 +109,7 @@ const reviewReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD:
             if (action.payload.Reviews) {
-                action.payload.Reviews.forEach((review) => newState[review.id] = review);
+                action.payload.Reviews.map((review) => newState[review.id] = review);
                 return newState;
             }
             return newState;

@@ -9,10 +9,16 @@ const DeleteReviewModal = ({reviewId, spotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
 
+
     const handleYes = async (e) => {
         e.preventDefault();
-        dispatch(reviewActions.deleteSingleReview(reviewId, spotId));
-        closeModal();
+        try {
+            dispatch(reviewActions.deleteSingleReview(reviewId)).then(() => dispatch(reviewActions.fetchSpotReviews(spotId)))
+            closeModal();
+        }
+        catch (error) {
+            console.error("There was an error in deleting the review", error)
+        }
     };
 
     return (
