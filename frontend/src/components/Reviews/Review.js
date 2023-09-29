@@ -24,7 +24,6 @@ function Review () {
     const sessionUser = useSelector(state => state.session.user);
     const {setOnModalContent} = useModal();
 
-    console.log('curr spot reviews before return:', currSpotReviews)
 
 
 
@@ -33,10 +32,10 @@ function Review () {
             <div className="reviews-header">
                 <p>
                     <i className="fa-solid fa-star" style={{color: "#000000"}}></i>
-                    {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpot?.numReviews ? currSpot.numReviews === 1 ? `${currSpot.numReviews} review` : `${currSpot.numReviews} reviews` : "0 reviews"}
+                    {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpotReviews ? currSpotReviews.length === 1 ? `${currSpotReviews.length} review` : `${currSpotReviews.length} reviews` : "0 reviews"}
+                    {console.log('current review on review component', currSpot?.numReviews)}
                 </p>
             </div>
-            {console.log('curr spot reviews after return:', currSpotReviews)}
             {currSpot?.Owner && sessionUser && currSpotReviews && (
                 <div className={currSpotReviews.length && ((currSpot?.Owner.id === sessionUser.id) || (currSpotReviews.find(review => review?.userId === sessionUser?.id))) ? "hide-buttons" : "show-button"}>
                     <OpenModalButton
