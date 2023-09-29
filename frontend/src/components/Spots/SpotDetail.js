@@ -16,12 +16,16 @@ function SpotDetail() {
     console.log(currSpotReviews)
 
     useEffect(() => {
-        dispatch(spotActions.fetchSingleSpot(id))
-        dispatch(reviewActions.fetchSpotReviews(id))
-
+        dispatch(spotActions.fetchSingleSpot(id)).then(() => {
+            dispatch(reviewActions.fetchSpotReviews(id) )
+            console.log('stars', currSpot.avgStarRating)
+        })
     }, [dispatch, id] )
 
+
+
     const previewImg = currSpot?.SpotImages?.find(image => image.preview === true)
+
 
     return (
         <div className="spot-container">
@@ -53,7 +57,7 @@ function SpotDetail() {
                     <p>
                         <i className="fa-solid fa-star" style={{color:"#000000"}}/>
                         {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpotReviews ? currSpotReviews.length === 1 ? `${currSpotReviews.length} review` : `${currSpotReviews.length} reviews` : "0 reviews"}
-                        {console.log('current review on spotDetail page:', currSpotReviews.length)}
+                        {console.log('stars', currSpot.avgStarRating)}
                     </p>
                     <button className="reserve-button" onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
                 </div>
