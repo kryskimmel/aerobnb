@@ -14,8 +14,10 @@ function Navigation({ isLoaded }){
   return (
     <ul className='nav-links-div'>
       <li className='home' onClick={() => {history.push('/')}}>
-        <NavLink exact to="/">Home</NavLink>
+        {/* <NavLink exact to="/">Home</NavLink> */}
+        <img src='../public/images/aerobnb-logo.png' alt='aerobnb-logo'/>
       </li>
+
       <div className='user-options'>
         {sessionUser && (
           <li>
