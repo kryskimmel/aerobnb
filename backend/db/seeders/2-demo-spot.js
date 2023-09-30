@@ -96,9 +96,9 @@ module.exports = {
     {
       "ownerId": 4,
       "address": "63737 San Pancho St",
-      "city" : "Nayarit",
-      "state" : "Mexico",
-      "country" : "United States",
+      "city" : "Xalisco",
+      "state" : "Nayarit",
+      "country" : "Mexico",
       "lat": 20.74919,
       "lng": 105.25362,
       "name": "Relaxing Escape",
