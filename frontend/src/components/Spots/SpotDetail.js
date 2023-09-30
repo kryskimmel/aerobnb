@@ -31,7 +31,7 @@ function SpotDetail() {
         <div className="spot-container">
             <div className="spot-header">
                 <h1>{currSpot?.name}</h1>
-                <h2>{currSpot?.city}, {currSpot?.state}</h2>
+                <h2>{currSpot?.city}, {currSpot?.state}, {currSpot?.country}</h2>
             </div>
 
             <div className="imgs-div">
