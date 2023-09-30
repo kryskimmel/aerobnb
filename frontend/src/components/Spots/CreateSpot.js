@@ -27,17 +27,40 @@ function CreateSpot () {
 
     useEffect(() => {
         const errors = {};
-        if (!address) errors.address = "Address is required"
+        if (!address) errors.address = "Street address is required"
+        if (address.trim().length === 0) errors.address = "Street address is required"
+
         if (!city) errors.city = "City is required"
+        if (city.trim().length === 0) errors.city = "City is required"
+
         if (!state) errors.state = "State is required"
+        if (state.trim().length === 0) errors.state = "State is required"
+
         if (!country) errors.country = "Country is required"
+        if (country.trim().length === 0) errors.country = "Country is required"
+
         if (!lat) errors.lat = "Latitude is required"
+        if (lat.trim().length === 0) errors.lat = "Latitude is required"
+
         if (!lng) errors.lng = "Longitude is required"
+        if (lng.trim().length === 0) errors.lng = "Longitude is required"
+
         if (!description) errors.description = "Description needs a minimum of 30 characters"
         if (description && description.length < 30) errors.description = "Description needs a minimum of 30 characters"
+        if (description.trim().length === 0) errors.description = "Description needs a minimum of 30 characters"
+
         if (!name) errors.name = "Name is required"
+        if (name.trim().length === 0) errors.name = "Name is required"
+
         if (!price) errors.price = "Price is required"
-        if (!previewImg) errors.previewImg = "Preview image is requred"
+        if (price.trim().length === 0) errors.price = "Price is required"
+
+        if (!previewImg) errors.previewImg = "Preview image is required"
+        if (previewImg.trim().length === 0) errors.previewImg = "Preview image is required"
+        const validExt = [".png", ".jpg", ".jpeg"];
+        const previewImgExt = previewImg.substring(previewImg.lastIndexOf("."));
+        if (!validExt.includes(previewImgExt)) errors.previewImg = "Image URL must end in .png, .jpg, or .jpeg"
+
         setValErrors(errors);
     }, [address,
         city,
@@ -57,6 +80,10 @@ function CreateSpot () {
         if (!canSubmit && Object.values(valErrors).length) setDisableSubmit(true);
         if (!canSubmit && !Object.values(valErrors).length) setDisableSubmit(false);
     }, [valErrors, canSubmit])
+
+    console.log('PREVIEW IMAGE URL' , previewImg)
+    console.log('PREVIEW IMAGE URL EXT', previewImg.substring(previewImg.length - 4) !== ".jpg")
+    console.log('CURRENT VAL ERRORS', valErrors)
 
 
     const handleFormSubmit = (e) => {
