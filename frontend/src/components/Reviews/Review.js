@@ -7,6 +7,7 @@ import DeleteReviewModal from "../Modals/DeleteReviewModal";
 import PostReviewModal from "../Modals/PostReviewModal";
 import useModal from "../../context/OpenModalContext";
 import { monthEquivalent } from "../../utilities/monthEquivalencies";
+import './css/Review.css'
 
 
 
@@ -54,14 +55,15 @@ function Review () {
                                 <li style={{fontWeight:"bold"}}>{review.User?review.User.firstName:""}</li>
                                 <li style={{color:"#989898"}}>{monthEquivalent(review.createdAt.slice(5,7))} {review.createdAt.slice(0,4)}</li>
                                 <li>{review.review}</li>
+                                <div className={review?.userId === sessionUser?.id ? "show-button" : "hide-buttons"} id="delete-review-button">
+                                    <OpenModalButton
+                                        buttonText="Delete"
+                                        onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
+                                        modalComponent={<DeleteReviewModal />}
+                                    />
+                                </div>
                             </ul>
-                            <div className={review?.userId === sessionUser?.id ? "show-button" : "hide-buttons"}>
-                            <OpenModalButton
-                                    buttonText="Delete"
-                                    onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
-                                    modalComponent={<DeleteReviewModal />}
-                                />
-                            </div>
+
                         </div>
                     )
                 } else {
