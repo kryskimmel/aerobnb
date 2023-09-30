@@ -28,12 +28,13 @@ function Review () {
 
 
 
+
     return (
         <>
             <div className="reviews-header">
                 <p>
                     <i className="fa-solid fa-star" style={{color: "#000000"}}></i>
-                    {currSpotReviews.length > 0 ? (currSpotReviews.reduce((sum, count) => sum + count.stars, 0) / currSpotReviews.length).toFixed(1) : "New"} • {currSpotReviews ? currSpotReviews.length === 1 ? `${currSpotReviews.length} review` : `${currSpotReviews.length} reviews` : "0 reviews"}
+                    {currSpotReviews.length > 0 ? (currSpotReviews.reduce((sum, count) => sum + count.stars, 0) / currSpotReviews.length).toFixed(1) : "New"} {!currSpotReviews?.length ? "" : currSpotReviews?.length === 1 ? `• ${currSpotReviews.length} review` : `• ${currSpotReviews.length} reviews`}
                     {console.log('current review on review component', currSpot?.numReviews)}
                 </p>
             </div>
