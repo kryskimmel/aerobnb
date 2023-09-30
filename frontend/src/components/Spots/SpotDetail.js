@@ -13,18 +13,18 @@ function SpotDetail() {
     const currSpot = useSelector(state => state.spots[parseInt(id)]);
     const currSpotReviews = Object.values(useSelector(state => state.reviews));
 
-    console.log(currSpotReviews)
+
 
     useEffect(() => {
         dispatch(spotActions.fetchSingleSpot(id)).then(() => {
-            dispatch(reviewActions.fetchSpotReviews(id) )
-            console.log('stars', currSpot.avgStarRating)
+            dispatch(reviewActions.fetchSpotReviews(id))
         })
     }, [dispatch, id] )
 
 
 
     const previewImg = currSpot?.SpotImages?.find(image => image.preview === true)
+
 
 
     return (
@@ -56,7 +56,7 @@ function SpotDetail() {
                     <p><span style={{fontWeight:"500", fontSize:"20px", marginLeft:"20px"}}>${currSpot?.price} </span>night</p>
                     <p>
                         <i className="fa-solid fa-star" style={{color:"#000000"}}/>
-                        {currSpot?.avgStarRating ? currSpot.avgStarRating.toFixed(1) : "New"} • {currSpotReviews ? currSpotReviews.length === 1 ? `${currSpotReviews.length} review` : `${currSpotReviews.length} reviews` : "0 reviews"}
+                        {currSpotReviews.length > 0 ? (currSpotReviews.reduce((sum, count) => sum + count.stars, 0) / currSpotReviews.length).toFixed(1) : "New"} • {currSpotReviews ? currSpotReviews.length === 1 ? `${currSpotReviews.length} review` : `${currSpotReviews.length} reviews` : "0 reviews"}
                         {console.log('stars', currSpot.avgStarRating)}
                     </p>
                     <button className="reserve-button" onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
