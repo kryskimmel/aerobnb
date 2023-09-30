@@ -45,6 +45,7 @@ function CreateSpot () {
         const latIntPart = Math.floor(lat);
         const latDecPart = lat - latIntPart;
         if (latDecPart === 0) errors.lat = "Latitude is not valid"
+        if (!/^[0-9]*\.?[0-9]*$/.test(lat)) errors.lat = "Latitude is not valid"
 
 
         if (!lng) errors.lng = "Longitude is required"
@@ -53,6 +54,7 @@ function CreateSpot () {
         const lngIntPart = Math.floor(lng);
         const lngDecPart = lng - lngIntPart;
         if (lngDecPart === 0) errors.lng = "Longitude is not valid"
+        if (!/^[0-9]*\.?[0-9]*$/.test(lng)) errors.lng = "Longitude is not valid"
 
 
 
