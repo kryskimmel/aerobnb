@@ -41,9 +41,21 @@ function CreateSpot () {
 
         if (!lat) errors.lat = "Latitude is required"
         if (lat.trim().length === 0) errors.lat = "Latitude is required"
+        if (typeof lat !== "number" && !lat.includes('.')) errors.lat = "Latitude is not valid"
+        const latIntPart = Math.floor(lat);
+        const latDecPart = lat - latIntPart;
+        if (latDecPart === 0) errors.lat = "Latitude is not valid"
+
 
         if (!lng) errors.lng = "Longitude is required"
         if (lng.trim().length === 0) errors.lng = "Longitude is required"
+        if (typeof lng !== "number" && !lng.includes('.')) errors.lng = "Longitude is not valid"
+        const lngIntPart = Math.floor(lng);
+        const lngDecPart = lng - lngIntPart;
+        if (lngDecPart === 0) errors.lng = "Longitude is not valid"
+
+
+
 
         if (!description) errors.description = "Description needs a minimum of 30 characters"
         if (description && description.length < 30) errors.description = "Description needs a minimum of 30 characters"
