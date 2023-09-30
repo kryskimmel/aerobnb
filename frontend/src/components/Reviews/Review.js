@@ -45,6 +45,7 @@ function Review () {
                         onButtonClick={() => {setOnModalContent(<PostReviewModal spotId={id} />)}}
                         modalComponent={<PostReviewModal />}
                     />
+                    {!currSpotReviews.length && currSpot?.Owner.id !== sessionUser.id ? <p>Be the first to post a review!</p> : ""}
                 </div>
             )}
 
