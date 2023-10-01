@@ -107,7 +107,7 @@ export const fetchCurrUserSpots = () => async (dispatch) => {
 }
 
 //CREATE A SPOT
-export const addSpot = (spot, previewImg) => async (dispatch) => {
+export const addSpot = (spot, previewImg, optImg1) => async (dispatch) => {
     try {
         console.log('new spot info', spot)
         const spotResponse = await csrfFetch('/api/spots', {
@@ -122,17 +122,28 @@ export const addSpot = (spot, previewImg) => async (dispatch) => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(previewImg)
             });
-            if (previewImgResponse.ok) {
+        if (previewImgResponse.ok) {
             const addPreviewImg =  await previewImgResponse.json();
-            const createdSpot = {...buildSpot, previewImage: addPreviewImg}
+            const optionalImgRsponse = await csrfFetch(`/api/spots/${buildSpot.id}/images`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(optImg1)
+            });
+        if (optionalImgRsponse.ok) {
+            const addOptionalImg = await optionalImgRsponse.json();
+            const createdSpot = {...buildSpot, previewImage: addPreviewImg, addOptionalImg}
             dispatch(createSpot(createdSpot));
             await dispatch(fetchSpots());
-            }
+
+        }
+        }
         };
     } catch (error) {
         console.error(`There was an issue in creating your spot: ${error.message}`);
     }
 };
+
+
 
 
 

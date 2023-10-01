@@ -141,6 +141,11 @@ function CreateSpot () {
                 preview: true
             };
 
+            const newOptionalImg1 = {
+                url: optImg1,
+                preview: false
+            }
+
             dispatch(spotActions.addSpot(newSpot, newSpotPrevImg));
             history.push('/')
         }
