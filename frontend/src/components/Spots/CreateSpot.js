@@ -20,10 +20,10 @@ function CreateSpot () {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [previewImg, setPreviewImg] = useState('');
-    const [optImg1, setOptImg1] = useState('/images/no-image-to-display.jpg')
-    const [optImg2, setOptImg2] = useState('/images/no-image-to-display.jpg')
-    const [optImg3, setOptImg3] = useState('/images/no-image-to-display.jpg')
-    const [optImg4, setOptImg4] = useState('/images/no-image-to-display.jpg')
+    // const [optImg1, setOptImg1] = useState('')
+    // const [optImg2, setOptImg2] = useState('')
+    // const [optImg3, setOptImg3] = useState('')
+    // const [optImg4, setOptImg4] = useState('')
     const [valErrors, setValErrors] = useState({});
     const [canSubmit, setCanSubmit] = useState(true);
     const [disableSubmit, setDisableSubmit] = useState(false);
@@ -79,14 +79,14 @@ function CreateSpot () {
         const previewImgExt = previewImg.substring(previewImg.lastIndexOf("."));
         if (!validExt.includes(previewImgExt)) errors.previewImg = "Image URL must end in .png, .jpg, or .jpeg"
 
-        const optImg1Ext = optImg1.substring(optImg1.lastIndexOf("."));
-        const optImg2Ext = optImg2.substring(optImg2.lastIndexOf("."));
-        const optImg3Ext = optImg3.substring(optImg3.lastIndexOf("."));
-        const optImg4Ext = optImg4.substring(optImg4.lastIndexOf("."));
-        if (!validExt.includes(optImg1Ext)) errors.optImg1 = "Image URL must end in .png, .jpg, or .jpeg"
-        if (!validExt.includes(optImg2Ext)) errors.optImg2 = "Image URL must end in .png, .jpg, or .jpeg"
-        if (!validExt.includes(optImg3Ext)) errors.optImg3 = "Image URL must end in .png, .jpg, or .jpeg"
-        if (!validExt.includes(optImg4Ext)) errors.optImg4 = "Image URL must end in .png, .jpg, or .jpeg"
+        // const optImg1Ext = optImg1.substring(optImg1.lastIndexOf("."));
+        // const optImg2Ext = optImg2.substring(optImg2.lastIndexOf("."));
+        // const optImg3Ext = optImg3.substring(optImg3.lastIndexOf("."));
+        // const optImg4Ext = optImg4.substring(optImg4.lastIndexOf("."));
+        // if (!validExt.includes(optImg1Ext)) errors.optImg1 = "Image URL must end in .png, .jpg, or .jpeg"
+        // if (!validExt.includes(optImg2Ext)) errors.optImg2 = "Image URL must end in .png, .jpg, or .jpeg"
+        // if (!validExt.includes(optImg3Ext)) errors.optImg3 = "Image URL must end in .png, .jpg, or .jpeg"
+        // if (!validExt.includes(optImg4Ext)) errors.optImg4 = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValErrors(errors);
     }, [address,
@@ -99,14 +99,13 @@ function CreateSpot () {
         name,
         price,
         previewImg,
-        optImg1,
-        optImg2,
-        optImg3,
-        optImg4
+        // optImg1,
+        // optImg2,
+        // optImg3,
+        // optImg4
     ]);
 
     useEffect(() => {
-        console.log(Object.values(valErrors).length, ':length of errors')
         if (canSubmit && !Object.values(valErrors).length) setDisableSubmit(false);
         if (!canSubmit && Object.values(valErrors).length) setDisableSubmit(true);
         if (!canSubmit && !Object.values(valErrors).length) setDisableSubmit(false);
@@ -119,8 +118,6 @@ function CreateSpot () {
         if (Object.values(valErrors).length) {
             setCanSubmit(false);
             setDisableSubmit(true);
-            console.log('Current errors:', valErrors)
-            console.log('You have errors to fix')
         }
         else {
             setCanSubmit(true);
@@ -136,17 +133,15 @@ function CreateSpot () {
                 price: parseInt(price)
             };
 
-            const newSpotPrevImg = {
-                url: previewImg,
-                preview: true
-            };
 
-            const newOptionalImg1 = {
-                url: optImg1,
-                preview: false
-            }
+            const previewImage =
+                {
+                    url: previewImg,
+                    preview: true
+                }
 
-            dispatch(spotActions.addSpot(newSpot, newSpotPrevImg));
+
+            dispatch(spotActions.addSpot(newSpot, previewImage));
             history.push('/')
         }
     };
@@ -277,29 +272,21 @@ function CreateSpot () {
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-1"
-                        value={optImg1}
-                        onChange={(e) => setOptImg1(e.target.value)}
                         ></input>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-2"
-                        value={optImg2}
-                        onChange={(e) => setOptImg2(e.target.value)}
                         ></input>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-3"
-                        value={optImg3}
-                        onChange={(e) => setOptImg3(e.target.value)}
                         ></input>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-4"
-                        value={optImg4}
-                        onChange={(e) => setOptImg4(e.target.value)}
                         ></input>
                 </div>
 
