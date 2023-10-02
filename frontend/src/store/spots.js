@@ -124,8 +124,8 @@ export const addSpot = (spot, previewImg) => async (dispatch) => {
         if (previewImgResponse.ok) {
             const addPreviewImg =  await previewImgResponse.json();
             const createdSpot = {...buildSpot, SpotImages: [addPreviewImg]}
-            dispatch(createSpot(createdSpot));
-            await dispatch(fetchSpots());
+            await dispatch(createSpot(createdSpot));
+            dispatch(fetchSpots());
         }}
     } catch (error) {
         console.error(`There was an issue in creating your spot: ${error.message}`);
