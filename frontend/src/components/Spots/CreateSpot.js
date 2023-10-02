@@ -25,12 +25,14 @@ function CreateSpot () {
     const [optImg3, setOptImg3] = useState('')
     const [optImg4, setOptImg4] = useState('')
     const [valErrors, setValErrors] = useState({});
+    const [additionalImgErrors, setAdditionalImgErrors] = useState({});
     const [canSubmit, setCanSubmit] = useState(true);
-    const [disableSubmit, setDisableSubmit] = useState(false);
+    const [disableSubmit, setDisableSubmit] = useState(true);
 
 
     useEffect(() => {
         const errors = {};
+        const additionalErrors = {};
         if (!address) errors.address = "Street address is required"
         if (address.trim().length === 0) errors.address = "Street address is required"
 
@@ -61,8 +63,6 @@ function CreateSpot () {
         if (!/^[0-9]*\.?[0-9]*$/.test(lng)) errors.lng = "Longitude is not valid"
 
 
-
-
         if (!description) errors.description = "Description needs a minimum of 30 characters"
         if (description && description.length < 30) errors.description = "Description needs a minimum of 30 characters"
         if (description.trim().length === 0) errors.description = "Description needs a minimum of 30 characters"
@@ -83,12 +83,13 @@ function CreateSpot () {
         const optImg2Ext = optImg2.substring(optImg2.lastIndexOf("."));
         const optImg3Ext = optImg3.substring(optImg3.lastIndexOf("."));
         const optImg4Ext = optImg4.substring(optImg4.lastIndexOf("."));
-        if (optImg1 && !validExt.includes(optImg1Ext)) errors.optImg1 = "Image URL must end in .png, .jpg, or .jpeg"
-        if (optImg2 && !validExt.includes(optImg2Ext)) errors.optImg2 = "Image URL must end in .png, .jpg, or .jpeg"
-        if (optImg3 && !validExt.includes(optImg3Ext)) errors.optImg3 = "Image URL must end in .png, .jpg, or .jpeg"
-        if (optImg4 && !validExt.includes(optImg4Ext)) errors.optImg4 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg1 && !validExt.includes(optImg1Ext)) additionalErrors.optImg1 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg2 && !validExt.includes(optImg2Ext)) additionalErrors.optImg2 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg3 && !validExt.includes(optImg3Ext)) additionalErrors.optImg3 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg4 && !validExt.includes(optImg4Ext)) additionalErrors.optImg4 = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValErrors(errors);
+        setAdditionalImgErrors(additionalErrors);
     }, [address,
         city,
         state,
@@ -102,14 +103,16 @@ function CreateSpot () {
         optImg1,
         optImg2,
         optImg3,
-        optImg4
+        optImg4,
     ]);
 
     useEffect(() => {
-        if (canSubmit && !Object.values(valErrors).length) setDisableSubmit(false);
-        if (!canSubmit && Object.values(valErrors).length) setDisableSubmit(true);
-        if (!canSubmit && !Object.values(valErrors).length) setDisableSubmit(false);
-    }, [valErrors, canSubmit])
+        if (canSubmit && !Object.values(valErrors).length && !Object.values(additionalImgErrors).length) setDisableSubmit(false);
+        if (!canSubmit && Object.values(valErrors).length && Object.values(additionalImgErrors).length) setDisableSubmit(true);
+        if (!canSubmit && !Object.values(valErrors).length && !Object.values(additionalImgErrors).length) setDisableSubmit(false);
+    }, [valErrors, additionalImgErrors, canSubmit, disableSubmit])
+
+
 
 
     const handleFormSubmit = (e) => {
@@ -145,6 +148,9 @@ function CreateSpot () {
             history.push('/')
         }
     };
+
+    const buttonClassName = "enable-submit-button" + (!Object.values(valErrors).length? "" : " disable-submit-button");
+    console.log('errors lenght', Object.values(valErrors).length)
 
 
 
@@ -275,7 +281,7 @@ function CreateSpot () {
                         value={optImg1}
                         onChange={(e) => {setOptImg1(e.target.value)}}
                         ></input>
-                            <div className="errors-div">{!canSubmit && valErrors.optImg1 && `${valErrors.optImg1}`}</div>
+                            <div className="errors-div">{!canSubmit && additionalImgErrors.optImg1 && `${additionalImgErrors.optImg1}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
@@ -283,7 +289,7 @@ function CreateSpot () {
                         value={optImg2}
                         onChange={(e) => {setOptImg2(e.target.value)}}
                         ></input>
-                            <div className="errors-div">{!canSubmit && valErrors.optImg2 && `${valErrors.optImg2}`}</div>
+                            <div className="errors-div">{!canSubmit && additionalImgErrors.optImg2 && `${additionalImgErrors.optImg2}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
@@ -291,7 +297,7 @@ function CreateSpot () {
                         value={optImg3}
                         onChange={(e) => {setOptImg3(e.target.value)}}
                         ></input>
-                            <div className="errors-div">{!canSubmit && valErrors.optImg3 && `${valErrors.optImg3}`}</div>
+                            <div className="errors-div">{!canSubmit && additionalImgErrors.optImg3 && `${additionalImgErrors.optImg3}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
@@ -299,13 +305,13 @@ function CreateSpot () {
                         value={optImg4}
                         onChange={(e) => {setOptImg4(e.target.value)}}
                         ></input>
-                            <div className="errors-div">{!canSubmit && valErrors.optImg4 && `${valErrors.optImg4}`}</div>
+                            <div className="errors-div">{!canSubmit && additionalImgErrors.optImg4 && `${additionalImgErrors.optImg4}`}</div>
                 </div>
 
                 <hr></hr>
 
                 <div className="submit-button-div">
-                    <button type="submit" className="submit-button" disabled={disableSubmit}>Create Spot</button>
+                    <button type="submit" className={buttonClassName} disabled={disableSubmit}>Create Spot</button>
                 </div>
             </form>
         </div>
