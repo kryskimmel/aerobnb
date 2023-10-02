@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
@@ -9,8 +9,8 @@ import "./css/LoginFormModal.css";
 
 const LoginFormModal = () => {
     const dispatch = useDispatch();
-
     const sessionUser = useSelector((state) => state.session.user);
+    const loginModalRef = useRef(null);
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
@@ -30,6 +30,7 @@ const LoginFormModal = () => {
 
     const buttonClassName = "enabled-button" + (credential.length >= 4 && password.length >= 6 ? "" : " disabled-button");
 
+
     const handleSubmit = (e) => {
       e.preventDefault();
       setErrors({});
@@ -42,9 +43,16 @@ const LoginFormModal = () => {
       );
     };
 
+    const handleOutsideClick = (e) => {
+        if (loginModalRef.current === e.target) {
+            closeModal()
+        }
+    }
+
+
 
     return (
-        <div className="overlay">
+        <div className="overlay" ref={loginModalRef} onClick={handleOutsideClick}>
             <div className="login-modal">
                 <div className="form-container-div">
                     <h1>Log In</h1>
