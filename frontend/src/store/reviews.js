@@ -1,5 +1,4 @@
 import { csrfFetch } from "./csrf";
-import * as spotActions from "./spots";
 
 
 const LOAD = "reviews/LOAD";
@@ -56,8 +55,7 @@ export const fetchSpotReviews = (spotId) => async (dispatch) => {
 };
 
 //CREATE REVIEW
-export const addAReview = (reviewReq, spotId) => async (dispatch) => {
-    const {review, stars} = reviewReq;
+export const addAReview = (review, stars, spotId) => async (dispatch) => {
     try {
         const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
             method: 'POST',
@@ -67,6 +65,7 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
                 stars
             })
         });
+        console.log('a response', response)
 
         if (response.ok) {
             const newResponse = await response.json();
@@ -76,7 +75,7 @@ export const addAReview = (reviewReq, spotId) => async (dispatch) => {
         };
     }
     catch (error) {
-        throw new Error(`The following error has occurred while creating a review for the selected spot: ${error.message}`)
+        throw new Error(`An error occured while creating a review for the selected spot: ${error}`)
     }
 }
 
@@ -89,6 +88,7 @@ export const deleteSingleReview = (reviewId) => async (dispatch) => {
         });
         console.log('RESPONSE', response)
         if (response.ok) {
+            console.log('RESPONSE', response)
             dispatch(deleteReview(reviewId));
             return response;
         }
@@ -96,7 +96,7 @@ export const deleteSingleReview = (reviewId) => async (dispatch) => {
 
     }
     catch (error) {
-        throw new Error(`The following error has occurred while deleting your review for the selected spot: ${error.message}`)
+        throw new Error(`The following error has occurred while deleting your review for the selected spot: ${error}`)
     }
 };
 

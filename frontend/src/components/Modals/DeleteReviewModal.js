@@ -9,17 +9,19 @@ const DeleteReviewModal = ({reviewId, spotId}) => {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
 
+    console.log(reviewId, spotId)
+
 
     const handleYes = async (e) => {
         e.preventDefault();
         try {
-            dispatch(reviewActions.deleteSingleReview(reviewId)).then(() => dispatch(reviewActions.fetchSpotReviews(spotId)))
-            closeModal();
+          await dispatch(reviewActions.deleteSingleReview(reviewId));
+          await dispatch(reviewActions.fetchSpotReviews(spotId));
+          closeModal();
+        } catch (error) {
+          console.error("There was an error in deleting the review", error);
         }
-        catch (error) {
-            console.error("There was an error in deleting the review", error)
-        }
-    };
+      };
 
     return (
         <div className="overlay">

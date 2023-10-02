@@ -15,7 +15,7 @@
     border-radius: 30px;
     background-color: #FFFFFF;
     width: 300px;
-    height: 250px;
+    /* height: 250px; */
     margin: 0 auto;
     margin-top: 105px;
     padding: 30px 30px
@@ -26,13 +26,21 @@
   }
 
   .text-area {
-    width: 300px;
-    height: 100px;
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 100px;
+    max-height: 100px;
     border: 2px solid #000000;
+    background-color: #E7F0FE;
+  }
+
+  .star-rating-div {
+    display: flex;
+    justify-content: center;
   }
 
 
-  .can-submit-button {
+  .can-submit-review-button {
     background-color: #FF5A5F;
     color: #FFFFFF;
     border: 1px solid #000000;
@@ -42,12 +50,16 @@
     margin-bottom: 5px;
   }
 
-  .cannot-submit-button {
-    background-color: #999999;
-    color: #FFFFFF;
+  .cannot-submit-review-button {
+    background-color: FFFFFF;
+    color: #000000;
     border: 1px solid #000000;
     box-shadow: 4px 2px 1px #000000;
     width: 300px;
     height: 40px;
     margin-top: 5px;
+  }
+
+  .errors-div {
+    display: block;
   }

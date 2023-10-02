@@ -22,6 +22,6 @@ export const OpenModalMenuProvider = props => {
     )
 }
 
-const useModal =  () => { return useContext(OpenModalMenuContext)}
+const useModal = () => { return useContext(OpenModalMenuContext)}
 
 export default useModal;

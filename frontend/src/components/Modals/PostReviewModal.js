@@ -11,19 +11,17 @@ import '../../utilities/StarRating.css';
 
 const PostReviewModal = ({spotId}) => {
     const dispatch = useDispatch();
-    const [review, setReview] = useState();
+    const [review, setReview] = useState('');
     let [stars, setStars] = useState(null);
     const [hover, setHover] = useState(null);
     const {closeModal} = useModal();
     const history = useHistory();
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const reviewReq = {
-            review,
-            stars : parseInt(stars)
-        };
-        dispatch(reviewActions.addAReview(reviewReq, spotId))
+        dispatch(reviewActions.addAReview(review, parseInt(stars), spotId))
         .then(() => {
           // After the review is added, fetch spot reviews to update the count
           dispatch(reviewActions.fetchSpotReviews(spotId));
@@ -45,6 +43,7 @@ const PostReviewModal = ({spotId}) => {
                             value={review}
                             onChange={(e) => setReview(e.target.value)}
                         ></textarea>
+                        <div className="star-rating-div">
                         <div>
                         {[...Array(5)].map((star, i) => {
                         const ratingValue = i + 1;
@@ -67,6 +66,8 @@ const PostReviewModal = ({spotId}) => {
                             </label>
                             )
                         })}
+                        </div>
+                        <div> Stars</div>
                         </div>
                         <button type="submit"  className="cannot-submit-button">Submit Your Review</button>
                     </form>
