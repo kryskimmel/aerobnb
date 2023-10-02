@@ -1,66 +1,120 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import useModal from "../../context/OpenModalContext";
 import * as sessionActions from "../../store/session";
 import "./css/SignupFormModal.css";
 
 
 const SignupFormModal = () => {
-
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
+    const signupModalRef = useRef(null);
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [disable, setDisable] = useState(true);
-    const [errors, setErrors] = useState({});
+    const [signUpErrors, setSignUpErrors] = useState({});
+    const [disable, setDisable] = useState(false);
+    const [canSubmit, setCanSubmit] = useState(true);
+    const {closeModal} = useModal();
+
+
 
 
     useEffect(() => {
         username.length < 4 || password.length < 6 ? setDisable(true) : setDisable(false);
      }, [username, password, disable])
 
+     useEffect(() => {
+        const errors = {};
+
+        if (!email) errors.email = "Email is required"
+        if (email.trim().length === 0) errors.email = "Email is required"
+        if (!email.includes("@")) errors.email = "The provided email is invalid"
+
+        if (!username) errors.username = "Username is required"
+        if (username.trim().length === 0) errors.username = "Username is required"
+        if (username && username.length < 4) errors.username = "Username must be 4 characters or more"
+
+        if (!password) errors.password = "Password is required"
+        if (password.trim().length === 0) errors.password = "Password is required"
+        if (password && password.length < 6) errors.password = "Password must be 6 characters of more"
+
+        if (password !== confirmPassword) errors.confirmPassword = "Confirm Password field must be the same as the Password field"
+
+        if (!firstName) errors.firstName = "First Name is required"
+        if (firstName.trim().length === 0) errors.firstName = "First Name is required"
+        if (!/^[a-zA-Z\s]+$/.test(firstName)) errors.firstName = "First Name is not valid"
+
+        if (!lastName) errors.lastName = "Last Name is required"
+        if (lastName.trim().length === 0) errors.lastName = "Last Name is required"
+        if (!/^[a-zA-Z\s]+$/.test(lastName)) errors.lastName = "Last Name is not valid"
+
+        setSignUpErrors(errors);
+     }, [
+        email,
+        username,
+        password,
+        confirmPassword,
+        firstName,
+        lastName
+     ]);
 
 
-    if (sessionUser) return <Redirect to="/" />;
+    useEffect(() => {
+        if (canSubmit && !Object.values(signUpErrors).length) setDisable(false);
+        if (!canSubmit && Object.values(signUpErrors).length) setDisable(true);
+        if (!canSubmit && !Object.values(signUpErrors).length) setDisable(false);
+    }, [signUpErrors, canSubmit])
 
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({});
-        if (password === confirmPassword) {
-            return dispatch(sessionActions.signup({
+
+        if (Object.values(signUpErrors).length) {
+            setCanSubmit(false);
+            setDisable(true);
+        }
+        else {
+            dispatch(sessionActions.signup({
                 firstName,
                 lastName,
                 email,
                 username,
                 password
             }))
-        }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
-    });
-  };
+            closeModal();
+        };
+    };
+
+    if (sessionUser) { <Redirect to="/" /> };
+
 
     const buttonClassName = "enabled-button" + (email && username.length >= 4 && firstName && lastName && password.length >= 6 && confirmPassword ? "" : " disabled-button");
 
 
+    const handleOutsideClick = (e) => {
+        if (signupModalRef.current === e.target) {
+            closeModal()
+        }
+    }
+
     return (
-        <div className="overlay">
-            <div className="signup-modal">
+        <div className="overlay" ref={signupModalRef} onClick={handleOutsideClick}>
+            <div className="signup-modal" >
                 <div className="form-container-div">
                     <h1>Sign Up</h1>
                     <div className="errors-div">
-                        {errors.firstName && <p>{errors.firstName}</p>}
-                        {errors.lastName && <p>{errors.lastName}</p>}
-                        {errors.email && <p>{errors.email}</p>}
-                        {errors.username && <p>{errors.username}</p>}
-                        {errors.password && <p>{errors.password}</p>}
-                        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+                            <p>{!canSubmit && signUpErrors.firstName && `${signUpErrors.firstName}`}</p>
+                            <p>{!canSubmit && signUpErrors.lastName && `${signUpErrors.lastName}`}</p>
+                            <p>{!canSubmit && signUpErrors.email && `${signUpErrors.email}`}</p>
+                            <p>{!canSubmit && signUpErrors.username && `${signUpErrors.username}`}</p>
+                            <p>{!canSubmit && signUpErrors.password && `${signUpErrors.password}`}</p>
+                            <p>{!canSubmit && signUpErrors.confirmPassword && `${signUpErrors.confirmPassword}`}</p>
                     </div>
                     <form onSubmit={handleSubmit} className="form-div">
                         <div className="field-group" id="field-group-1">
