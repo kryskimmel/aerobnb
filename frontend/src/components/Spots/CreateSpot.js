@@ -20,10 +20,10 @@ function CreateSpot () {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [previewImg, setPreviewImg] = useState('');
-    // const [optImg1, setOptImg1] = useState('')
-    // const [optImg2, setOptImg2] = useState('')
-    // const [optImg3, setOptImg3] = useState('')
-    // const [optImg4, setOptImg4] = useState('')
+    const [optImg1, setOptImg1] = useState('')
+    const [optImg2, setOptImg2] = useState('')
+    const [optImg3, setOptImg3] = useState('')
+    const [optImg4, setOptImg4] = useState('')
     const [valErrors, setValErrors] = useState({});
     const [canSubmit, setCanSubmit] = useState(true);
     const [disableSubmit, setDisableSubmit] = useState(false);
@@ -77,16 +77,16 @@ function CreateSpot () {
         if (previewImg.trim().length === 0) errors.previewImg = "Preview image is required"
         const validExt = [".png", ".jpg", ".jpeg"];
         const previewImgExt = previewImg.substring(previewImg.lastIndexOf("."));
-        if (!validExt.includes(previewImgExt)) errors.previewImg = "Image URL must end in .png, .jpg, or .jpeg"
+        if (previewImg && !validExt.includes(previewImgExt)) errors.previewImg = "Image URL must end in .png, .jpg, or .jpeg"
 
-        // const optImg1Ext = optImg1.substring(optImg1.lastIndexOf("."));
-        // const optImg2Ext = optImg2.substring(optImg2.lastIndexOf("."));
-        // const optImg3Ext = optImg3.substring(optImg3.lastIndexOf("."));
-        // const optImg4Ext = optImg4.substring(optImg4.lastIndexOf("."));
-        // if (!validExt.includes(optImg1Ext)) errors.optImg1 = "Image URL must end in .png, .jpg, or .jpeg"
-        // if (!validExt.includes(optImg2Ext)) errors.optImg2 = "Image URL must end in .png, .jpg, or .jpeg"
-        // if (!validExt.includes(optImg3Ext)) errors.optImg3 = "Image URL must end in .png, .jpg, or .jpeg"
-        // if (!validExt.includes(optImg4Ext)) errors.optImg4 = "Image URL must end in .png, .jpg, or .jpeg"
+        const optImg1Ext = optImg1.substring(optImg1.lastIndexOf("."));
+        const optImg2Ext = optImg2.substring(optImg2.lastIndexOf("."));
+        const optImg3Ext = optImg3.substring(optImg3.lastIndexOf("."));
+        const optImg4Ext = optImg4.substring(optImg4.lastIndexOf("."));
+        if (optImg1 && !validExt.includes(optImg1Ext)) errors.optImg1 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg2 && !validExt.includes(optImg2Ext)) errors.optImg2 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg3 && !validExt.includes(optImg3Ext)) errors.optImg3 = "Image URL must end in .png, .jpg, or .jpeg"
+        if (optImg4 && !validExt.includes(optImg4Ext)) errors.optImg4 = "Image URL must end in .png, .jpg, or .jpeg"
 
         setValErrors(errors);
     }, [address,
@@ -99,10 +99,10 @@ function CreateSpot () {
         name,
         price,
         previewImg,
-        // optImg1,
-        // optImg2,
-        // optImg3,
-        // optImg4
+        optImg1,
+        optImg2,
+        optImg3,
+        optImg4
     ]);
 
     useEffect(() => {
@@ -156,7 +156,7 @@ function CreateSpot () {
                     <h2>Where's your place located?</h2>
                     <p>Guests will only get your exact address once they booked a reservation.</p>
                         <label>Country</label>
-                        <div className="errors-div">{!canSubmit && valErrors.country && `* ${valErrors.country}`}</div>
+                        <div className="errors-div">{!canSubmit && valErrors.country && `${valErrors.country}`}</div>
                         <input
                         type="text"
                         placeholder="Country"
@@ -165,7 +165,7 @@ function CreateSpot () {
                         onChange={(e) => {setCountry(e.target.value)}}
                         />
                         <label>Street Address</label>
-                        <div className="errors-div">{!canSubmit && valErrors.address && `* ${valErrors.address}`}</div>
+                        <div className="errors-div">{!canSubmit && valErrors.address && `${valErrors.address}`}</div>
                         <input
                         type="text"
                         placeholder="Address"
@@ -174,7 +174,7 @@ function CreateSpot () {
                         onChange={(e) => {setAddress(e.target.value)}}
                         />
                         <label>City</label>
-                        <div className="errors-div">{!canSubmit && valErrors.city && `* ${valErrors.city}`}</div>
+                        <div className="errors-div">{!canSubmit && valErrors.city && `${valErrors.city}`}</div>
                         <input
                         type="text"
                         placeholder="City"
@@ -183,7 +183,7 @@ function CreateSpot () {
                         onChange={(e) => setCity(e.target.value)}
                         />
                         <label>State</label>
-                        <div className="errors-div">{!canSubmit && valErrors.state && `* ${valErrors.state}`}</div>
+                        <div className="errors-div">{!canSubmit && valErrors.state && `${valErrors.state}`}</div>
                         <input
                         type="text"
                         placeholder="STATE"
@@ -192,7 +192,7 @@ function CreateSpot () {
                         onChange={(e) => setState(e.target.value)}
                         />
                         <label>Latitude</label>
-                        <div className="errors-div">{!canSubmit && valErrors.lat && `* ${valErrors.lat}`}</div>
+                        <div className="errors-div">{!canSubmit && valErrors.lat && `${valErrors.lat}`}</div>
                         <input
                         type="text"
                         placeholder="Latitude"
@@ -201,7 +201,7 @@ function CreateSpot () {
                         onChange={(e) => setLat(e.target.value)}
                         />
                         <label>Longitude</label>
-                        <div className="errors-div">{!canSubmit && valErrors.lng && `* ${valErrors.lng}`}</div>
+                        <div className="errors-div">{!canSubmit && valErrors.lng && `${valErrors.lng}`}</div>
                         <input
                         type="text"
                         placeholder="Longitude"
@@ -222,7 +222,7 @@ function CreateSpot () {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         ></textarea>
-                         <div className="errors-div">{!canSubmit && valErrors.description && `* ${valErrors.description}`}</div>
+                         <div className="errors-div">{!canSubmit && valErrors.description && `${valErrors.description}`}</div>
                 </div>
 
                 <hr></hr>
@@ -237,7 +237,7 @@ function CreateSpot () {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         ></input>
-                         <div className="errors-div">{!canSubmit && valErrors.name && `* ${valErrors.name}`}</div>
+                         <div className="errors-div">{!canSubmit && valErrors.name && `${valErrors.name}`}</div>
                 </div>
 
                 <hr></hr>
@@ -252,7 +252,7 @@ function CreateSpot () {
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                         ></input>
-                         <div className="errors-div">{!canSubmit && valErrors.price && `* ${valErrors.price}`}</div>
+                         <div className="errors-div">{!canSubmit && valErrors.price && `${valErrors.price}`}</div>
                 </div>
 
                 <hr></hr>
@@ -267,27 +267,39 @@ function CreateSpot () {
                         value={previewImg}
                         onChange={(e) => {setPreviewImg(e.target.value)}}
                         ></input>
-                         <div className="errors-div">{!canSubmit && valErrors.previewImg && `* ${valErrors.previewImg}`}</div>
+                            <div className="errors-div">{!canSubmit && valErrors.previewImg && `${valErrors.previewImg}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-1"
+                        value={optImg1}
+                        onChange={(e) => {setOptImg1(e.target.value)}}
                         ></input>
+                            <div className="errors-div">{!canSubmit && valErrors.optImg1 && `${valErrors.optImg1}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-2"
+                        value={optImg2}
+                        onChange={(e) => {setOptImg2(e.target.value)}}
                         ></input>
+                            <div className="errors-div">{!canSubmit && valErrors.optImg2 && `${valErrors.optImg2}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-3"
+                        value={optImg3}
+                        onChange={(e) => {setOptImg3(e.target.value)}}
                         ></input>
+                            <div className="errors-div">{!canSubmit && valErrors.optImg3 && `${valErrors.optImg3}`}</div>
                         <input
                         type="text"
                         placeholder="Image URL"
                         name="opt-img-4"
+                        value={optImg4}
+                        onChange={(e) => {setOptImg4(e.target.value)}}
                         ></input>
+                            <div className="errors-div">{!canSubmit && valErrors.optImg4 && `${valErrors.optImg4}`}</div>
                 </div>
 
                 <hr></hr>
