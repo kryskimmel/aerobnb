@@ -31,8 +31,8 @@
     grid-area: 1/ 2/ 2/ 3
 }
 
-span {
-    font-weight: 500;
+.spot-info span {
+    font-weight: 700;
 }
 
 /***************************/

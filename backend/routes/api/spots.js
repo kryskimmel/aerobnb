@@ -246,7 +246,6 @@ router.post( '/:spotId/images', requireAuth, existSpot, isAuthorizedSpot, async 
     }
 });
 
-
 /****************************************************** */
 //Create a review for a spot based on the Spot's id
 router.post( '/:spotId/reviews', requireAuth, existSpot, validateReview, async (req, res, next) => {

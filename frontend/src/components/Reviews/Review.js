@@ -36,10 +36,9 @@ function Review () {
     return (
         <>
             <div className="reviews-header">
-                <p>
+                <p style={{fontWeight:"500", fontSize:"24px"}}>
                     <i className="fa-solid fa-star" style={{color: "#000000"}}></i>
                     {currSpotReviews.length > 0 ? (currSpotReviews.reduce((sum, count) => sum + count.stars, 0) / currSpotReviews.length).toFixed(1) : "New"} {!currSpotReviews?.length ? "" : currSpotReviews?.length === 1 ? `• ${currSpotReviews.length} review` : `• ${currSpotReviews.length} reviews`}
-                    {console.log('current review on review component', currSpot?.numReviews)}
                 </p>
             </div>
             {currSpot?.Owner && sessionUser && currSpotReviews && (
@@ -56,8 +55,8 @@ function Review () {
             {currSpotReviews && sortedReviews && reversedSortReviews?.map(review => {
                 if (review && review?.User) {
                     return (
-                        <div className="reviews" key={review.id}>
-                            <ul>
+                        <div className="reviews" key={review.id} style={{paddingBottom:'10px'}}>
+                            <ul style={{listStyle:'none', padding:'0'}}>
                                 <li style={{fontWeight:"bold"}}>{review.User?review.User.firstName:""}</li>
                                 <li style={{color:"#989898"}}>{monthEquivalent(review.createdAt.slice(5,7))} {review.createdAt.slice(0,4)}</li>
                                 <li>{review.review}</li>

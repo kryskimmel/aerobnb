@@ -53,11 +53,10 @@ function SpotDetail() {
                     <p>{currSpot?.description}</p>
                 </div>
                 <div className="spot-info-box">
-                    <p><span style={{fontWeight:"500", fontSize:"20px", marginLeft:"20px"}}>${currSpot?.price} </span>night</p>
-                    <p>
+                    <p><span style={{fontWeight:"500", fontSize:"24px", marginLeft:"20px"}}>${currSpot?.price.toFixed(2)} </span>night</p>
+                    <p style={{marginLeft:"27px", marginTop:"25px"}}>
                         <i className="fa-solid fa-star" style={{color:"#000000"}}/>
                         {currSpotReviews.length > 0 ? (currSpotReviews.reduce((sum, count) => sum + count.stars, 0) / currSpotReviews.length).toFixed(1) : "New"} {!currSpotReviews?.length ? "" : currSpotReviews?.length === 1 ? `• ${currSpotReviews.length} review` : `• ${currSpotReviews.length} reviews`}
-                        {console.log('stars', currSpot.avgStarRating)}
                     </p>
                     <button className="reserve-button" onClick={() => {alert("Feature Coming Soon...")}}>Reserve</button>
                 </div>

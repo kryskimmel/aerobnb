@@ -149,16 +149,11 @@ function CreateSpot () {
     };
 
 
-    // useEffect(() => {
-    //     dispatch(spotActions.fetchSpots())
-    //     console.log('after create spot:', spots)
-    //     console.log('the last spot in array', spots[spots.length-1])
-    // }, [dispatch])
 
 
 
     const buttonClassName = "enable-submit-button" + (!Object.values(valErrors).length? "" : " disable-submit-button");
-    console.log('errors lenght', Object.values(valErrors).length)
+
 
 
 

@@ -134,9 +134,6 @@ export const addSpot = (spot, previewImg) => async (dispatch) => {
 
 
 
-
-
-
 //DELETE A SPOT
 export const deleteSingleSpot = (spotId) => async (dispatch) => {
     try {
@@ -157,21 +154,22 @@ export const deleteSingleSpot = (spotId) => async (dispatch) => {
 
 
 //UPDATE SPOT
-export const updateSingleSpot = (spotId, spot, previewImg) => async (dispatch) => {
+export const updateSingleSpot = (spotId, updatedSpotInfo) => async (dispatch) => {
     try {
         const updatedSpotResponse = await csrfFetch(`/api/spots/${spotId}`, {
             method: 'PUT',
             headers: {'Content-Type' : 'application/json'},
-            body: JSON.stringify(spot)
+            body: JSON.stringify(updatedSpotInfo)
         });
         if (updatedSpotResponse.ok) {
-            const updatedSpotInfo = await updatedSpotResponse.json();
-            dispatch(updateSpot(updatedSpotInfo));
-            await dispatch(fetchCurrUserSpots());
+            const revisedSpotInfo = await updatedSpotResponse.json();
+            const updatedSpot = {...revisedSpotInfo}
+            await dispatch(updateSpot(updatedSpot));
+            dispatch(fetchCurrUserSpots());
         }
     }
     catch (error) {
-        throw new Error('There was an issue in updating your spot')
+        throw new Error('There was an issue in updating your spot:', error.message)
     }
 }
 

@@ -18,7 +18,9 @@
 
 
 .preview-img-div {
-    width: 100vw;
+    width: 2000px;
+    margin-right: 2px;
+
 }
 
 
@@ -27,6 +29,7 @@
     width: 100%;
     object-fit: cover;
     padding-right: 10px;
+
 }
 
 
@@ -67,6 +70,11 @@
     grid-template-columns: 50% 50%;
     grid-template-rows: 50% 50%;
     margin-top: 20px;
+    justify-self: flex-end;
+}
+
+.spot-info-box p {
+    margin-top:20px;
 }
 
 
@@ -96,6 +104,6 @@
 .show-button button {
     border: 2px solid #000000;
     box-shadow: 2px 2px 0px #000000;
-    background-color: #999999;
+    background-color: #666666;
     color: #FFFFFF;
 }

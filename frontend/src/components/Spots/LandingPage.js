@@ -27,7 +27,7 @@ function LandingPage() {
                             <img src={spot?.previewImage} alt={spot?.name} title={spot?.name}></img>
                             <div className="spot-info" key={spot && `spot-info-${spot.id}`}>
                                 <p>{spot?.city}, {spot?.state}</p>
-                                <p><span>${spot?.price}</span> night</p>
+                                <p><span>${spot?.price.toFixed(2)}</span> night</p>
                                 <p className="rating-info"><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span>{spot?.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
                             </div>
                         </div>
