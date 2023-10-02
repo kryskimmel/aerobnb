@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import useModal from "../../context/OpenModalContext";
 import LoginFormPage from "../LoginFormPage";
@@ -10,6 +10,7 @@ import "./css/LoginFormModal.css";
 const LoginFormModal = () => {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state) => state.session.user);
+    const history = useHistory();
     const loginModalRef = useRef(null);
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
@@ -23,10 +24,10 @@ const LoginFormModal = () => {
 
      const handleDemoUser = () => {
         dispatch(sessionActions.login({ credential:"Demo-lition", password:"password"}));
+        history.push('/');
         closeModal();
     };
 
-    if (sessionUser) return <Redirect to="/" />;
 
     const buttonClassName = "enabled-button" + (credential.length >= 4 && password.length >= 6 ? "" : " disabled-button");
 
@@ -35,12 +36,17 @@ const LoginFormModal = () => {
       e.preventDefault();
       setErrors({});
 
-      return dispatch(sessionActions.login({ credential, password })).catch(
+      dispatch(sessionActions.login({ credential, password })).then(() => {}).catch(
         async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
         }
       );
+    };
+
+    if (sessionUser) {
+        history.push('/')
+        closeModal()
     };
 
     const handleOutsideClick = (e) => {
