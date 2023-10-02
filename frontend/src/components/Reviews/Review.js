@@ -25,6 +25,10 @@ function Review () {
     const sessionUser = useSelector(state => state.session.user);
     const {setOnModalContent} = useModal();
 
+    const sortedReviews = currSpotReviews.sort((a, b) => b.createdAt - a.createdAt);
+    console.log('the sorted review variable', sortedReviews)
+    const reversedSortReviews = [...sortedReviews].reverse();
+
 
 
 
@@ -42,14 +46,14 @@ function Review () {
                 <div className={currSpot?.Owner.id === sessionUser.id || currSpotReviews.length && ((currSpot?.Owner.id === sessionUser.id) || (currSpotReviews.find(review => review?.userId === sessionUser?.id))) ? "hide-buttons" : "show-button"}>
                     <OpenModalButton
                         buttonText="Post Your Review"
-                        onButtonClick={() => {setOnModalContent(<PostReviewModal spotId={id} />)}}
+                        onButtonClick={() => {setOnModalContent(<PostReviewModal spotId={parseInt(id)} />)}}
                         modalComponent={<PostReviewModal />}
                     />
                     {!currSpotReviews.length && currSpot?.Owner.id !== sessionUser.id ? <p>Be the first to post a review!</p> : ""}
                 </div>
             )}
 
-            {currSpotReviews && currSpotReviews.map(review => {
+            {currSpotReviews && sortedReviews && reversedSortReviews?.map(review => {
                 if (review && review?.User) {
                     return (
                         <div className="reviews" key={review.id}>
@@ -60,7 +64,7 @@ function Review () {
                                 <div className={review?.userId === sessionUser?.id ? "show-button" : "hide-buttons"} id="delete-review-button">
                                     <OpenModalButton
                                         buttonText="Delete"
-                                        onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={id}/>)}}
+                                        onButtonClick={() => {setOnModalContent(<DeleteReviewModal reviewId={review.id} spotId={parseInt(id)}/>)}}
                                         modalComponent={<DeleteReviewModal />}
                                     />
                                 </div>
