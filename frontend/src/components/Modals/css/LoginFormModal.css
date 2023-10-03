@@ -59,3 +59,8 @@ label {
   height: 40px;
   margin-top: 5px;
 }
+
+.errors-div {
+  display: block;
+  width: 350px;
+}

@@ -43,10 +43,13 @@ h1 {
 
 
 .show-create {
-    border: 1px solid #000000;
-    box-shadow: 2px 2px 4px #000000;
+    border: 2px solid #000000;
+    box-shadow: 4px 2px 1px #000000;
     background-color: #666666;
     color: #FFFFFF;
+    width: 130px;
+    height: 25px;
+    margin-left: 10px;
 }
 
 .show-create:hover {

@@ -17,41 +17,41 @@ const SignupFormModal = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [signUpErrors, setSignUpErrors] = useState({});
-    const [disable, setDisable] = useState(false);
+    const [disable, setDisable] = useState(true);
     const [canSubmit, setCanSubmit] = useState(true);
     const {closeModal} = useModal();
 
 
 
 
-    useEffect(() => {
-        username.length < 4 || password.length < 6 ? setDisable(true) : setDisable(false);
-     }, [username, password, disable])
+    // useEffect(() => {
+    //     username.length < 4 || password.length < 6 ? setDisable(true) : setDisable(false);
+    //  }, [username, password, disable])
 
      useEffect(() => {
         const errors = {};
 
-        if (!email) errors.email = "Email is required"
-        if (email.trim().length === 0) errors.email = "Email is required"
-        if (!email.includes("@")) errors.email = "The provided email is invalid"
+        if (!email) errors.email = "Email is required."
+        if (email.trim().length === 0) errors.email = "Email is required."
+        if (!email.includes("@" && '.')) errors.email = "The provided email is invalid."
 
-        if (!username) errors.username = "Username is required"
-        if (username.trim().length === 0) errors.username = "Username is required"
-        if (username && username.length < 4) errors.username = "Username must be 4 characters or more"
+        if (!username) errors.username = "Username is required."
+        if (username.trim().length === 0) errors.username = "Username is required."
+        if (username && username.length < 4) errors.username = "Username must be 4 characters or more."
 
-        if (!password) errors.password = "Password is required"
-        if (password.trim().length === 0) errors.password = "Password is required"
-        if (password && password.length < 6) errors.password = "Password must be 6 characters of more"
+        if (!password) errors.password = "Password is required."
+        if (password.trim().length === 0) errors.password = "Password is required."
+        if (password && password.length < 6) errors.password = "Password must be 6 characters of more."
 
-        if (password !== confirmPassword) errors.confirmPassword = "Confirm Password field must be the same as the Password field"
+        if (password !== confirmPassword) errors.confirmPassword = "Confirm Password field must be the same as the Password field."
 
-        if (!firstName) errors.firstName = "First Name is required"
-        if (firstName.trim().length === 0) errors.firstName = "First Name is required"
-        if (!/^[a-zA-Z\s]+$/.test(firstName)) errors.firstName = "First Name is not valid"
+        if (!firstName) errors.firstName = "First Name is required."
+        if (firstName.trim().length === 0) errors.firstName = "First Name is required."
+        if (!/^[a-zA-Z\s]+$/.test(firstName)) errors.firstName = "First Name is not valid."
 
-        if (!lastName) errors.lastName = "Last Name is required"
-        if (lastName.trim().length === 0) errors.lastName = "Last Name is required"
-        if (!/^[a-zA-Z\s]+$/.test(lastName)) errors.lastName = "Last Name is not valid"
+        if (!lastName) errors.lastName = "Last Name is required."
+        if (lastName.trim().length === 0) errors.lastName = "Last Name is required."
+        if (!/^[a-zA-Z\s]+$/.test(lastName)) errors.lastName = "Last Name is not valid."
 
         setSignUpErrors(errors);
      }, [
@@ -65,6 +65,7 @@ const SignupFormModal = () => {
 
 
     useEffect(() => {
+        if (firstName && lastName && email && username && password && confirmPassword) setDisable(false)
         if (canSubmit && !Object.values(signUpErrors).length) setDisable(false);
         if (!canSubmit && Object.values(signUpErrors).length) setDisable(true);
         if (!canSubmit && !Object.values(signUpErrors).length) setDisable(false);
@@ -94,7 +95,7 @@ const SignupFormModal = () => {
     if (sessionUser) { <Redirect to="/" /> };
 
 
-    const buttonClassName = "enabled-button" + (email && username.length >= 4 && firstName && lastName && password.length >= 6 && confirmPassword ? "" : " disabled-button");
+    const buttonClassName = "enabled-button" + (firstName && lastName && email && username && password && confirmPassword ? "" : " disabled-button");
 
 
     const handleOutsideClick = (e) => {
