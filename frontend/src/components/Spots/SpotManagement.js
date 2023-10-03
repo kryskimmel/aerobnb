@@ -24,21 +24,20 @@ function SpotManagement() {
 
     return (
         <>
-            <h1>Manage Your Spots</h1>
+            <h1 style={{marginLeft:'10px',marginBottom:'30px'}}>Manage Your Spots</h1>
             <div className="mgmt-spots-container">
                 <button className={createButtonCN} onClick={() => {history.push("/spots/new")}}>Create a New Spot</button>
                 {spots && spots.map((spot) => {
                     return (
                         <div key={spot?.id} className="mgmt-spots">
-                            <div className="spot-card" onClick={()=>{history.push(`/spots/${spot?.id}`)}}>
-                                <img src={spot?.previewImage} alt={spot?.name} title={spot?.name}></img>
-                                <div className="spot-info">
+                            <div className="spot-card">
+                                <img src={spot?.previewImage} alt={spot?.name} title={spot?.name} onClick={()=>{history.push(`/spots/${spot?.id}`)}}></img>
+                                <div className="spot-info" onClick={()=>{history.push(`/spots/${spot?.id}`)}}>
                                     <p>{spot?.city}, {spot?.state}</p>
-                                    <p><span>${spot?.price}</span> night</p>
+                                    <p><span>${spot?.price.toFixed(2)}</span> night</p>
                                     <p className="rating-info"><i className="fa-solid fa-star" style={{color: "#000000"}}></i><span>{spot?.avgRating ? spot.avgRating.toFixed(1) : "New"}</span></p>
                                 </div>
-                            </div>
-                            <div className="show-mgmt">
+                                <div className="show-mgmt">
                                 <button onClick={() => {history.push(`/spots/${spot?.id}/edit`)}}>Update</button>
                                 <OpenModalButton
                                     buttonText="Delete"
@@ -46,6 +45,8 @@ function SpotManagement() {
                                     modalComponent={<DeleteSpotModal />}
                                 />
                             </div>
+                            </div>
+
                         </div>
                     );
                 })}
